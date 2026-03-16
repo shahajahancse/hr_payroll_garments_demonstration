@@ -138,7 +138,7 @@ class Entry_system_con extends CI_Controller
         $this->db->from('pr_advance_loan loan');
         $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
         $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
-        $this->db->limit(10);
+        $this->db->limit(10)->order_by('loan.loan_month', 'DESC');
         $this->data['results'] = $this->db->get()->result();
 
         $this->data['title'] = 'Advance Salary';
@@ -215,36 +215,53 @@ class Entry_system_con extends CI_Controller
             // over time calculation
             $ot_amount = 0;
             if (!empty($attendances->ot) && $info->ot_entitle != 1 && $ot == 1) {
-                $ot_rate = $info->ot_rate;
+                $ot_rate = $ot_rate;
                 $ot_amount = $attendances->ot * $ot_rate;
             }
 
             // salary calculation
             if ($salary_type == 1) {
                 $salary = $info->gross_sal;
+                $salary_type = 'Gross';
             } else {
                 $salary = $basic_sal;
+                $salary_type = 'Basic';
             }
             $pay = round(($salary / $num_of_days) * $pay_days) + $ot_amount + $att_bouns;
 
             $data = array(
                 'emp_id'        => $row,
-                'loan_amount'   => $pay,
-                'pay_amt'       => $pay,
-                'loan_date'     => date('Y-m-d'),
-                'effect_month'  => $effect_month,
-                'loan_month'    => $loan_month,
                 'from_date'     => $from_date,
                 'to_date'       => $to_date,
-                'unit_id'       => $unit_id,
-                'loan_status'   => 1,
+                'pay_cal_day'   => ((strtotime($to_date) - strtotime($from_date)) / 86400) + 1,
+                'attend'        => $attend,
+                'absent'        => $absent,
+                'weekend'       => $weekend,
+                'holiday'       => $holiday,
+                'total_leave'   => $total_leave,
+                'pay_days'      => $pay_days,
+                'salary_type'   => $salary_type,
+                'gross_salary'  => $info->gross_sal,
+                'pay_salay'     => $pay,
+                'ot'            => $attendances->ot,
+                'ot_rate'       => $ot_rate,
+                'ot_amt'        => $ot_amount,
+                'att_bouns'     => $att_bouns,
+                'loan_amt'      => $pay,
+                'loan_date'     => date('Y-m-d'),
+                'loan_month'    => $loan_month,
+                'effect_month'  => $effect_month,
+                'pay_amt'       => $pay,
+                'status'        => 1, // 1 open, 2 close
+                'loan_status'   => 1, // 1 not pay, 2 full pay, 3 partial pay
                 'type'          => 2,  // 2 advance salary
+                'unit_id'       => $unit_id,
                 'created_by'    => $this->data['user_data']->id,
             );
 
-            $r = $this->db->where('emp_id', $row)->where('loan_month', $loan_month)->where('type', 2)->where('loan_status', 1)->get('pr_advance_loan')->row();
+            $r = $this->db->where('emp_id', $row)->where('loan_month', $loan_month)->where('loan_status', 1)->where('type', 2)->get('pr_advance_loan')->row();
             if (!empty($r)) {
-                $this->db->where('emp_id', $id)->where('loan_month', $loan_month)->where('status', 1);
+                $this->db->where('id', $r->id);
                 if ($this->db->update('pr_advance_loan', $data)) {
                     $st = true;
                 }
@@ -337,7 +354,7 @@ class Entry_system_con extends CI_Controller
         $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
         $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
         $this->db->where('loan.unit_id', $this->data['user_data']->unit_name);
-        $this->db->limit(10);
+        $this->db->limit(10)->order_by('loan.loan_month', 'DESC');
         $this->data['results'] = $this->db->get()->result();
 
         $this->data['title'] = 'Advance Salary';
@@ -424,18 +441,19 @@ class Entry_system_con extends CI_Controller
             $id         = $row;
             $data = array(
                 'emp_id'        => $id,
-                'loan_amount'   => $loan_amount,
-                'pay_amount'    => $pay_amount,
+                'loan_amt'      => $loan_amount,
                 'loan_month'    => $loan_month,
+                'pay_amt'       => $pay_amount,
                 'effect_month'  => $effect_month,
                 'unit_id'       => $unit_id,
                 'created_by'    => $this->data['user_data']->id,
                 'status'        => $status,
+                'type'          => 1 // loan
             );
 
-            $r = $this->db->where('emp_id', $id)->where('loan_month', $loan_month)->where('status', 1)->get('pr_advance_loan')->row();
+            $r = $this->db->where('emp_id', $id)->where('loan_month', $loan_month)->where('status', 1)->where('type', 1)->get('pr_advance_loan')->row();
             if (!empty($r)) {
-                $this->db->where('emp_id', $id)->where('loan_month', $loan_month)->where('status', 1);
+                $this->db->where('id', $r->id);
                 if ($this->db->update('pr_advance_loan', $data)) {
                     $st = true;
                 }
@@ -1009,6 +1027,7 @@ class Entry_system_con extends CI_Controller
         $this->data['subview'] = 'entry_system/incre_prom_entry';
         $this->load->view('layout/template', $this->data);
     }
+
     public function special_entry()
     {
         $unit_id        = $_POST['unit_id'];
@@ -1059,6 +1078,8 @@ class Entry_system_con extends CI_Controller
         } else {
             $data['prev_salary']      = $r->gross_sal;
             $data['prev_com_salary']  = $r->com_gross_sal;
+            $data['monitor_con']       = 2;
+
             if ( $this->db->insert('pr_incre_prom_pun', $data) ) {
                 $this->db->where('emp_id', $emp_id)->update('pr_emp_com_info', $dd);
                 echo 'success';
@@ -1137,6 +1158,7 @@ class Entry_system_con extends CI_Controller
         } else {
             $data['prev_salary']      = $r->gross_sal;
             $data['prev_com_salary']  = $r->com_gross_sal;
+            $data['monitor_con']       = 2;
             if ( $this->db->insert('pr_incre_prom_pun', $data) ) {
                 $this->db->where('emp_id', $emp_id)->update('pr_emp_com_info', $dd);
                 echo 'success';
@@ -1246,6 +1268,7 @@ class Entry_system_con extends CI_Controller
                 'effective_month'   => $prom_date,
                 'ref_id'            => $emp_id,
                 'status'            => 2,
+                'monitor_con'       => 2
             );
             if ( $this->db->insert('pr_incre_prom_pun', $data) ) {
                 $this->db->where('emp_id', $emp_id)->update('pr_emp_com_info', $dd);
@@ -1255,6 +1278,7 @@ class Entry_system_con extends CI_Controller
             }
         }
     }
+
     public function prom_delete_ajax(){
         $emp_id         = $_POST['sql'];
         $unit_id        = $_POST['unit_id'];
@@ -2415,14 +2439,14 @@ class Entry_system_con extends CI_Controller
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql)->delete('pr_emp_resign_history');
 
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql);
-            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 1, 'monitor_con'=>2))) {
+            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 1, 'monitor_con'=>2, 'monitor_type'=> 'Left/Resign to Regular'))) {
                 echo 'success';
             }else{
                 echo 'error';
             }
         } else if ($type == 2 && !empty($date)) {
             $data = [];
-            $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'left_date' => $date, 'remark' => $remark);
+            $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'left_date' => $date, 'remark' => $remark, 'monitor_con'=>2);
             $dd = $this->db->where('unit_id', $unit_id)->where('emp_id', $sql)->get('pr_emp_left_history');
             if (empty($dd->row())) {
                 $this->db->insert('pr_emp_left_history', $data);
@@ -2430,20 +2454,20 @@ class Entry_system_con extends CI_Controller
             // $this->db->insert_batch('pr_emp_left_history', $data);
 
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql);
-            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 2,'monitor_con'=>2))) {
+            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 2,'monitor_con'=>2, 'monitor_type'=> 'Left'))) {
                 echo 'success';
             }else{
                 echo 'error';
             }
         } else {
             $data = [];
-            $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'resign_date' => $date, 'remark' => $remark);
+            $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'resign_date' => $date, 'remark' => $remark, 'monitor_con'=>2);
             $dd = $this->db->where('unit_id', $unit_id)->where('emp_id', $sql)->get('pr_emp_resign_history');
             if (empty($dd->row())) {
                 $this->db->insert('pr_emp_resign_history', $data);
             }
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql);
-            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 3,'monitor_con'=>2))) {
+            if ($this->db->update('pr_emp_com_info', array('emp_cat_id' => 3,'monitor_con'=>2, 'monitor_type'=> 'Resign'))) {
                 echo 'success';
             }else{
                 echo 'error';

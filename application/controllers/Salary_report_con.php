@@ -42,7 +42,7 @@ class Salary_report_con extends CI_Controller {
 
 		$this->load->view('salary_report/salary_sheet_com', $data);
 	}
-	
+
 	function pay_slip_com()
 	{
         $salary_month = date('Y-m-01', strtotime($this->input->post('salary_month')));
@@ -77,7 +77,7 @@ class Salary_report_con extends CI_Controller {
 		//$data["values"] = $this->Grid_model->summary_report_com($salary_month, $stop_salary, $grid_emp_id, $unit_id);
 		$data["values"] = $this->Grid_model->salary_summary($salary_month,$status,$unit_id,$stop_salary);
 		//dd($data["values"]);
-		
+
 		// dd($data["values"]);
 		$data["salary_month"] = $salary_month;
 		$data["grid_emp_id"]  = $grid_emp_id;
@@ -386,7 +386,7 @@ class Salary_report_con extends CI_Controller {
 		$data["second_month"] = date('F-Y', strtotime($second_month));
 		$data["unit_id"] = $grid_unit;
 		$data["grid_status"] = $grid_status;
-		
+
 		$this->load->view('comprative_salary_statement_summary',$data);
 	}
 
@@ -626,7 +626,7 @@ class Salary_report_con extends CI_Controller {
 		$data["unit_id"]  		= $grid_unit;
 		$this->load->view('festival_bonus_report',$data);
 	}
-	
+
 	function advance_salary_report(){
 		$unit_id 		= $this->input->post('unit_id');
 		$emp_id 		= $this->input->post('emp_id');

@@ -2134,7 +2134,11 @@ class Grid_model extends CI_Model{
 
 		// Subquery to get latest id per ref_id
 		$this->db->from('pr_incre_prom_pun incre');
-		$this->db->join('(SELECT MAX(id) as max_id FROM pr_incre_prom_pun GROUP BY ref_id) as latest_ids', 'incre.id = latest_ids.max_id');
+		$this->db->join(
+			'(SELECT ref_id, MAX(id) as max_id FROM pr_incre_prom_pun GROUP BY ref_id) as latest_ids',
+			'incre.id = latest_ids.max_id AND incre.ref_id = latest_ids.ref_id',
+			'inner'
+		);
 		$this->db->join('pr_emp_per_info', 'incre.ref_id = pr_emp_per_info.emp_id','left');
 		$this->db->join('pr_emp_com_info', 'pr_emp_per_info.emp_id = pr_emp_com_info.emp_id');
 		$this->db->join('emp_depertment as prev_dept_name',  'incre.prev_dept    = prev_dept_name.dept_id','left');

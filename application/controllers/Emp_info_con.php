@@ -33,7 +33,7 @@ class Emp_info_con extends CI_Controller {
 		$this->load->view('layout/template', $this->data);
 	}
 
-		function personal_info_short()
+	function personal_info_short()
 	{
         $this->data['units'] = $this->db->select('pr_units.*')->get('pr_units')->result();
 
@@ -157,7 +157,7 @@ class Emp_info_con extends CI_Controller {
 
 
 	function personal_info_add_short() {
-	
+
 		// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// 	$this->load->view('empInfo/personal_info');
 		// }
@@ -171,6 +171,7 @@ class Emp_info_con extends CI_Controller {
 			echo "<SCRIPT LANGUAGE=\"JavaScript\">alert('Sorry! Error Occurred'); window.location='personal_info_short';</SCRIPT>";
 		}
 	}
+
 	function get_salary_by_grade_id() {
 		$this->db->select('salary');
 	 echo	$this->db->where('gr_id', $_POST['grade_id'])->get('pr_grade')->row()->salary;

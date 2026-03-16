@@ -66,6 +66,7 @@ class Monitoring_con extends CI_Controller {
 
         $this->db->trans_start();
         $this->db->where('emp_id', $emp_id)->delete('pr_emp_resign_history');
+        $this->db->where('emp_id', $emp_id)->update('pr_emp_com_info', array('emp_cat_id' => 1));
         $this->db->trans_complete();
 
         if ($this->db->trans_status() === FALSE) {
@@ -125,7 +126,8 @@ class Monitoring_con extends CI_Controller {
         $emp_id = $this->input->post('emp_id');
 
         $this->db->trans_start();
-        $this->db->where('emp_id', $emp_id)->delete('pr_emp_left_history');
+            $this->db->where('emp_id', $emp_id)->delete('pr_emp_left_history');
+            $this->db->where('emp_id', $emp_id)->update('pr_emp_com_info', array('emp_cat_id' => 1));
         $this->db->trans_complete();
 
         if ($this->db->trans_status() === FALSE) {
@@ -284,8 +286,10 @@ class Monitoring_con extends CI_Controller {
             $last_month = $this->db->where('monitor_con', 2)->get($attn_table)->result();
         }
         $attn_table = "att_".date("Y_m");
-        $current_data = $this->db->where('monitor_con', 2)->get($attn_table)->result();
-        $this->data['results'] = array_merge($last_month, $current_data);
+        $current_data = $this->db->where('monitor_con', 2)->order_by('date_time', 'desc')->get($attn_table)->result();
+        $results = array_merge($last_month, $current_data);
+        usort($results, fn($a,$b) => strtotime($b->date_time) <=> strtotime($a->date_time));
+        $this->data['results'] = $results;
 
         $this->data['title'] = 'Training List';
         $this->data['username'] = $this->data['user_data']->id_number;
@@ -295,18 +299,16 @@ class Monitoring_con extends CI_Controller {
 
 	public function approves()
     {
-
         $att_id = $this->input->post('id');
         $date_time = $this->input->post('date_time');
         $attn_table = "att_".date("Y_m", strtotime($date_time));
-
         $this->db->trans_start();
         $data = array(
             'monitor_con' => 1,
             'monitor_id' => $this->data['user_data']->id,
             'monitor_date' => date('Y-m-d H:i:s'),
         );
-        $this->db->where('att_id', $att_id)->update($attn_table, $data);
+        $this->db->where('id', $att_id)->update($attn_table, $data);
         $this->db->trans_complete();
 
         if ($this->db->trans_status() === FALSE) {

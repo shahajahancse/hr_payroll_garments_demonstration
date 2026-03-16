@@ -44,6 +44,7 @@ class Processdb extends CI_Model{
 			'emp_shift'  		=> $this->input->post('emp_shift'),
 			'gross_sal'			=> $this->input->post('gross_sal'),
 			'com_gross_sal'		=> $this->input->post('gross_sal'),
+			'monitor_con'		=> 2,
 
 			'ot_entitle'		=> $this->input->post('ot_entitle'),
 			'com_ot_entitle'    => $this->input->post('com_ot_entitle'),
@@ -225,6 +226,7 @@ class Processdb extends CI_Model{
 			'emp_shift'  		=> $this->input->post('emp_shift'),
 			'gross_sal'			=> $this->input->post('gross_sal'),
 			'com_gross_sal'		=> $this->input->post('gross_sal'),
+			'monitor_con'		=> 2,
 
 			'ot_entitle'		=> $this->input->post('ot_entitle'),
 			'com_ot_entitle'    => $this->input->post('com_ot_entitle'),
@@ -259,6 +261,7 @@ class Processdb extends CI_Model{
 		  return ;
 		}
 	}
+
 	function updatedb_short()
 	{
 		// dd($_POST);
@@ -781,7 +784,7 @@ class Processdb extends CI_Model{
 		);
 
 		if($this->db->where('emp_id',$id)->update('pr_emp_com_info', $data))
-		{  
+		{
 			$ids = $this->db->where('emp_id',$id)->get('pr_emp_com_info')->row()->emp_id;
 			$per_data['emp_id'] =$ids;
 			$img ="";
@@ -1468,7 +1471,7 @@ class Processdb extends CI_Model{
 		// return "string"; die();
 		$unit_id 		= $this->input->post('start');
 		$dept_id_name 	= $this->dept_search($unit_id);
-		$sec_id_name 	= $this->section_search($unit_id); 
+		$sec_id_name 	= $this->section_search($unit_id);
 		$line_id_name 	= $this->line_search($unit_id);
 		$desig_id_name 	= $this->desig_search($unit_id);
 		$status_id_name = $this->empstat_search();
@@ -1487,17 +1490,17 @@ class Processdb extends CI_Model{
 				emp_section.sec_bangla,
 				emp_line_num.line_name as line_name,
 				emp_designation.desig_name,
-				emp_designation.desig_bangla, 
+				emp_designation.desig_bangla,
 				pr_grade.gr_name as gr_name,
-				emp_category_status.stat_type as stat_type, 
-				pr_emp_com_info.gross_sal as gross_sal, 
+				emp_category_status.stat_type as stat_type,
+				pr_emp_com_info.gross_sal as gross_sal,
 				pr_emp_com_info.emp_join_date as emp_join_date,
 				pr_emp_com_info.ot_entitle as ot_entitle,
 				pr_emp_com_info.transport as transport,
 				pr_emp_com_info.lunch as lunch,
-				pr_emp_com_info.att_bonus as att_bonus, 
-				pr_emp_com_info.salary_draw as salary_draw, 
-				pr_emp_com_info.salary_type as salary_type, 
+				pr_emp_com_info.att_bonus as att_bonus,
+				pr_emp_com_info.salary_draw as salary_draw,
+				pr_emp_com_info.salary_type as salary_type,
 				pr_emp_shift.shift_name as shift_name,
 				pr_emp_com_info.com_gross_sal as com_gross_sal,
 				pr_emp_com_info.emp_sts_id,

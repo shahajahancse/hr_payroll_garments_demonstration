@@ -1573,9 +1573,14 @@
         });
     }
 
+    $(document).on("click", ".checkbox", function() {
+        $("#special_entry, #increment_entry, #promotion_entry, #line_change").hide();
+    });
+
     $(document).ready(function() {
         // select all item or deselect all item
         $("#select_all").click(function() {
+            $("#special_entry, #increment_entry, #promotion_entry, #line_change").hide();
             $('input:checkbox').not(this).prop('checked', this.checked);
         });
 

@@ -1,16 +1,16 @@
 <style>
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 
-input[type="number"] {
-    -moz-appearance: textfield;
-}
-.bangla_name, .bangla_village {
-    font-family: SutonnyMJ !important;
-}
+    input[type="number"] {
+        -moz-appearance: textfield;
+    }
+    .bangla_name, .bangla_village {
+        font-family: SutonnyMJ !important;
+    }
 </style>
 <!-- < ? php dd($emp_info);?> -->
 <!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
@@ -59,7 +59,7 @@ input[type="number"] {
                                                     continue;
                                                 }
                                             }
-                                        
+
 										echo '<option '.$select_data.'  value="'.$row->unit_id.'">'.$row->unit_name.
 										'</option>';
 										}
@@ -289,7 +289,7 @@ input[type="number"] {
                                 <!-- <input type="hidden" name="ft" id="ft"> -->
                                 <!-- <input type="hidden" name="inches" id="inches"> -->
                                 <input  class="form-control input-sm" name="hight" id="hight" class="col-md-5" type="text" onkeypress="return isValidInput(event)" oninput="validateHeightInput(this)">
-                               
+
                             <script>
                                 function isValidInput(event) {
                                     // Allow only digits and dot (.)
@@ -1021,7 +1021,7 @@ input[type="number"] {
 </div>
 <script>
 function set_desi_item() {
-    
+
     var emp_dob = localStorage.getItem('emp_dob');
 
     if (emp_dob) {
@@ -1039,7 +1039,7 @@ function set_desi_item() {
     var nomi_thana = localStorage.getItem('nomi_thana');
     var nomi_post = localStorage.getItem('nomi_post');
 
-    
+
     var ot_entitle = localStorage.getItem('ot_entitle');
     var com_ot_entitle = localStorage.getItem('com_ot_entitle');
     var nid_dob_check = localStorage.getItem('nid_dob_check');
@@ -1055,13 +1055,13 @@ function set_desi_item() {
                 $('#com_gross_sal').val(com_gross_sal).trigger('change');
             }, 500)
         }, 500)
-        
 
 
 
 
 
-    
+
+
 
     //alert(new Date(emp_dob));
     var nomi_age = localStorage.getItem('nomi_age');
@@ -1114,7 +1114,7 @@ function set_desi_item() {
     var ref_district = localStorage.getItem('ref_district');
     var ref_thana = localStorage.getItem('ref_thana');
     var ref_post = localStorage.getItem('ref_post');
-    
+
     var hight = localStorage.getItem('hight');
     $('#hight').val(hight).trigger('change');
 
@@ -1251,7 +1251,7 @@ function emp_id_search(id = null) {
                 });
             }
 
-            
+
             set_desi_item();
             get_last_id();
         },

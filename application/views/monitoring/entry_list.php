@@ -37,7 +37,7 @@
             <div class="navbar-header col-md-5" style="padding: 7px;">
                 <div>
                     <!-- <a class="btn btn-primary" href="<?php echo base_url('payroll_con') ?>">Home</a> -->
-                    <a style="font-size: 16px; font-weight: bold;"> Entry List</a>
+                    <a style="font-size: 16px; font-weight: bold;"> Manual Entry List</a>
                 </div>
             </div>
             <div class="col-md-7">
@@ -74,6 +74,7 @@
                 <tr>
                     <th>Sl. No.</th>
                     <th>Punch Id </th>
+                    <th>Date</th>
                     <th>Time</th>
                     <th width="80">Edit</th>
                     <th>Delete</th>
@@ -85,13 +86,22 @@
                     <tr>
                         <td><?php echo $key + 1  ?></td>
                         <td> <?php echo $r->proxi_id ?></td>
-                        <td> <?php echo $r->date_time ?></td>
+                        <td> <?php echo date('d-m-Y', strtotime($r->date_time)) ?></td>
+                        <td> <?php echo date('h:i s', strtotime($r->date_time)) ?></td>
                         <td>
-                            <a onclick="return confirm('Are you sure you want to approve this?') ? approves(this, <?= $r->att_id ?>, '<?= $r->date_time ?>') : false;" class="btn btn-primary center-text" role="button">Approve</a>
+                            <a href="javascript:void(0);"
+                            class="btn btn-primary center-text approve-btn"
+                            data-id="<?= $r->id ?>"
+                            data-time="<?= htmlspecialchars($r->date_time, ENT_QUOTES) ?>">
+                            Approve </a>
                         </td>
 
                         <td>
-                            <a onclick="return confirm('Are you sure you want to delete this?') ? deletes(this, <?= $r->att_id ?>, '<?= $r->date_time ?>') : false;" class="btn btn-danger center-text" role="button">Delete</a>
+                            <a href="javascript:void(0);"
+                            class="btn btn-danger center-text delete-btn"
+                            data-id="<?= $r->att_id ?>"
+                            data-date="<?= $r->date_time ?>"
+                            role="button">Delete</a>
                         </td>
                     </tr>
                 <?php }} else {?>
@@ -106,28 +116,49 @@
 </div>
 
 <script>
-    function approves(el, att_id, date_time) {
+    $(document).on('click', '.approve-btn', function() {
+
+        if (!confirm('Are you sure you want to approve this?')) {
+            return false;
+        }
+
+        var el = this;
+        var att_id = $(this).data('id');
+        var date_time = $(this).data('time');
+
         $.ajax({
             type: "POST",
             url: hostname + "monitoring_con/approves",
             data: {
                 id: att_id,
-                date_time: date_time,
+                date_time: date_time
             },
             success: function(data) {
                 if (data == 'success') {
                     $(el).closest('tr').remove();
                     showMessage('success', 'Updated Successfully');
-                }else {
+                } else {
                     showMessage('error', 'Sorry! Not Updated');
                 }
-            } ,
-            error: function (xhr, status, error) {
+            },
+            error: function(xhr) {
                 console.log(xhr.responseText);
                 showMessage('error', 'Sorry! Not Updated');
             }
-        })
-    }
+        });
+
+    });
+</script>
+
+<script>
+    $(document).on('click', '.delete-btn', function () {
+        if(confirm('Are you sure you want to delete this?')){
+            var att_id = $(this).data('id');
+            var date_time = $(this).data('time');
+            deletes(this, id, date);
+        }
+    });
+
     function deletes(el, att_id, date_time) {
         $.ajax({
             type: "POST",
