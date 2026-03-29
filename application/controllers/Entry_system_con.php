@@ -2465,8 +2465,9 @@ class Entry_system_con extends CI_Controller
         $this->db->where('salary_month', date('Y-m-01', strtotime("-1 month", strtotime($start_date))));
         $payment = $this->db->get('pay_salary_sheet')->row();
         if (empty($payment)) {
-            echo 'Previous Month salary not found';
-            exit();
+            // echo 'Previous Month salary not found';
+            // exit();
+            $payment = $this->db->where('emp_id', $emp_id)->order_by('salary_month', 'desc')->get('pay_salary_sheet')->row();
         }
 
         $year=date('Y-m-d', strtotime($start_date));
@@ -2695,20 +2696,25 @@ class Entry_system_con extends CI_Controller
         $this->data['subview'] = 'entry_system/resign_list';
         $this->load->view('layout/template', $this->data);
     }
+
     public function resign_list_ajax(){
         $offset = $this->input->post('offset');
         $limit = $this->input->post('limit');
         $deptSearch = $this->input->post('deptSearch');
+
         $this->db->select('rs.*, pr_units.unit_name, per.name_en as user_name');
         $this->db->from('pr_emp_resign_history as rs');
         $this->db->join('pr_units', 'pr_units.unit_id = rs.unit_id', 'left');
         $this->db->join('pr_emp_per_info as per', 'per.emp_id = rs.emp_id', 'left');
+
         if (!empty($this->data['user_data']->unit_name) && $this->data['user_data']->unit_name != 'All') {
             $this->db->where('pr_units.unit_id', $this->data['user_data']->unit_name);
         }
+
         $this->db->order_by('rs.resign_date', 'DESC');
-        $this->db->group_by('rs.emp_id');
+        // $this->db->group_by('rs.emp_id');
         $this->db->limit($limit, $offset);
+
         if (!empty($deptSearch) && $deptSearch != '') {
             $this->db->group_start();
             $this->db->or_like('pr_units.unit_name', $deptSearch);
@@ -2716,10 +2722,9 @@ class Entry_system_con extends CI_Controller
             $this->db->or_like('per.emp_id', $deptSearch);
             $this->db->group_end();
         }
+
         $this->data['results'] = $this->db->get()->result();
-
         echo json_encode($this->data['results']);
-
     }
 
     public function left_delete($id){
@@ -2736,6 +2741,7 @@ class Entry_system_con extends CI_Controller
         $this->db->where('emp_id', $id);
         $employee_info = $this->db->get('pr_emp_com_info')->row();
         $this->data['employee_info'] = $employee_info;
+        $this->data['unit_id'] = $this->session->userdata('data')->unit_name;
         $this->load->view('entry_system/print_envelope', $this->data);
     }
 

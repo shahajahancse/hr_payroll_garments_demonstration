@@ -27,7 +27,7 @@
 </head>
 
 <body style="font-family: SutonnyMJ">
-    <?php 
+    <?php
     if(count($values)==0){
       echo "<h6 style='font-family:Arial;margin-left:10px'>No Record Found</h6>";exit;
     }
@@ -56,8 +56,8 @@
         <div class="mt-3">
             <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="d-flex">
-                <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo"
-                    style="width: 60px;height: 50px;position: absolute;">
+                <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo"
+                    style="width: 120px;height: 45px;position: absolute;">
                 <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
             </div>
         </div>
@@ -66,7 +66,7 @@
         </div>
 
 
-        <?php 
+        <?php
           if ($no_change == 2) {
             $this->db->where('left_id', $value->left_id)->update('pr_emp_left_history', array('status' => 4));
           }
@@ -78,7 +78,7 @@
                     style="font-family: SutonnyMJ;font-size:17px"><?php echo $value->id?>/<?php echo date('m/Y',strtotime($value->left_date . '+1 days'))?></span><span
                     style="font-family: SutonnyMJ;font-size:19px">-wm</span></div>
             <div class="col-md-6 text-right">তারিখঃ <span style="font-family: SutonnyMJ;font-size:19px">
-                    <?php 
+                    <?php
 
             $second_date = add_days_skipping_fridays($value->left_date, 31,$value->emp_id);
             $date = DateTime::createFromFormat('d/m/Y', $second_date);
@@ -146,7 +146,7 @@
                         style="font-family: SutonnyMJ;font-size:19px"><?php echo date('d/m/Y',strtotime($value->left_date . '+1 days'))?></span></b>
                 ইং তারিখ হতে অদ্যবদি পর্যন্ত কর্তৃপক্ষের বিনা অনুমতিতে কর্মস্থলে অনুপস্থিত থাকার কারনে আপনাকে গত
                 <b><span style="font-family: SutonnyMJ;font-size:19px">
-                        <?php 
+                        <?php
               $second_date = add_days_skipping_fridays($value->left_date, 11,$value->emp_id);
               $date = DateTime::createFromFormat('d/m/Y', $second_date);
               if($date->format('D') == 'Sat'){
@@ -165,14 +165,14 @@
                 কোন ব্যাখ্যা
                 প্রদান করেন নি। তথাপিও কর্তৃপক্ষ গত <b><span style="font-family: SutonnyMJ;font-size:19px">
 
-                        <?php 
+                        <?php
             $second_date = add_days_skipping_fridays($value->left_date, 22,$value->emp_id);
             if(date('D',strtotime($second_date)) == 'Sat'){
               $date = DateTime::createFromFormat('d/m/Y', $second_date);
               $date->modify('+1 day');
               $second_date = $date->format('d/m/Y');
             }
-              
+
             if(date('D',strtotime($second_date)) == 'Fri'){
               $date = DateTime::createFromFormat('d/m/Y', $second_date);
               $date->modify('+1 day');

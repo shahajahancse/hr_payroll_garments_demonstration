@@ -513,7 +513,7 @@
                             <?php } ?>
 							<!-- Other Reports end -->
 							<?php if(in_array(131,$acl)) { ?>
-							<button class="btn input-sm sbtn" onclick="grid_roster_employee()">Roster List</button>
+							<!-- <button class="btn input-sm sbtn" onclick="grid_roster_employee()">Roster List</button> -->
                             <?php } ?>
 							<?php if(in_array(121,$acl)) { ?>
 							<button class="btn input-sm sbtn" onclick="grid_employee_background()">Employee Background</button>

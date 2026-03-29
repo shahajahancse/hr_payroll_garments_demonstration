@@ -57,8 +57,8 @@
         <div class="mt-3">
             <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="d-flex">
-                <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo"
-                    style="width: 60px;height: 50px;position: absolute;">
+                <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo"
+                    style="width: 120px;height: 45px;position: absolute;">
                 <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
             </div>
         </div>
@@ -67,7 +67,7 @@
         </div>
 
 
-        <?php 
+        <?php
           if ($no_change == 2) {
             $this->db->where('left_id', $value->left_id)->update('pr_emp_left_history', array('status' => 3));
           }
@@ -79,12 +79,12 @@
                     style="font-family: SutonnyMJ;font-size:23px">-we</span></div>
             <div class="col-md-6 text-right">তারিখঃ <span style="font-family: SutonnyMJ;font-size:23px">
 
-                    <?php 
+                    <?php
               $l_date =  add_days_skipping_fridays($value->left_date, 21,$value->emp_id);
               $date = DateTime::createFromFormat('d/m/Y', $l_date);
               $date->modify('+1 day');
               $l_date = $date->format('d/m/Y');
-              
+
               list($day, $month, $year) = explode('/', $l_date);
               $formatted_date_str = "$year-$month-$day";
               $date_timestamp = strtotime($formatted_date_str);
@@ -156,7 +156,7 @@
                 ইং তারিখ থেকে কারখানা কর্তৃপক্ষের বিনা অনুমতিতে কর্মস্থলে অনুপস্থিত i‡q‡Qb। এ প্রেক্ষিতে কারখানার
                 কর্তৃপক্ষ আপনার স্থায়ী ও বর্তমান ঠিকানায় রেজিষ্ট্রি ডাকযোগে গত <b><span
                         style="font-family: SutonnyMJ;font-size:19px">
-                        <?php 
+                        <?php
           $second_date = add_days_skipping_fridays($value->left_date, 11,$value->emp_id);
           $date = DateTime::createFromFormat('d/m/Y', $second_date);
           if($date->format('D') == 'Sat'){

@@ -24,7 +24,7 @@
 </head>
 
 <body style="font-family: SutonnyMJ">
-    <?php  foreach($values as $row){?>
+    <?php foreach($values as $row){?>
     <div class="container w-75">
         <?php $unit_id =$this->session->userdata('data')->unit_name; if($unit_id ==1){?>
         <div class="d-flex flex-row justify-content-between">
@@ -45,10 +45,11 @@
             <p style="font-family: Arial, Helvetica, sans-serif;">Document Code : HGL/HRD/HR/03/008</p>
         </div>
         <?php }?>
+
         <div class="mt-3">
             <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="d-flex">
-                <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 60px;height: 50px;position: absolute;">
+                <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px;height: 45px;position: absolute;">
                 <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h4>
             </div>
         </div>
@@ -79,20 +80,20 @@
         <div class="ml-3">
             <p class="text-justify" >
                 <span><?php echo $row->gender == "Male"? 'Rbve':'Rbvev'?>,</span><br>
-            ï‡f”Qv wb‡eb, 
+            ï‡f”Qv wb‡eb,
             <?php if ($row->status == 1) { ?>
-            
+
             Avcbvi AeMwZi Rb¨ Rvbv‡bv hv‡”Q †h, Avcbvi PvKzixi †gqv` GK ermi c~b© nIqvq ewb©Z welq ev¯Íevq‡bi j‡ÿ¨ KZ…©cÿ <span style="font-family:SutonnyMJ;font-size:19px;white-space:nowrap"><?php echo date('d/m/Y',strtotime($row->effective_month))?> Bs</span>  ZvwiL n‡Z Avcbvi eZ©gvb gvwmK ‡gvU †eZb  <span style="font-family:SutonnyMJ;font-size:19px"><?php echo $row->prev_salary?></span> UvKvi m‡½ <span style="font-family:SutonnyMJ;font-size:19px"><?php echo ($row->new_salary - $row->prev_salary) ?></span> UvKv †hvM K‡i †gvU <span style="font-family:SutonnyMJ;font-size:19px"><?php echo $row->new_salary?></span>
-            UvKvq DbœxZ Kiv nj| 
+            UvKvq DbœxZ Kiv nj|
             <br>
             D‡jøL¨, cieZx© eQi GB e„w× µge×©gvb nv‡i e„w× ‡c‡q Ges Avcbvi eZ©gvb †MÖW I c`ex, wb‡qvM c‡Îi gRyix As‡ki gRyix KvVv‡gv
             wb‡Pi †Uwe‡j wjwLZ cwiewZ©Z gRyix web¨vm Kjvg Abyhvqx n‡e| Av‡iv D‡jøL, _v‡K †h, wb‡qvM c‡Îi Ab¨vb¨ kZ©vejx AcwiewZ©Z _vK‡e<br>
             KZ©„cÿ Avkv K‡ib †h, Avcwb mZZv, AvšÍwiKZv I wbôvi mv‡_ KvR K‡i Av‡iv DbœwZ Ki‡eb| Avcbvi ‡eZb e„w×i c~‡e©i I eZ©gvb gRyix KvVv‡gv Abyhvqx Zzjbvg~jK Z_¨vejx wb¤œiƒct
             </p>
             <?php } else { ?>
-                Avcbvi AeMwZi Rb¨ Rvbv‡bv hv‡”Q †h, ‡Kv¤úvbx KZ…©cÿ Avcbvi Kg©`ÿZvq mš‘ó n‡q Avcbvi c~‡e©i †eZb 
-                <span style="font-family:SutonnyMJ;font-size:19px"><?php echo $row->prev_salary?></span> 
-                UvKvi mv‡_ AviI <span style="font-family:SutonnyMJ;font-size:19px"><?php echo ($row->new_salary - $row->prev_salary) ?></span>  UvKv e„w× K‡i †gvU †eZb 
+                Avcbvi AeMwZi Rb¨ Rvbv‡bv hv‡”Q †h, ‡Kv¤úvbx KZ…©cÿ Avcbvi Kg©`ÿZvq mš‘ó n‡q Avcbvi c~‡e©i †eZb
+                <span style="font-family:SutonnyMJ;font-size:19px"><?php echo $row->prev_salary?></span>
+                UvKvi mv‡_ AviI <span style="font-family:SutonnyMJ;font-size:19px"><?php echo ($row->new_salary - $row->prev_salary) ?></span>  UvKv e„w× K‡i †gvU †eZb
                 <span style="font-family:SutonnyMJ;font-size:19px"><?php echo $row->new_salary?></span> UvKv avh© Kviv n‡jv|
                 <br>
                 Avcbvi ‡eZb e„w×i c~‡e©i I eZ©gvb gRyix KvVv‡gv Abyhvqx Zzjbvg~jK Z_¨vejx wb¤œiƒct
@@ -156,7 +157,7 @@
 
             <div style="line-height: 10px;">
                 <?php if ($row->status != 1) { ?>
-                    <p style="margin: 
+                    <p style="margin:
                     15px 0px !important;">Avkv Kwi fwel¨‡Z Avcwb Avcbvi AwaKZi Kg©`ÿZvi cwiPq w`‡eb Ges †Kv¤úvbxi D‡ËviËi mg„w×‡Z Av‡iv mnvqK f‚wgKv ivL‡eb|</p>
                 <?php } ?>
                 <p style="margin-bottom: 117px !important;">ab¨ev`v‡šÍ,</p>
@@ -164,7 +165,7 @@
                 <br><br>
                 <p class="mt-2">wefvMxq cÖavb (GBPAvi, GWwgb GÛ Kgcøv‡qÝ)</p>
                 <?php $unit_id= $this->session->userdata('data')->unit_name;
-                      $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); 
+                      $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row();
                 ?>
                 <p style="font-size:19px"><?php echo $com_info->company_name_bangla?></p>
                 <p class="mt-5">Abywjwct</p>
