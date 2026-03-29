@@ -178,7 +178,7 @@ $unit = $this->common_model->get_unit_id_name();
             </div>
         </div>
         <!-- Advanced Loan form   -->
-        <div id="advanced_loan_entry" class="row nav_head">
+        <!-- <div id="advanced_loan_entry" class="row nav_head">
             <div class="col-md-12" style="display: flex;gap: 11px;flex-direction: column;">
                 <fieldset>
                     <legend>Advanced Loan</legend>
@@ -236,7 +236,7 @@ $unit = $this->common_model->get_unit_id_name();
                     </form>
                 </fieldset>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- employee list for right side -->
@@ -348,11 +348,6 @@ function tax_entry(e) {
     let emp_id = sql.split(",");
     if (emp_id == '') {
         showMessage('error', 'Please select employee Id');
-        return false;
-    }
-
-    if (emp_id.length > 1) {
-        showMessage('error', 'Please select max one employee Id');
         return false;
     }
 

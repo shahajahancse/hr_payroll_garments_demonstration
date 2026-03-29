@@ -165,9 +165,14 @@ class Common extends CI_Controller {
 
 
 
-    function ajax_department_by_unit_id($id){
+    function ajax_department_by_unit_id($id = null){
 
         $data = array();
+        if (empty($id)) {
+            header('Content-Type: application/x-json; charset=utf-8');
+            echo json_encode($data);
+            exit;
+        }
         $this->db->select('*');
         $this->db->from('emp_depertment');
         $this->db->where('unit_id', $id);

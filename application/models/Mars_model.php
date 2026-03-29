@@ -49,6 +49,10 @@ class Mars_model extends CI_Model{
 
 	function last_month_expenses($salary_month, $all_id)
 	{
+		// Guard: return default zeros if no employee IDs
+		if (empty($all_id)) {
+			return (object) array('net_pay' => 0, 'ot_amount' => 0, 'eot_amount' => 0, 'att_bonus' => 0);
+		}
 		$last_salary_month = date('Y-m-01',strtotime('-1 month',strtotime($salary_month)));
 		$this->db->select("
 				SUM(net_pay) AS net_pay,
@@ -64,7 +68,22 @@ class Mars_model extends CI_Model{
 
 	function attendance_summary($report_date, $all_emp_id)
 	{
-		$data =array();
+		$data = array();
+
+		// Guard: return default zeros if no employee IDs to prevent IN() SQL error
+		if (empty($all_emp_id)) {
+			$data['all_present']  = 0;
+			$data['all_absent']   = 0;
+			$data['all_leave']    = 0;
+			$data['all_late']     = 0;
+			$data['all_male']     = 0;
+			$data['all_female']   = 0;
+			$data['all_staff']    = 0;
+			$data['all_employee'] = 0;
+			$data['all_emp']      = 0;
+			return $data;
+		}
+
 		$this->db->select("
 			SUM(CASE WHEN present_status = 'P' THEN 1 ELSE 0 END) AS present,
 			SUM(CASE WHEN present_status = 'A' THEN 1 ELSE 0 END) AS absent,
@@ -76,12 +95,11 @@ class Mars_model extends CI_Model{
 		$this->db->where_in("emp_id", $all_emp_id);
 		$this->db->where("shift_log_date", $report_date);
 		$atten_data = $this->db->get()->row();
-		// dd($all_emp_id);
 
 		$data['all_present'] 	= $atten_data->present ? $atten_data->present : 0;
 		$data['all_absent'] 	= $atten_data->absent ? $atten_data->absent : 0;
 		$data['all_leave'] 		= $atten_data->leaves ? $atten_data->leaves : 0;
-		$data['all_late'] 		= $atten_data->late ? $atten_data->leaves : 0;
+		$data['all_late'] 		= $atten_data->late ? $atten_data->late : 0;
 
 		$this->db->select("
 			SUM(CASE WHEN pr_emp_per_info.gender = 'Male' THEN 1 ELSE 0 END) AS male,
@@ -93,13 +111,12 @@ class Mars_model extends CI_Model{
 		$this->db->join('pr_emp_com_info','pr_emp_per_info.emp_id = pr_emp_com_info.emp_id','left');
 		$this->db->where_in('pr_emp_per_info.emp_id', $all_emp_id);
 		$q = $this->db->get()->row();
-		// dd($q);
 
-		$data['all_male'] = $q->male ? $q->male : 0;
-		$data['all_female'] = $q->female ? $q->female : 0;
-		$data['all_staff'] = $q->staff ? $q->staff : 0;
+		$data['all_male']     = $q->male ? $q->male : 0;
+		$data['all_female']   = $q->female ? $q->female : 0;
+		$data['all_staff']    = $q->staff ? $q->staff : 0;
 		$data['all_employee'] = $q->employee ? $q->employee : 0;
-		$data['all_emp'] = $data['all_staff'] + $data['all_employee'];
+		$data['all_emp']      = $data['all_staff'] + $data['all_employee'];
 		return $data;
 	}
 

@@ -134,12 +134,35 @@ class Entry_system_con extends CI_Controller
         if ($this->session->userdata('logged_in') == false) {
             redirect("authentication");
         }
+
+        // --- Date / Month filter ---
+        $search_type   = $this->input->get('search_type');   // 'range' | 'month'
+        $from_date     = $this->input->get('from_date');
+        $to_date       = $this->input->get('to_date');
+        $search_month  = $this->input->get('search_month');   // yyyy-mm
+
         $this->db->select('loan.*, per.name_en, pr_units.unit_name');
         $this->db->from('pr_advance_loan loan');
         $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
         $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
-        $this->db->limit(10)->order_by('loan.loan_month', 'DESC');
+
+        if ($search_type === 'range' && !empty($from_date) && !empty($to_date)) {
+            $fd = date('Y-m-01', strtotime($from_date));
+            $td = date('Y-m-01', strtotime($to_date));
+            $this->db->where("loan.loan_month BETWEEN '$fd' AND '$td'");
+        } elseif ($search_type === 'month' && !empty($search_month)) {
+            $month_first = date('Y-m-01', strtotime($search_month . '-01'));
+            $this->db->where('loan.loan_month', $month_first);
+        }
+
+        $this->db->order_by('loan.loan_month', 'DESC');
         $this->data['results'] = $this->db->get()->result();
+
+        // pass filter values back for form pre-fill
+        $this->data['search_type']  = $search_type;
+        $this->data['from_date']    = $from_date;
+        $this->data['to_date']      = $to_date;
+        $this->data['search_month'] = $search_month;
 
         $this->data['title'] = 'Advance Salary';
         $this->data['username'] = $this->data['user_data']->id_number;
@@ -259,6 +282,8 @@ class Entry_system_con extends CI_Controller
                 'created_by'    => $this->data['user_data']->id,
             );
 
+            // dd($data);
+
             $r = $this->db->where('emp_id', $row)->where('loan_month', $loan_month)->where('loan_status', 1)->where('type', 2)->get('pr_advance_loan')->row();
             if (!empty($r)) {
                 $this->db->where('id', $r->id);
@@ -342,6 +367,106 @@ class Entry_system_con extends CI_Controller
     // ==================  end advance salary entry  ======================
     // ====================================================================
 
+    // Get a single advance salary record by ID (JSON)
+    public function advance_salary_get($id = 0)
+    {
+        $this->db->select('loan.*, per.name_en, pr_units.unit_name');
+        $this->db->from('pr_advance_loan loan');
+        $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
+        $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
+        $this->db->where('loan.id', $id);
+        $row = $this->db->get()->row();
+        header('Content-Type: application/json');
+        echo json_encode($row);
+    }
+
+    // Update a single advance salary record by ID
+    public function advance_salary_update()
+    {
+        $id           = $this->input->post('id');
+        $loan_amt     = $this->input->post('loan_amt');
+        $pay_amt      = $this->input->post('pay_amt');
+        $loan_month   = date('Y-m-01', strtotime($this->input->post('loan_month')));
+        $effect_month = $this->input->post('effect_month');
+        $loan_status  = $this->input->post('loan_status');
+        $status       = $this->input->post('status');
+
+        if (empty($id)) {
+            echo 'Invalid ID';
+            return;
+        }
+
+        $data = array(
+            'loan_amt'     => $loan_amt,
+            'pay_amt'      => $pay_amt,
+            'loan_month'   => $loan_month,
+            'effect_month' => !empty($effect_month) ? date('Y-m-01', strtotime($effect_month)) : null,
+            'loan_status'  => $loan_status,
+            'status'       => $status,
+        );
+
+        $this->db->where('id', $id);
+        if ($this->db->update('pr_advance_loan', $data)) {
+            echo 'success';
+        } else {
+            echo 'Advance Salary Not Updated';
+        }
+    }
+
+    // Bulk update multiple advance salary records
+    public function advance_salary_bulk_update()
+    {
+        $raw     = $this->input->post('records');
+        $records = json_decode($raw, true);
+
+        if (empty($records) || !is_array($records)) {
+            echo 'Invalid data';
+            return;
+        }
+
+        $success = true;
+        foreach ($records as $rec) {
+            $id         = isset($rec['id'])         ? intval($rec['id'])         : 0;
+            $pay_amt    = isset($rec['pay_amt'])     ? floatval($rec['pay_amt'])  : 0;
+            $loan_status = isset($rec['loan_status']) ? intval($rec['loan_status']) : 1;
+            $status     = isset($rec['status'])      ? intval($rec['status'])     : 1;
+
+            if ($id <= 0) continue;
+
+            $data = array(
+                'pay_amt'     => $pay_amt,
+                'loan_status' => $loan_status,
+                'status'      => $status,
+            );
+
+            $this->db->where('id', $id);
+            if (!$this->db->update('pr_advance_loan', $data)) {
+                $success = false;
+            }
+        }
+
+        echo $success ? 'success' : 'Some records failed to update';
+    }
+
+    // Delete a single advance salary record by ID
+    public function advance_salary_delete_by_id()
+    {
+        $id = $this->input->post('id');
+
+        if (empty($id)) {
+            echo 'Invalid ID';
+            return;
+        }
+
+        $this->db->where('id', $id);
+        if ($this->db->delete('pr_advance_loan')) {
+            echo 'success';
+        } else {
+            echo 'Advance Salary Not Deleted';
+        }
+    }
+    // ===================================================================
+
     // advanced loan
     // ====================================================================
     public function advance_loan()
@@ -349,18 +474,58 @@ class Entry_system_con extends CI_Controller
         if ($this->session->userdata('logged_in') == false) {
             redirect("authentication");
         }
-        $this->db->select('loan.*, per.name_en, pr_units.unit_name');
-        $this->db->from('pr_advance_loan loan');
-        $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
-        $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
-        $this->db->where('loan.unit_id', $this->data['user_data']->unit_name);
-        $this->db->limit(10)->order_by('loan.loan_month', 'DESC');
+        $this->db->select('tax.*, per.name_en, pr_units.unit_name');
+        $this->db->from('emp_tax_entry tax');
+        $this->db->join('pr_emp_per_info per', 'tax.emp_id = per.emp_id', 'left');
+        $this->db->join('pr_units', 'tax.unit_id = pr_units.unit_id', 'left');
+        $this->db->order_by('tax.effect_date', 'DESC');
         $this->data['results'] = $this->db->get()->result();
 
-        $this->data['title'] = 'Advance Salary';
+        $this->data['title'] = 'Tax';
         $this->data['username'] = $this->data['user_data']->id_number;
         $this->data['subview'] = 'entry_system/advance_loan';
         $this->load->view('layout/template', $this->data);
+    }
+
+    // Get a single tax entry record by ID (JSON)
+    public function advance_loan_get($id = 0)
+    {
+        $this->db->select('tax.*, per.name_en, pr_units.unit_name');
+        $this->db->from('emp_tax_entry tax');
+        $this->db->join('pr_emp_per_info per', 'tax.emp_id = per.emp_id', 'left');
+        $this->db->join('pr_units', 'tax.unit_id = pr_units.unit_id', 'left');
+        $this->db->where('tax.id', $id);
+        $row = $this->db->get()->row();
+        header('Content-Type: application/json');
+        echo json_encode($row);
+    }
+
+    // Update a single tax entry record by ID
+    public function advance_loan_update()
+    {
+        $id          = $this->input->post('id');
+        $amount      = $this->input->post('amount');
+        $effect_date = date('Y-m-01', strtotime($this->input->post('effect_date')));
+        $status      = $this->input->post('status');
+
+        if (empty($id)) { echo 'Invalid ID'; return; }
+
+        $data = array(
+            'amount'      => $amount,
+            'effect_date' => $effect_date,
+            'status'      => $status,
+        );
+        $this->db->where('id', $id);
+        echo $this->db->update('emp_tax_entry', $data) ? 'success' : 'Tax Record Not Updated';
+    }
+
+    // Delete a single tax entry record by ID
+    public function advance_loan_delete_by_id()
+    {
+        $id = $this->input->post('id');
+        if (empty($id)) { echo 'Invalid ID'; return; }
+        $this->db->where('id', $id);
+        echo $this->db->delete('emp_tax_entry') ? 'success' : 'Tax Record Not Deleted';
     }
 
     public function tax_list()
@@ -477,26 +642,29 @@ class Entry_system_con extends CI_Controller
         $effect_date = date('Y-m-01', strtotime($_POST['effect_date']));
         $status      = $_POST['status'];
         $emp_id      = $_POST['emp_id'];
-
-        $data = array(
-            'emp_id'       => $emp_id,
-            'unit_id'      => $unit_id,
-            'amount'       => $amount,
-            'effect_date'  => $effect_date,
-            'status'       => $status,
-            'created_by'   => $this->data['user_data']->id,
-        );
+        $emp_ids     = explode(',', $emp_id);
 
         $st = false;
-        $r = $this->db->where('emp_id', $emp_id)->where('effect_date', $effect_date)->where('status', 1)->get('emp_tax_entry')->row();
-        if (!empty($r)) {
-            $this->db->where('emp_id', $emp_id)->where('effect_date', $effect_date)->where('status', 1);
-            if ($this->db->update('emp_tax_entry', $data)) {
-                $st = true;
-            }
-        } else {
-            if ($this->db->insert('emp_tax_entry', $data)) {
-                $st = true;
+        foreach ($emp_ids as $id) {
+            $data = array(
+                'emp_id'       => $id,
+                'unit_id'      => $unit_id,
+                'amount'       => $amount,
+                'effect_date'  => $effect_date,
+                'status'       => $status,
+                'created_by'   => $this->data['user_data']->id,
+            );
+
+            $r = $this->db->where('emp_id', $id)->where('effect_date', $effect_date)->where('status', 1)->get('emp_tax_entry')->row();
+            if (!empty($r)) {
+                $this->db->where('emp_id', $id)->where('effect_date', $effect_date)->where('status', 1);
+                if ($this->db->update('emp_tax_entry', $data)) {
+                    $st = true;
+                }
+            } else {
+                if ($this->db->insert('emp_tax_entry', $data)) {
+                    $st = true;
+                }
             }
         }
 

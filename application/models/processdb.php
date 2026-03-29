@@ -37,7 +37,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('emp_sec_id'),
 			'emp_line_id' 		=> $this->input->post('emp_line_id'),
 			'emp_desi_id'  		=> $this->input->post('emp_desi_id'),
-
+			'emp_type'  		=> $this->input->post('emp_type'),
 			'emp_sal_gra_id'  	=> $this->input->post('emp_sal_gra_id'),
 			'emp_cat_id'		=> $this->input->post('emp_cat_id'),
 			'proxi_id'			=> $this->input->post('proxi_id'),
@@ -219,6 +219,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('emp_sec_id'),
 			'emp_line_id' 		=> $this->input->post('emp_line_id'),
 			'emp_desi_id'  		=> $this->input->post('emp_desi_id'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 
 			'emp_sal_gra_id'  	=> $this->input->post('emp_sal_gra_id'),
 			'emp_cat_id'		=> $this->input->post('emp_cat_id'),
@@ -278,6 +279,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('emp_sec_id'),
 			'emp_line_id' 		=> $this->input->post('emp_line_id'),
 			'emp_desi_id'  		=> $this->input->post('emp_desi_id'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 
 			'emp_cat_id'		=> $this->input->post('emp_cat_id'),
 			'emp_shift'  		=> $this->input->post('emp_shift'),
@@ -628,6 +630,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('sec'),
 			'emp_line_id' 		=> $this->input->post('line'),
 			'emp_desi_id'  		=> $this->input->post('desig'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 			'emp_operation_id'	=> $this->input->post('operation'),
 			'emp_position_id'  	=> $this->input->post('position'),
 			'emp_sts_id'		=> $this->input->post('emp_sts_id'),
@@ -699,6 +702,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('emp_sec_id'),
 			'emp_line_id' 		=> $this->input->post('emp_line_id'),
 			'emp_desi_id'  		=> $this->input->post('emp_desi_id'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 
 			'emp_sal_gra_id'  	=> $this->input->post('emp_sal_gra_id'),
 			'emp_cat_id'		=> $this->input->post('emp_cat_id'),
@@ -972,6 +976,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('sec'),
 			'emp_line_id' 		=> $this->input->post('line'),
 			'emp_desi_id'  		=> $this->input->post('desig'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 			'emp_operation_id'	=> $this->input->post('operation'),
 			'emp_position_id'  	=> $this->input->post('position'),
 			'floor_id'			=> $this->input->post('emp_floor'),
@@ -2322,6 +2327,7 @@ class Processdb extends CI_Model{
 			'emp_sec_id' 		=> $this->input->post('emp_sec_id'),
 			'emp_line_id' 		=> $this->input->post('emp_line_id'),
 			'emp_desi_id'  		=> $this->input->post('emp_desi_id'),
+			'emp_type'  		=> $this->input->post('emp_type'),
 
 			'emp_sal_gra_id'  	=> $this->input->post('emp_sal_gra_id'),
 			'emp_cat_id'		=> $this->input->post('emp_cat_id'),

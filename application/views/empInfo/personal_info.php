@@ -522,7 +522,7 @@
 
                     <div class="row">
                         <?php $categorys = $this->db->get('emp_category_status')->result(); ?>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label>Emp Status <span style="color: red;">*</span> </label>
                                 <?php echo form_error('emp_cat_id');?>
@@ -550,7 +550,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-md-3" style="padding-left: 0px !important;">
+                        <div class="col-md-2" style="padding-left: 0px !important;">
                             <div class="form-group">
                                 <label>Emp Joining Date <span style="color: red;">*</span> </label>
                                 <input type="text" name="emp_join_date" id="emp_join_date"
@@ -560,7 +560,7 @@
                         </div>
 
                         <?php $sl_grade = $this->db->get('pr_grade')->result(); ?>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
                             <div class="form-group">
                                 <label>Salary Grade <span style="color: red;">*</span> </label>
                                 <?php echo form_error('emp_sal_gra_id');?>
@@ -573,6 +573,16 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Employee Type <span style="color: red;">*</span> </label>
+                            <select name="emp_type" id="emp_type" class="form-control input-sm required" required="">
+                                <option value="">-- Select one --</option>
+                                <option value="1">Worker</option>
+                                <option value="2">Staff</option>
+                            </select>
+                        </div>
+                    </div>
                     </div>
 
                     <div class="row">
@@ -1210,7 +1220,7 @@ function emp_id_search(id = null) {
                     "education", "nid_dob_id", "nid_dob_check","nomi_nid_bc_check", "exp_factory_name",
                     "exp_duration", "exp_designation", "personal_mobile", "exp_dasignation",
                     "bank_bkash_no", "unit_id", "emp_dept_id", "refer_village",
-                    "emp_sec_id", "emp_line_id", "emp_desi_id", "emp_sal_gra_id",
+                    "emp_sec_id", "emp_line_id", "emp_desi_id", "emp_sal_gra_id", "emp_type",
                     "emp_cat_id", "proxi_id", "emp_shift", "gross_sal",
                     "com_gross_sal", "ot_entitle", "com_ot_entitle", "transport", "img_source",
                     "lunch", "att_bonus", "salary_draw", "salary_type", "emp_join_date",
