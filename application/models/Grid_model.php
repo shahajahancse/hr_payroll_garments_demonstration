@@ -257,7 +257,7 @@ class Grid_model extends CI_Model{
 
 	function actual_summary_report($salary_month = null, $unit_id = null, $type=null)
 	{
- 		$this->db->distinct();
+ 		// $this->db->distinct();
  		$this->db->select("
  				num.id as line_id, num.line_name_en, num.line_name_bn, sec.sec_name_en,
  				IFNULL(SUM(CASE WHEN com.salary_draw = 1 THEN 1 ELSE 0 END), 0) AS emp_cash,
@@ -332,7 +332,13 @@ class Grid_model extends CI_Model{
 			$this->db->where("ss.eot_amount   != ",0);
 			$this->db->where("ss.eot_hour     > ",0);
 		}
-		$this->db->group_by("num.id");
+		$this->db->group_by([
+			'num.id',
+			'num.line_name_en',
+			'num.line_name_bn',
+			'sec.sec_name_en'
+		]);
+		// $this->db->group_by("num.id");
 		$this->db->order_by("num.line_name_en");
 		return $this->db->get()->result();
 	}
@@ -365,9 +371,13 @@ class Grid_model extends CI_Model{
 		$this->db->where('pr_emp_com_info.emp_sal_gra_id = pr_grade.gr_id');
 		$this->db->where('pr_emp_per_info.emp_id = pay_salary_sheet.emp_id');
 		$this->db->where("pay_salary_sheet.salary_month = '$sal_year_month'");
+		$this->db->where('pay_salary_sheet.id = (
+			SELECT MAX(id) FROM pay_salary_sheet
+			WHERE emp_id = pr_emp_com_info.emp_id
+		)');
 		$this->db->order_by("pr_emp_com_info.emp_id");
 		$this->db->order_by("emp_designation.desig_name");
-		$this->db->group_by("pay_salary_sheet.emp_id");
+		// $this->db->group_by("pay_salary_sheet.emp_id");
 		$query = $this->db->get();
 		//echo $this->db->last_query();
 		if($query->num_rows()>0)
@@ -404,7 +414,18 @@ class Grid_model extends CI_Model{
 		$this->db->where_in('pr_emp_com_info.emp_id', $grid_emp_id);
 		$this->db->where('pr_emp_shift_log.shift_log_date >=', $date1);
 		$this->db->where('pr_emp_shift_log.shift_log_date <=', $date2);
-		$this->db->group_by('pr_emp_com_info.emp_id');
+		$this->db->group_by([
+			'pr_emp_com_info.emp_id',
+			'emp_line_num.line_name_en',
+			'pr_emp_com_info.id',
+			'pr_emp_com_info.proxi_id',
+			'pr_emp_com_info.emp_join_date',
+			'pr_emp_com_info.emp_sec_id',
+			'pr_emp_per_info.name_en',
+			'emp_designation.desig_name',
+			'emp_depertment.dept_name',
+			'emp_section.sec_name_en'
+		]);
 		$this->db->order_by('pr_emp_com_info.emp_sec_id','ASC' );
 
 		$query = $this->db->get()->result_array();
@@ -440,7 +461,18 @@ class Grid_model extends CI_Model{
 		$this->db->where('pr_emp_shift_log.late_status', 1);
 		$this->db->where('pr_emp_shift_log.shift_log_date >=', $date1);
 		$this->db->where('pr_emp_shift_log.shift_log_date <=', $date2);
-		$this->db->group_by('pr_emp_com_info.emp_id');
+		$this->db->group_by([
+			'pr_emp_com_info.emp_id',
+			'emp_line_num.line_name_en',
+			'pr_emp_com_info.id',
+			'pr_emp_com_info.proxi_id',
+			'pr_emp_com_info.emp_join_date',
+			'pr_emp_com_info.emp_sec_id',
+			'pr_emp_per_info.name_en',
+			'emp_designation.desig_name',
+			'emp_depertment.dept_name',
+			'emp_section.sec_name_en'
+		]);
 		$this->db->order_by('pr_emp_com_info.emp_sec_id','ASC' );
 
 		$query = $this->db->get()->result_array();
@@ -985,7 +1017,7 @@ class Grid_model extends CI_Model{
 		}
 
 		$this->db->order_by('pr_emp_com_info.emp_line_id','ASC');
-		$this->db->group_by('pr_emp_com_info.emp_id');
+		// $this->db->group_by('pr_emp_com_info.emp_id');
 		$query = $this->db->get()->result_array();
 		// dd($query);
 		if(empty($query)){
@@ -1163,7 +1195,7 @@ class Grid_model extends CI_Model{
 		$this->db->where_in("com.emp_id",$emp_id);
 		$this->db->where("incre.status", $status);
 		$this->db->order_by("incre.effective_month", "DESC");
-		$this->db->group_by("incre.ref_id");
+		// $this->db->group_by("incre.ref_id");
 		$query = $this->db->get();
 
 		if (!empty($query->result())) {
@@ -1209,10 +1241,10 @@ class Grid_model extends CI_Model{
 		$this->db->where("incre.effective_month BETWEEN '$da1' AND '$da2'");
 		$this->db->where_in("com.emp_id", $emp_id);
 		$this->db->order_by("incre.effective_month", "DESC");
-		$this->db->group_by("incre.ref_id");
+		// $this->db->group_by("incre.ref_id");
 		$array1 = $this->db->get();
 		$array1 =  $array1->result_array();
-// <<<<<<<<<<<<<<  ✨ Codeium Command 🌟 >>>>>>>>>>>>>>>>
+		// <<<<<<<<<<<<<<  ✨ Codeium Command 🌟 >>>>>>>>>>>>>>>>
 		if(!empty($array1)){
 			$employee_id=array_column($array1, 'emp_id');
 			$this->db->select("
@@ -1243,7 +1275,7 @@ class Grid_model extends CI_Model{
 			$this->db->where_not_in("com.emp_id", $employee_id);
 
 			$this->db->order_by("com.emp_join_date", "DESC");
-			$this->db->group_by("com.emp_id");
+			// $this->db->group_by("com.emp_id");
 			$array2 = $this->db->get();
 			$array2 =  $array2->result_array();
 			$array = array_merge($array1, $array2);
@@ -1664,21 +1696,21 @@ class Grid_model extends CI_Model{
 	function continuous_ot_eot_report($firstdate, $seconddate, $grid_emp_id)
 	{
 		$this->db->select('
-				pr_emp_com_info.emp_id,
-				pr_emp_com_info.id as user_id,
-				pr_emp_com_info.unit_id,
-				pr_emp_com_info.emp_join_date as doj,
-				pr_emp_com_info.emp_cat_id,
-				pr_emp_com_info.gross_sal,
-				pr_emp_per_info.name_en as emp_name,
-				emp_designation.desig_name,
-				emp_depertment.dept_name,
-				emp_section.sec_name_en as sec_name,
-				emp_line_num.line_name_en as line_name,
-				SUM(pr_emp_shift_log.ot) as ot_hour,
-				SUM(pr_emp_shift_log.eot) as eot_hour,
-				SUM(pr_emp_shift_log.deduction_hour) as deduction_hour,
-			');
+			pr_emp_com_info.emp_id,
+			ANY_VALUE(pr_emp_com_info.id) as user_id,
+			ANY_VALUE(pr_emp_com_info.unit_id) as unit_id,
+			ANY_VALUE(pr_emp_com_info.emp_join_date) as doj,
+			ANY_VALUE(pr_emp_com_info.emp_cat_id) as emp_cat_id,
+			ANY_VALUE(pr_emp_com_info.gross_sal) as gross_sal,
+			ANY_VALUE(pr_emp_per_info.name_en) as emp_name,
+			ANY_VALUE(emp_designation.desig_name) as desig_name,
+			ANY_VALUE(emp_depertment.dept_name) as dept_name,
+			ANY_VALUE(emp_section.sec_name_en) as sec_name,
+			ANY_VALUE(emp_line_num.line_name_en) as line_name,
+			SUM(pr_emp_shift_log.ot) as ot_hour,
+			SUM(pr_emp_shift_log.eot) as eot_hour,
+			SUM(pr_emp_shift_log.deduction_hour) as deduction_hour
+		');
 		$this->db->from('pr_emp_per_info');
 		$this->db->join('pr_emp_com_info', 'pr_emp_per_info.emp_id = pr_emp_com_info.emp_id');
 		$this->db->join('emp_designation', 'pr_emp_com_info.emp_desi_id = emp_designation.id');
@@ -1737,17 +1769,18 @@ class Grid_model extends CI_Model{
 		$seconddate = date("Y-m-d", strtotime($seconddate));
 
 		$this->db->select("
-					pr_emp_com_info.emp_id,
-					pr_emp_com_info.gross_sal,
-					pr_emp_per_info.name_en,
-					emp_designation.desig_name,
-					emp_section.sec_name_en,
-					emp_line_num.line_name_en,
-					SUM(pr_emp_shift_log.ot) as total_ot,
-					SUM(pr_emp_shift_log.eot) as total_extra_ot_hour,
-					COUNT(pr_emp_shift_log.present_status) as total_day,
-					SUM(pr_emp_shift_log.deduction_hour) as total_deduction_hour,
-				");
+			pr_emp_com_info.emp_id,
+			ANY_VALUE(pr_emp_com_info.gross_sal) as gross_sal,
+			ANY_VALUE(pr_emp_per_info.name_en) as name_en,
+			ANY_VALUE(emp_designation.desig_name) as desig_name,
+			ANY_VALUE(emp_section.sec_name_en) as sec_name_en,
+			ANY_VALUE(emp_line_num.line_name_en) as line_name_en,
+			SUM(pr_emp_shift_log.ot) as total_ot,
+			SUM(pr_emp_shift_log.eot) as total_extra_ot_hour,
+			COUNT(pr_emp_shift_log.present_status) as total_day,
+			SUM(pr_emp_shift_log.deduction_hour) as total_deduction_hour
+		");
+
 		$this->db->from('pr_emp_per_info');
 		$this->db->join('pr_emp_com_info', 'pr_emp_per_info.emp_id = pr_emp_com_info.emp_id', 'left');
 		$this->db->join('emp_designation', 'pr_emp_com_info.emp_desi_id = emp_designation.id', 'left');
@@ -1759,7 +1792,8 @@ class Grid_model extends CI_Model{
 		$this->db->where("pr_emp_shift_log.shift_log_date <=", $seconddate);
 		$this->db->where("pr_emp_shift_log.present_status !=", "A");
 		$this->db->group_by("pr_emp_com_info.emp_id");
-		$this->db->order_by("emp_line_num.line_name_en");
+		// ✅ FIX HERE
+		$this->db->order_by("line_name_en");
 		$query = $this->db->get();
 
 		$data = [];
@@ -1879,9 +1913,14 @@ class Grid_model extends CI_Model{
 		$this->db->where('pr_emp_per_info.emp_id = pay_salary_sheet.emp_id');
 		$this->db->where("pay_salary_sheet.salary_month = '$date'");
 		$this->db->where("pay_salary_sheet.total_allaw !=", 0);
+		$this->db->where('pay_salary_sheet.id = (
+			SELECT MAX(id)
+			FROM pay_salary_sheet
+			WHERE emp_id = pr_emp_com_info.emp_id
+		)');
 		$this->db->order_by("pr_emp_com_info.emp_id");
 		$this->db->order_by("emp_designation.desig_name");
-		$this->db->group_by("pay_salary_sheet.emp_id");
+		// $this->db->group_by("pay_salary_sheet.emp_id");
 		$query = $this->db->get();
 		return $query->result();
 	}
@@ -5774,7 +5813,7 @@ class Grid_model extends CI_Model{
 		$this->db->join('emp_line_num','emp_line_num.id = pr_emp_com_info.emp_line_id','left');
 		$this->db->join('emp_designation','emp_designation.id = pr_emp_com_info.emp_desi_id','left');
 		$this->db->where_in('pr_emp_com_info.emp_id',$grid_emp_id);
-		$this->db->group_by("pr_emp_per_info.emp_id");
+		// $this->db->group_by("pr_emp_per_info.emp_id");
 		$this->db->order_by("pr_emp_per_info.emp_id");
 		$query = $this->db->get();
 
@@ -5872,7 +5911,7 @@ class Grid_model extends CI_Model{
 		$this->db->join('emp_line_num','emp_line_num.id = pr_emp_com_info.emp_line_id','left');
 		$this->db->join('emp_designation','emp_designation.id = pr_emp_com_info.emp_desi_id','left');
 		$this->db->where_in('pr_emp_per_info.emp_id',$grid_emp_id);
-		$this->db->group_by("pr_emp_per_info.emp_id");
+		// $this->db->group_by("pr_emp_per_info.emp_id");
 		$this->db->order_by("pr_emp_per_info.emp_id");
 		$query = $this->db->get();
 		if( $query->num_rows() > 0){
@@ -9055,8 +9094,8 @@ class Grid_model extends CI_Model{
 	}
 
 	function grid_employee_information($grid_emp_id){
-		// dd($grid_emp_id);
-	$this->db->select('
+		$this->db->distinct();
+		$this->db->select('
 							pr_emp_com_info.id as com_id,
 							pr_emp_com_info.emp_id,
 							pr_emp_per_info.*,
@@ -9103,12 +9142,11 @@ class Grid_model extends CI_Model{
 		$this->db->join('emp_post_offices as pre_post', 'pr_emp_per_info.pre_post = pre_post.id', 'LEFT');
 		$this->db->where_in('pr_emp_com_info.emp_id', $grid_emp_id);
 		$this->db->order_by("pr_emp_com_info.emp_id");
-		$this->db->group_by("pr_emp_com_info.emp_id");
+		// $this->db->group_by("pr_emp_com_info.emp_id");
 		$query = $this->db->get()->result();
-
-		// dd($query);
 		return $query;
 	}
+
 	function grid_employee_information2($grid_emp_id){
 		// dd($grid_emp_id);
 		$this->db->select('pr_emp_com_info.emp_id,
@@ -12270,6 +12308,7 @@ function grid_emp_job_application($grid_emp_id){
 		$lastday = date("t", mktime(0, 0, 0, $month, 1, $year));
 		$lastday = date("Y-m-d", mktime(0, 0, 0, $month, $lastday, $year));
 		$query = $this->db->select('
+				pr_emp_com_info.emp_id,
 				pr_emp_per_info.name_en,
 				pr_emp_per_info.bank_bkash_no as mobile,
 				emp_designation.desig_name,
@@ -12280,6 +12319,7 @@ function grid_emp_job_application($grid_emp_id){
 				emp_line_num.line_name_en,
 				emp_section.sec_name_en,
 			')
+			->distinct()
 			->from('pr_emp_per_info')
 			->join('pr_emp_com_info','pr_emp_per_info.emp_id = pr_emp_com_info.emp_id')
 			->join('pr_advance_loan' ,'pr_advance_loan.emp_id    = pr_emp_com_info.emp_id')
@@ -12292,7 +12332,7 @@ function grid_emp_job_application($grid_emp_id){
 			->where("pr_advance_loan.loan_date = '$sal_year_month'")
 			->order_by("pr_emp_com_info.emp_id")
 			->order_by("emp_designation.desig_name")
-			->group_by("pr_advance_loan.emp_id")
+			// ->group_by("pr_advance_loan.emp_id")
 			->get();
 			if($query->num_rows() == 0){
 				return "No Data Found";
@@ -12301,9 +12341,9 @@ function grid_emp_job_application($grid_emp_id){
 			return $query->result();
 	}
 
-function service_book_info($grid_emp_id){
+	function service_book_info($grid_emp_id){
 		// dd($grid_emp_id);
-	$this->db->select('
+		$this->db->select('
 							pr_emp_com_info.id as com_id,
 							pr_emp_com_info.emp_id as empp_id,
 							pr_emp_per_info.*,
@@ -12352,7 +12392,7 @@ function service_book_info($grid_emp_id){
 		$this->db->join('emp_post_offices as pre_post', 'pr_emp_per_info.pre_post = pre_post.id', 'LEFT');
 		$this->db->where_in('pr_emp_com_info.emp_id', $grid_emp_id);
 		$this->db->order_by("pr_emp_com_info.emp_id");
-		$this->db->group_by("pr_emp_com_info.emp_id");
+		// $this->db->group_by("pr_emp_com_info.emp_id");
 		$query = $this->db->get();
 		//dd($query->result());
 		$data = array();
@@ -12447,8 +12487,7 @@ function service_book_info($grid_emp_id){
 				return "Soryy! Requested list is empty";
 			}
 			return $data;
-		}
-		else{
+		} else{
 			return "Soryy! Requested list is empty";
 		}
 	}
@@ -12676,7 +12715,7 @@ function service_book_info($grid_emp_id){
 		$this->db->join('emp_post_offices as pre_post', 'pr_emp_per_info.pre_post = pre_post.id', 'LEFT');
 		$this->db->where_in('pr_emp_com_info.emp_id', $grid_emp_id);
 		$this->db->order_by("pr_emp_com_info.emp_id");
-		$this->db->group_by("pr_emp_com_info.emp_id");
+		// $this->db->group_by("pr_emp_com_info.emp_id");
 		$query = $this->db->get()->result();
 		return $query[0];
 	}

@@ -21,13 +21,13 @@
         background-color: #f8f8f8;
         margin: 0;
         padding: 0;
-        justify-content: center;  
-        align-items: center;      
-        height: 80vh;            
+        justify-content: center;
+        align-items: center;
+        height: 80vh;
     }
     .order-box {
-        width: 926px;  
-        height: 416px; 
+        width: 926px;
+        height: 416px;
         /* margin: 20px 0px 0px 20px; */
         /* background-color: #f0f0f0;  */
         /* border: 2px solid #333;     */
@@ -80,22 +80,23 @@
     }
 </style>
 </head>
-<body>
+<body style="font-family: SutonnyMJ">
     <div class="order-box">
         <div class="container">
             <!-- Left Section with Logo and Company Details -->
+            <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="left-section">
                 <div class="logo">
-                    <img src="<?php echo base_url('images/AJ_Logo_copy5.png')?>" alt="Logo">
+                    <img style="width: 100px; height: 40px;" src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo">
                     <div>
-                        <div class="company-details">এজে ফ্যাশনস লিমিটেড</div>
+                        <div class="company-details"><?= $com_info->company_name_bangla ?></div>
                         <div class="company-address">
-                            ২৩৪/৪ কচুক্ষেত, ঢাকা ক্যান্ট, ঢাকা-১২০৬
+                            <?= $com_info->company_add_bangla ?>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Section with Form using Table -->
             <div class="right-section">
                 <table class="form-table">
@@ -135,23 +136,25 @@
             </div>
         </div>
     </div>
-<br><br><br>
-    <div style="page-break-after: always"></div>
+
+    <!-- <br><br><br> -->
+    <!-- <div style="page-break-after: always"></div> -->
+
     <div class="order-box">
         <div class="container">
             <!-- Left Section with Logo and Company Details -->
             <div class="left-section">
                 <div class="logo">
-                    <img src="<?php echo base_url('images/AJ_Logo_copy5.png')?>" alt="Logo">
+                    <img style="width: 100px; height: 40px;" src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo">
                     <div>
-                        <div class="company-details">এজে ফ্যাশনস লিমিটেড</div>
+                        <div class="company-details"><?= $com_info->company_name_bangla ?></div>
                         <div class="company-address">
-                            ২৩৪/৪ কচুক্ষেত, ঢাকা ক্যান্ট, ঢাকা-১২০৬
+                            <?= $com_info->company_add_bangla ?>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Section with Form using Table -->
             <div class="right-section">
                 <table class="form-table">

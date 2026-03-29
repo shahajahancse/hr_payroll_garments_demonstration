@@ -33,11 +33,11 @@
 </head>
 
 <body style="font-family: SutonnyMJ">
-    <?php 
+    <?php
       if(count($values)==0){
         echo "<h6 style='font-family:Arial;margin-left:10px'>No Record Found</h6>";exit;
       }
-    foreach($values as $value){ 
+    foreach($values as $value){
       // dd($values);
     ?>
     <div class="container w-75">
@@ -63,15 +63,15 @@
         <div class="mt-3">
             <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="d-flex">
-                <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo"
-                    style="width: 84px;height: 50px;position: absolute;">
+                <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo"
+                    style="width: 120px;height: 45px;position: absolute;">
                 <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
             </div>
         </div>
         <div class="col-md-12" style="border-bottom: 1px solid black!important;">
             <p class="text-center h5"><?= $com_info->company_add_bangla ?></p>
         </div>
-        <?php 
+        <?php
           if (isset($no_change) && $no_change == 2) {
             $this->db->where('left_id', $value->left_id)->update('pr_emp_left_history', array('status' => 2));
           }
@@ -82,7 +82,7 @@
                     style="font-family: SutonnyMJ;font-size:23px"><?php echo $value->id?>/<?php echo date('m/Y',strtotime($value->left_date))?></span><span
                     style="font-family: SutonnyMJ;font-size:23px">-G</span></div>
             <div class="col-md-6 text-right">তারিখঃ <span style="font-family: SutonnyMJ;font-size:23px">
-                    <?php 
+                    <?php
               $l_date =  add_days_skipping_fridays($value->left_date, 11,$value->emp_id);
               // dd($l_date);
               list($day, $month, $year) = explode('/', $l_date);
@@ -127,7 +127,7 @@
                 <p class="mt-3 unicode-to-bijoy" style='font-size:23px'><b>বর্তমান ঠিকানাঃ</b></p>
                 <p class='unicode-to-bijoy' style='font-size:20px'>হোল্ডিং নংঃ <span
                         style="font-family: SutonnyMJ;font-size:15px">
-                        <?php 
+                        <?php
                 echo $value->holding_num.', '.$value->pre_village_bn?>
                         </sapn>
                 </p>

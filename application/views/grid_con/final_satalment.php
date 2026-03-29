@@ -149,8 +149,8 @@ function englishToBengaliMonth($englishMonth) {
             font-size:19px;
         } */
     </style>
-        <style>
 
+    <style>
         .voucher-container {
             border: 1px solid black;
             padding: 20px;
@@ -207,7 +207,6 @@ function englishToBengaliMonth($englishMonth) {
             text-align: center;
         }
     </style>
-
 </head>
 
 <body>
@@ -236,7 +235,7 @@ function englishToBengaliMonth($englishMonth) {
             <div class="mt-3">
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px; height: 45px; position: absolute;">
                     <h1 class="text-center  unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
             </div>
@@ -474,7 +473,7 @@ function englishToBengaliMonth($englishMonth) {
     <div class="mt-3">
         <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
         <div class="d-flex">
-            <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 80px;height: 50px;position: absolute;">
+            <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px;height: 45px;position: absolute;">
             <h1 class="text-center  unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
         </div>
     </div>

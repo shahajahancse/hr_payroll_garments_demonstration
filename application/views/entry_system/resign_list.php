@@ -1,29 +1,29 @@
 <style>
-.inputs{
-    background: white !important;
-    width: 100% !important;
+    .inputs{
+        background: white !important;
+        width: 100% !important;
 
-}
-td{
-    text-align: center;
-    vertical-align: middle !important;
-    padding: 0px !important;
-}
-.form-control {
-    width: 60%;
-    display: inline-block !important;
-    text-align: center;
-    min-height: 25px !important;
-}
-.tables th, .tables td{
-    padding: 0px !important;
-}
-input[type=number] {
-    -moz-appearance: textfield;
-    appearance: textfield;
-    font-size: 15px;
-    font-family: SutonnyMJ;
-}
+    }
+    td{
+        text-align: center;
+        vertical-align: middle !important;
+        padding: 0px !important;
+    }
+    .form-control {
+        width: 60%;
+        display: inline-block !important;
+        text-align: center;
+        min-height: 25px !important;
+    }
+    .tables th, .tables td{
+        padding: 0px !important;
+    }
+    input[type=number] {
+        -moz-appearance: textfield;
+        appearance: textfield;
+        font-size: 15px;
+        font-family: SutonnyMJ;
+    }
 </style>
 
 <div class="content">
@@ -537,103 +537,103 @@ function report(id, type){
 
 <!-- lazy loading script -->
 <script>
-var offset = 0
-var limit = 15
-var i = 0
-$(document).ready(function() {
-    get_data(offset)
-})
-var e=true;
-function get_data(offset=0) {
-    if(e===false){
-        return false
-    }else{
-        e=false
-    }
-
-    var deptSearch = $('#deptSearch').val()
-    $.ajax({
-        url: "<?php echo base_url('entry_system_con/resign_list_ajax') ?>",
-        type: "post",
-        data: {
-            offset: offset,
-            limit: limit,
-            deptSearch: deptSearch
-        },
-        success: function(data) {
-            var obj = JSON.parse(data)
-           // console.log('data=?'+obj);
-            //var i = offset
-                <?php
-                    $user_id = $this->session->userdata('data')->id;
-                    $acl = check_acl_list($user_id);
-                ?>
-            obj.forEach(element => {
-                var lid = ''
-
-                if (element.status == 1) {
-                    <?php if(in_array(116,$acl)) { ?>
-                    lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 1)">Satalement Acc</a></li>`
-                    <?php } ?>
-                    <?php if(in_array(117,$acl)) { ?>
-                         lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 2)">Final Satalement 7pm </a></li>`
-                    <?php } ?>
-                    <?php if(in_array(118,$acl)) { ?>
-                     lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 3)">Final Satalement 9pm</a></li>`
-                    <?php } ?>
-                    <?php if(in_array(119,$acl)) { ?>
-                     lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 4)">Satalement 12am</a></li>`
-                    <?php } ?>
-                    <?php if(in_array(120,$acl)) { ?>
-                     lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 5)">Satalement(W/H)</a></li>`
-                    <?php } ?>
-                }else{
-                     lid+= `<li><a class="btn btn-sm" data-toggle="modal" data-target="#myModal" onclick="final_satalment(${element.emp_id})">Add Final Satalment</a></li>`
-                }
-                 lid+= `<li><a class="btn btn-sm" href="<?=base_url('entry_system_con/resign_delete/')?>${element.emp_id}">Delete</a></li>`
-
-                $('#tbody').append(`<tr>
-                <td>${++i}</td>
-                  <td style="padding: 1px !important;" >${element.user_name}</td>
-                    <td style="padding: 1px !important;" >${element.emp_id}</td>
-                    <td style="padding: 1px !important;" >${element.unit_name}</td>
-                    <td style="padding: 1px !important;" >${element.resign_date}</td>
-                    <td style="padding: 1px !important;">
-                        <div class="btn-group">
-                            <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                                Action <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" role="menu">
-                                <?php
-                                    $user_id = $this->session->userdata('data')->id;
-                                    $acl = check_acl_list($user_id);
-                                ?>
-                                ${lid}
-                            </ul>
-                        </div>
-                    </td>
-
-
-            </tr>`)
-            });
-        },
-        complete: function() {
-            e = true
-        }
-    })
-}
-window.onscroll = function() {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
-        offset += limit
+    var offset = 0
+    var limit = 15
+    var i = 0
+    $(document).ready(function() {
         get_data(offset)
-    }
-}
+    })
+    var e=true;
+    function get_data(offset=0) {
+        if(e===false){
+            return false
+        }else{
+            e=false
+        }
 
-$('#deptSearch').keyup(function() {
-    $('#tbody').empty()
-    offset = 0
-    i = 0
-    get_data(offset)
-    $('#tbody').empty()
-})
+        var deptSearch = $('#deptSearch').val()
+        $.ajax({
+            url: "<?php echo base_url('entry_system_con/resign_list_ajax') ?>",
+            type: "post",
+            data: {
+                offset: offset,
+                limit: limit,
+                deptSearch: deptSearch
+            },
+            success: function(data) {
+                var obj = JSON.parse(data)
+            // console.log('data=?'+obj);
+                //var i = offset
+                    <?php
+                        $user_id = $this->session->userdata('data')->id;
+                        $acl = check_acl_list($user_id);
+                    ?>
+                obj.forEach(element => {
+                    var lid = ''
+
+                    if (element.status == 1) {
+                        <?php if(in_array(116,$acl)) { ?>
+                        lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 1)">Satalement Acc</a></li>`
+                        <?php } ?>
+                        <?php if(in_array(117,$acl)) { ?>
+                            lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 2)">Final Satalement 7pm </a></li>`
+                        <?php } ?>
+                        <?php if(in_array(118,$acl)) { ?>
+                        lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 3)">Final Satalement 9pm</a></li>`
+                        <?php } ?>
+                        <?php if(in_array(119,$acl)) { ?>
+                        lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 4)">Satalement 12am</a></li>`
+                        <?php } ?>
+                        <?php if(in_array(120,$acl)) { ?>
+                        lid+= `<li><a class="btn btn-sm" onclick="report(${element.emp_id}, 5)">Satalement(W/H)</a></li>`
+                        <?php } ?>
+                    }else{
+                        lid+= `<li><a class="btn btn-sm" data-toggle="modal" data-target="#myModal" onclick="final_satalment(${element.emp_id})">Add Final Satalment</a></li>`
+                    }
+                    lid+= `<li><a class="btn btn-sm" href="<?=base_url('entry_system_con/resign_delete/')?>${element.emp_id}">Delete</a></li>`
+
+                    $('#tbody').append(`<tr>
+                    <td>${++i}</td>
+                    <td style="padding: 1px !important;" >${element.user_name}</td>
+                        <td style="padding: 1px !important;" >${element.emp_id}</td>
+                        <td style="padding: 1px !important;" >${element.unit_name}</td>
+                        <td style="padding: 1px !important;" >${element.resign_date}</td>
+                        <td style="padding: 1px !important;">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                                    Action <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <?php
+                                        $user_id = $this->session->userdata('data')->id;
+                                        $acl = check_acl_list($user_id);
+                                    ?>
+                                    ${lid}
+                                </ul>
+                            </div>
+                        </td>
+
+
+                </tr>`)
+                });
+            },
+            complete: function() {
+                e = true
+            }
+        })
+    }
+    window.onscroll = function() {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+            offset += limit
+            get_data(offset)
+        }
+    }
+
+    $('#deptSearch').keyup(function() {
+        $('#tbody').empty()
+        offset = 0
+        i = 0
+        get_data(offset)
+        $('#tbody').empty()
+    })
 </script>

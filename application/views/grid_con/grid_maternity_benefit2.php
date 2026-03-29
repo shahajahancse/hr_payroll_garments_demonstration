@@ -1,24 +1,24 @@
 
-<?php  
+<?php
     function english_to_bangla_date_convert($date) {
         $date = date("d/m/Y",strtotime($date));
 
-        $search_array= array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ":", ",","/"); 
+        $search_array= array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ":", ",","/");
 
         $replace_array= array("১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০", "জানুয়ারী", "ফেব্রুয়ারী", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগষ্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর", ":", ",","/");
 
         return str_replace($search_array, $replace_array, $date);
-    } 
+    }
 
     function eng2bn_month($date) {
         $date = date("F Y",strtotime($date));
 
-        $search_array= array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ":", ",","/"); 
+        $search_array= array("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December", ":", ",","/");
 
         $replace_array= array("১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯", "০", "জানুয়ারী", "ফেব্রুয়ারী", "মার্চ", "এপ্রিল", "মে", "জুন", "জুলাই", "আগষ্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর", ":", ",","/");
 
         return str_replace($search_array, $replace_array, $date);
-    } 
+    }
 ?>
 
 <?php
@@ -107,11 +107,11 @@
     $obj = new BanglaNumberToWord();
 ?>
 
-<?php  
+<?php
     function jod_duration_cal($first_date, $second_date) {
         $diff = date_diff(date_create($second_date), date_create($first_date));
         return $diff->format("%y eQi %m gvm %d w`b");
-    } 
+    }
 ?>
 
 </html>
@@ -176,7 +176,7 @@
             <div class="mt-3">
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 60px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px;height: 45px;position: absolute;">
                     <h4 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h4>
                 </div>
             </div>
@@ -245,8 +245,8 @@
                </div>
                 <br><br>
             </div>
-            
-            
+
+
             <div style="font-size:16px;  clear: both; padding:0px 10px;">
                 <h4 class="unicode-to-bijoy" style="font-family:SutonnyMJ;"> <?= '<span style="font-size:18px">'.$row->name_bn.'</span>' ?> Gi gvZ…Z¡Kvjxb myweavi wnmvewU wbgœiƒc:-</h4>
                 <table style="width: 100%; padding:0px 10px; font-size:16px;" border="1" cellpadding="0" cellspacing="0">
@@ -263,10 +263,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php $a1 =  date('Y-m-01', strtotime($row->start_date .' -1 month')); ?> 
-                        <?php $a2 =  date('Y-m-01', strtotime($a1 .' -2 month')); ?> 
-                        <?php 
-                            $this->db->where("salary_month BETWEEN '$a2' and '$a1'"); 
+                        <?php $a1 =  date('Y-m-01', strtotime($row->start_date .' -1 month')); ?>
+                        <?php $a2 =  date('Y-m-01', strtotime($a1 .' -2 month')); ?>
+                        <?php
+                            $this->db->where("salary_month BETWEEN '$a2' and '$a1'");
                             $this->db->where('emp_id', $row->emp_id)->order_by('salary_month', 'asc');
                             $sals = $this->db->get('pay_salary_sheet')->result();
                             $total_gross = 0;
@@ -274,25 +274,25 @@
                             $total_fb = 0;
                             $total_ab = 0;
                             $total = 0;
-                        ?> 
+                        ?>
                         <?php foreach ($sals as $s) { ?>
-                        <?php $a =  eng2bn_month($s->salary_month); ?> 
-                        <?php 
+                        <?php $a =  eng2bn_month($s->salary_month); ?>
+                        <?php
                             $fbonus = 0;
                             if ($row->festival_month == $s->salary_month) {
                                 $fbonus = $row->festival_bonus;
-                            }; 
+                            };
                             $abonus = 0;
                             if ($row->abenifit_month == $s->salary_month) {
                                 $abonus = $row->ather_benifit;
-                            }; 
+                            };
                             $total_gross = $s->gross_sal + $total_gross;
                             $total_attn = $s->att_bonus + $total_attn;
                             $total_fb = $fbonus + $total_fb;
                             $total_ab = $abonus + $total_ab;
                             $sub_total = $s->gross_sal + $s->att_bonus + $fbonus + $abonus;
                             $total = $sub_total + $total;
-                        ?> 
+                        ?>
                         <tr style="font-size:16px; text-align:center;font-family:SutonnyMJ;font-size:19px">
                             <td class="unicode-to-bijoy" style="padding:5px; width:15%;font-family:arial"><?= $a; ?>  </td>
                             <td><span>‡eZb</span></td>
@@ -356,7 +356,7 @@
                     <p style="border: 1px solid #000;padding:58px 80px;"></p>
                 </div>
             </div>
-            
+
         <?php } ?>
     </div>
     <br><br>
@@ -365,7 +365,7 @@
         <div class="row approvals text-center">
             <div class="col-md-6">
                 <p class="unicode-to-bijoy">প্রস্তুতকারী</p>
-            </div> 
+            </div>
         </div>
         <br><br>
         <!-- Approvals Section -->
@@ -375,7 +375,7 @@
                 <br>এইচ.আর.ডি</p>
             </div>
             <div class="col-md-4">
-                <p class="unicode-to-bijoy">মহাব্যবস্থাপক 
+                <p class="unicode-to-bijoy">মহাব্যবস্থাপক
                 <br>প্রজেক্ট হেড</p>
             </div>
             <div class="col-md-4">
@@ -410,7 +410,7 @@
             margin-left: auto;
             margin-right: 0;
         }
-    </style>    
+    </style>
 
 
     <script src="<?=base_url()?>js/unicode_to_bijoy.js" type="text/javascript"></script>

@@ -25,8 +25,8 @@
                 margin: 0;
                 padding: 0;
             }
-            @page { 
-                size: A4; 
+            @page {
+                size: A4;
             }
             .image {
                 height: 500 !important;
@@ -64,7 +64,7 @@
             <div class="mt-3">
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 60px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px;height: 40px;position: absolute;">
                     <h4 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h4>
                 </div>
             </div>
@@ -85,7 +85,7 @@
             <p> KvWt   <?php echo $row->emp_id?>         </p>
             <p> ‡mKkbt <?php echo "<span style='font-family:arial;font-size:14px'>".$row->new_sec_name?>   </p>
             <p> jvBbt  <?php echo "<span style='font-family:arial;font-size:14px'>".$row->new_line_name?>  </p>
-            <p> ‡hvM`vbt 
+            <p> ‡hvM`vbt
                 <span style="font-family:SutonnyMJ;font-size:19px">
                     <?php echo date('m/Y',strtotime($row->effective_month))?>
                 </span>Bs

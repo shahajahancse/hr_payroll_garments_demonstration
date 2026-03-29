@@ -8,7 +8,7 @@ class NumberToWord{
         '30' => 'Thirty', '40' => 'Forty', '50' => 'Fifty', '60' => 'Sixty', '70' => 'Seventy',
         '80' => 'Eighty', '90' => 'Ninety'
     );
-    
+
     var $hundred = 'Hundred';
     var $thousand = 'Thousand';
     var $million = 'Million';
@@ -154,10 +154,10 @@ $obj = new NumberToWord();
             </div>
             <?php }?>
             <div class="mt-3">
-                <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); 
+                <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row();
                 //dd($com_info);?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
                     <h2 class="text-center" style="margin:0 auto"><b><?= $com_info->company_name_english ?></b></h2>
                 </div>
             </div>
@@ -179,7 +179,7 @@ $obj = new NumberToWord();
             <br>
 
             <div style="margin-left:15px ;">
-                <p>To,</p> 
+                <p>To,</p>
                 <p><b> <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?>  <?php echo $value->name_en?></b></p>
                 <p>Present Address: Vill: <?php echo $value->pre_village?>, Post: <?php echo $value->pre_post_name_en?>, Thana: <?php echo $value->pre_upa_name_en?>, Dist: <?php echo $value->pre_dis_name_en?></p>
                 <p>Permanent Address: Vill: <?php echo $value->per_village?>, Post: <?php echo $value->post_name_en?>, Thana: <?php echo $value->upa_name_en?>, Dist: <?php echo $value->dis_name_en?> </p>
@@ -187,11 +187,11 @@ $obj = new NumberToWord();
                 <br>
                 <p><b>Subject: Appointment Letter</b></p>
                 <br>
-                <p><b>Dear <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?> <?php echo $value->name_en?></b></p> 
-                
+                <p><b>Dear <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?> <?php echo $value->name_en?></b></p>
+
                 <p>
                     With reference to your interest about our company and subsequent interview with us, the
-                    Management of <b> <?php echo $com_info->company_name_english?></b> is pleased to appoint you as 
+                    Management of <b> <?php echo $com_info->company_name_english?></b> is pleased to appoint you as
                     <b><?php echo $value->desig_name?> </b>  Office ID no:- <b> <?php echo $value->per_emp_id?> </b> in <b> <?php echo $value->dept_name?> Department</b>   from the date of <b> <?php echo date('d-m-Y',strtotime($value->emp_join_date))?></b> underthe following terms and conditions.
                 </p>
 
@@ -210,33 +210,33 @@ $obj = new NumberToWord();
                 <table style="line-height: 1;">
                     <tr>
                         <th> i. Basic</th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;:</td> 
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;:</td>
                         <td>&nbsp;&nbsp;<?php $basic = round(($value->salary -(1250+450+750)) / 1.5); echo $basic;?></td>
                         <td>&nbsp;&nbsp;TK</td>
                     </tr>
                     <tr>
                         <th> ii. House Rent </th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                         <td>&nbsp;&nbsp;<?php echo round($basic/2)?> </td>
                         <td>&nbsp;&nbsp;TK</td>
 
                     </tr>
                     <tr>
                             <th> iii. Medical </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;750 </td>
                             <td>&nbsp;&nbsp;TK</td>
-                                            
+
                         </tr>
                         <tr>
                             <th> iv. Transport </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;450 </td>
                             <td>&nbsp;&nbsp;TK</td>
                         </tr>
                         <tr style="border-bottom: 1px solid black;">
                             <th> v. Food </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;1250 </td>
                             <td>&nbsp;&nbsp;TK </td>
                         </tr>
@@ -247,7 +247,7 @@ $obj = new NumberToWord();
                             <td>&nbsp;&nbsp; TK </td>
                         </tr>
                     </table>
-                    <table style="line-height: 1;margin-left:100px"> 
+                    <table style="line-height: 1;margin-left:100px">
                         <tr style='vertical-align:baseline'>
                             <td><b>In Word:  </b></td>
                             <td style="padding-left:5px;"><?php echo $obj->numToWord( $value->salary);?> </td>
@@ -259,7 +259,7 @@ $obj = new NumberToWord();
             </ol>
             <ol start='9'  style="line-height:1.3;font-size:17px;margin-left:-25px">
                 <li >You need to follow the company Rules Regulations and policies. Breaking of any such may cause the Termination of your service at AJ Group. </li>
-                <li>Permanent employees may resign from employment with 60 days written notice. If you choose to resign without notice, you must have to pay 60 days basic wages to the employer. In case of terminate of any  worker without notice by the owner, the owner will follow Bangladesh Labor Law.</li>  
+                <li>Permanent employees may resign from employment with 60 days written notice. If you choose to resign without notice, you must have to pay 60 days basic wages to the employer. In case of terminate of any  worker without notice by the owner, the owner will follow Bangladesh Labor Law.</li>
             </ol>
 
 
@@ -289,11 +289,11 @@ $obj = new NumberToWord();
                         <p style="text-align:center"><?= $value->name_en?></p>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     <?php }?>
-    <br> 
+    <br>
         <?php
             // dd($values);
     foreach($values as $value){?>
@@ -319,10 +319,10 @@ $obj = new NumberToWord();
             </div>
             <?php }?>
             <div class="mt-3">
-                <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); 
+                <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row();
                 //dd($com_info);?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
                     <h2 class="text-center" style="margin:0 auto"><b><?= $com_info->company_name_english ?></b></h2>
                 </div>
             </div>
@@ -344,7 +344,7 @@ $obj = new NumberToWord();
             <br>
 
             <div style="margin-left:15px ;">
-                <p>To,</p> 
+                <p>To,</p>
                 <p><b> <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?>  <?php echo $value->name_en?></b></p>
                 <p>Present Address: Vill: <?php echo $value->pre_village?>, Post: <?php echo $value->pre_post_name_en?>, Thana: <?php echo $value->pre_upa_name_en?>, Dist: <?php echo $value->pre_dis_name_en?></p>
                 <p>Permanent Address: Vill: <?php echo $value->per_village?>, Post: <?php echo $value->post_name_en?>, Thana: <?php echo $value->upa_name_en?>, Dist: <?php echo $value->dis_name_en?> </p>
@@ -352,11 +352,11 @@ $obj = new NumberToWord();
                 <br>
                 <p><b>Subject: Appointment Letter</b></p>
                 <br>
-                <p><b>Dear <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?> <?php echo $value->name_en?></b></p> 
-                
+                <p><b>Dear <?php echo $value->gender == 'Male' ? 'Mr.':'Mrs.'?> <?php echo $value->name_en?></b></p>
+
                 <p>
                     With reference to your interest about our company and subsequent interview with us, the
-                    Management of <b> <?php echo $com_info->company_name_english?></b> is pleased to appoint you as 
+                    Management of <b> <?php echo $com_info->company_name_english?></b> is pleased to appoint you as
                     <b><?php echo $value->desig_name?> </b>  Office ID no:- <b> <?php echo $value->per_emp_id?> </b> in <b> <?php echo $value->dept_name?> Department</b>   from the date of <b> <?php echo date('d-m-Y',strtotime($value->emp_join_date))?></b> underthe following terms and conditions.
                 </p>
 
@@ -375,33 +375,33 @@ $obj = new NumberToWord();
                 <table style="line-height: 1;">
                     <tr>
                         <th> i. Basic</th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;:</td> 
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;:</td>
                         <td>&nbsp;&nbsp;<?php $basic = round(($value->salary -(1250+450+750)) / 1.5); echo $basic;?></td>
                         <td>&nbsp;&nbsp;TK</td>
                     </tr>
                     <tr>
                         <th> ii. House Rent </th>
-                        <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                        <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                         <td>&nbsp;&nbsp;<?php echo round($basic/2)?> </td>
                         <td>&nbsp;&nbsp;TK</td>
 
                     </tr>
                     <tr>
                             <th> iii. Medical </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;750 </td>
                             <td>&nbsp;&nbsp;TK</td>
-                                            
+
                         </tr>
                         <tr>
                             <th> iv. Transport </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;450 </td>
                             <td>&nbsp;&nbsp;TK</td>
                         </tr>
                         <tr style="border-bottom: 1px solid black;">
                             <th> v. Food </th>
-                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td> 
+                            <td>&nbsp;&nbsp;&nbsp;&nbsp;: </td>
                             <td>&nbsp;&nbsp;1250 </td>
                             <td>&nbsp;&nbsp;TK </td>
                         </tr>
@@ -412,19 +412,19 @@ $obj = new NumberToWord();
                             <td>&nbsp;&nbsp; TK </td>
                         </tr>
                     </table>
-                    <table style="line-height: 1;margin-left:100px"> 
+                    <table style="line-height: 1;margin-left:100px">
                         <tr style='vertical-align:baseline'>
                             <td><b>In Word:  </b></td>
                             <td style="padding-left:5px;"><?php echo $obj->numToWord( $value->salary);?> </td>
                             <td style="padding-left:5px;"> Taka Only </td>
                         </tr>
                     </table>
-                </div>    
+                </div>
             </li>
             </ol>
             <ol start='9'  style="line-height:1.3;font-size:17px;margin-left:-25px">
                 <li >You need to follow the company Rules Regulations and policies. Breaking of any such may cause the Termination of your service at AJ Group. </li>
-                <li>Permanent employees may resign from employment with 60 days written notice. If you choose to resign without notice, you must have to pay 60 days basic wages to the employer. In case of terminate of any  worker without notice by the owner, the owner will follow Bangladesh Labor Law.</li>  
+                <li>Permanent employees may resign from employment with 60 days written notice. If you choose to resign without notice, you must have to pay 60 days basic wages to the employer. In case of terminate of any  worker without notice by the owner, the owner will follow Bangladesh Labor Law.</li>
             </ol>
 
 
@@ -454,7 +454,7 @@ $obj = new NumberToWord();
                         <p style="text-align:center"><?= $value->name_en?></p>
                     </div>
                 </div>
-                
+
             </div>
         </div>
     <?php }?>

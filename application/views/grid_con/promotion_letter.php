@@ -136,7 +136,7 @@ $obj = new BanglaNumberToWord();
         <div class="mt-3">
             <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
             <div class="d-flex">
-                <img src="<?php echo base_url('/images/AJ_Logo_copy4.png')?>" alt="Logo" style="width: 60px;height: 50px;position: absolute;">
+                <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px;height: 45px;position: absolute;">
                 <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h4>
             </div>
         </div>
@@ -173,14 +173,14 @@ $obj = new BanglaNumberToWord();
                     <?php echo $row->gender == "Male"? 'Rbve':'Rbvev'?>,
                 </span>
                 <br>
-                Avcbvi AeMwZi Rb¨ Rvbv‡bv hv‡”Q ‡h, ‡Kv¤úvbx KZ©…c¶ Avcbvi Kg©`¶Zvq mš‘ó n‡q Avcbv‡K 
-                <?php echo '<span style="font-size:14px">'.$row->prev_desig_name.'</span>'?> c`, ‡M«Wt 
+                Avcbvi AeMwZi Rb¨ Rvbv‡bv hv‡”Q ‡h, ‡Kv¤úvbx KZ©…c¶ Avcbvi Kg©`¶Zvq mš‘ó n‡q Avcbv‡K
+                <?php echo '<span style="font-size:14px">'.$row->prev_desig_name.'</span>'?> c`, ‡M«Wt
                 <?php echo '<span font-size:19px;">'.($row->prev_grade_name =="None" ? '<span class="unicode-to-bijoy"> প্রযোজ্য নয় </span>' : $row->prev_grade_name).'</span>';?>  ‡_‡K
-                <?php echo '<span style="font-size:14px">'.$row->new_desig_name.'</span>'?> c‡`, jvBbt 
-                <?php echo '<span style="font-size:18px">'.$row->new_line_name.'</span>'?> , ‡M«Wt 
-                <?php echo '<span font-size:19px">'.($row->new_grade_name =="None"? '<span class="unicode-to-bijoy">প্রযোজ্য নয় </span>': $row->new_grade_name).'</span>';?> G c‡`vbœwZ ‡`Iqvi wm×všÍ M…nxZ n‡q‡Q| Avcbvi c~‡e©i ‡eZb 
+                <?php echo '<span style="font-size:14px">'.$row->new_desig_name.'</span>'?> c‡`, jvBbt
+                <?php echo '<span style="font-size:18px">'.$row->new_line_name.'</span>'?> , ‡M«Wt
+                <?php echo '<span font-size:19px">'.($row->new_grade_name =="None"? '<span class="unicode-to-bijoy">প্রযোজ্য নয় </span>': $row->new_grade_name).'</span>';?> G c‡`vbœwZ ‡`Iqvi wm×všÍ M…nxZ n‡q‡Q| Avcbvi c~‡e©i ‡eZb
                 <?php echo $row->prev_salary?>
-                UvKvi mv‡_ AviI 
+                UvKvi mv‡_ AviI
                 <?php echo ($row->new_salary - $row->prev_salary)?> UvKv e…w× K‡i ‡gvU ‡eZb <?php echo $row->new_salary?> UvKv avh© Kiv nBj| hv A`¨  <?php echo date('d/m/Y',strtotime($row->effective_month))?> Bs ZvwiL n‡Z Kvh©Ki Kiv n‡e|
                 Avcbvi ‡eZb e…w×i c~‡e©i I eZ©gvb gRyix KvVv‡gv Abyhvqx Zyjbvg~jK Z_¨ejx wbgœiæc|
             </p>
