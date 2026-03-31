@@ -2275,28 +2275,47 @@ class Entry_system_con extends CI_Controller
         $this->data['subview'] = 'entry_system/leave_list';
         $this->load->view('layout/template', $this->data);
     }
-    public function leave_list_ajax(){
 
+    public function leave_list_ajax(){
         $offset = $this->input->post('offset');
         $limit = $this->input->post('limit');
-        $deptSearch = $this->input->post('deptSearch');
+        $from_date = $this->input->post('from_date');
+        $to_date = $this->input->post('to_date');
+        $month = $this->input->post('month');
+        $year = $this->input->post('year');
+        $emp_id = $this->input->post('emp_id');
+
         $this->db->select('pr_leave_trans.*, pr_units.unit_name, pr_emp_per_info.name_en as user_name');
         $this->db->from('pr_leave_trans');
         $this->db->join('pr_units', 'pr_units.unit_id = pr_leave_trans.unit_id', 'left');
         $this->db->join('pr_emp_per_info', 'pr_emp_per_info.emp_id = pr_leave_trans.emp_id', 'left');
         $this->db->where('pr_units.unit_id', $this->data['user_data']->unit_name);
-        $this->db->order_by('pr_leave_trans.leave_start', 'DESC');
-        // $this->db->group_by('pr_leave_trans.start_date');
-        if (!empty($deptSearch) && $deptSearch != '') {
-            $this->db->group_start();
-            $this->db->like('pr_leave_trans.leave_start', $deptSearch);
-            $this->db->or_like('pr_units.unit_name', $deptSearch);
-            $this->db->or_like('pr_emp_per_info.name_en', $deptSearch);
-            $this->db->or_like('pr_emp_per_info.emp_id', $deptSearch);
-            $this->db->group_end();
+
+        // ✅ date range filter (better logic)
+        if (!empty($from_date) && !empty($to_date) && $from_date <= $to_date) {
+            $this->db->where('pr_leave_trans.leave_start >=', $from_date);
+            $this->db->where('pr_leave_trans.leave_end <=', $to_date);
         }
+
+        // ✅ month filter (fix)
+        if (!empty($month)) {
+            $this->db->where("DATE_FORMAT(pr_leave_trans.leave_start, '%Y-%m') =", $month);
+        }
+
+        // ✅ year filter
+        if (!empty($year)) {
+            $this->db->where('YEAR(pr_leave_trans.leave_start)', $year);
+        }
+
+        // ✅ employee filter
+        if (!empty($emp_id)) {
+            $this->db->where('pr_leave_trans.emp_id', $emp_id);
+        }
+
+        // ✅ pagination + sorting
         $this->db->limit($limit, $offset);
-        $results= $this->db->get()->result();
+        $this->db->order_by('pr_leave_trans.leave_start', 'DESC');
+        $results = $this->db->get()->result();
         echo json_encode($results);
     }
 
