@@ -606,8 +606,7 @@ class Grid_con extends CI_Controller {
 					LEFT JOIN emp_line_num as line ON com.emp_line_id = line.id
 					WHERE transfer.joining_date BETWEEN '$firstdate' AND '$seconddate'
 					AND com.emp_id IN (".implode(',', $emp_id).")
-					AND com.unit_id = $unit_id
-					GROUP BY com.emp_id";
+					AND com.unit_id = $unit_id ";
 		} else {
 			$sql = "SELECT DISTINCT transfer.*, com.emp_id, com.unit_id, com.emp_join_date, com.gross_sal, com.com_gross_sal, per.name_en, per.name_bn, per.personal_mobile, per.gender, desig.desig_bangla, dept.dept_bangla, sec.sec_name_bn, line.line_name_bn FROM pr_unit_transfer as transfer
 					LEFT JOIN pr_emp_com_info as com ON transfer.".($type == 1 ? 'new_emp_id' : 'old_emp_id')." = com.emp_id
@@ -617,8 +616,7 @@ class Grid_con extends CI_Controller {
 					LEFT JOIN emp_section as sec ON com.emp_sec_id = sec.id
 					LEFT JOIN emp_line_num as line ON com.emp_line_id = line.id
 					WHERE com.emp_id IN (".implode(',', $emp_id).")
-					AND com.unit_id = $unit_id
-					GROUP BY com.emp_id";
+					AND com.unit_id = $unit_id ";
 		}
 
 		$data["array"] = $this->db->query($sql)->result();
@@ -1177,8 +1175,7 @@ class Grid_con extends CI_Controller {
 		$query['values'] = $this->Grid_model->grid_emp_job_application($grid_emp_id);
 		if(is_string($query['values'])){
 			echo $query['values'];
-		}
-		else{
+		} else{
 			$this->load->view('worker_personal_info',$query);
 		}
 	}
@@ -2870,8 +2867,7 @@ class Grid_con extends CI_Controller {
 		// dd($data);
 		if(is_string($data['values'])){
 			echo $data['values'];
-		}
-		else{
+		} else {
 			$this->load->view('earn_leave_report',$data);
 		}
 	}

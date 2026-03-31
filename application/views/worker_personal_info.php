@@ -196,9 +196,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -407,9 +407,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -617,9 +617,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center unicode-to-bijoy" style="margin:0 auto" ><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -707,9 +707,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -822,9 +822,9 @@ $obj = new BanglaNumberToWord();
                     <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                     <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                         <h1 class="text-center unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                     </div>
@@ -973,9 +973,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -1160,9 +1160,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center unicode-to-bijoy" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>
@@ -1226,9 +1226,9 @@ $obj = new BanglaNumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
                 <div class="d-flex">
                     <?php if($unit_id ==4){?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute;">
                     <?php }else{?>
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 80px;height: 50px;position: absolute; margin-left: 230px;">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="margin-top: 5px;width: 120px; height: 40px; position: absolute; margin-left: 230px;">
                     <?php }?>
                     <h1 class="text-center" style="margin:0 auto"><?= $com_info->company_name_bangla ?></h1>
                 </div>

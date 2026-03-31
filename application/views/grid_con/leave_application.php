@@ -216,9 +216,10 @@
             </tr>
         </table>
 
-        <br><br>
-            <div style='float:right'>
-                 <p style="border-top:1px solid black;width:fit-content">Av‡e`b Kvixi ¯^v¶i</p>
+        <br>
+            <div style='float:right' style="margin-top: -30px !important;">
+                <span> <img src="<?= base_url('uploads/emp_signature/'.$values['emp_info']->signature)?>" width="100px" height="30px"> </span>
+                <p style="border-top:1px solid black;width:fit-content">Av‡e`b Kvixi ¯^v¶i </p>
             </div>
             <br>
             <br>

@@ -249,9 +249,9 @@ $obj = new BanglaNumberToWord();
             <div style="line-height: 10px;">
                 <div style="line-height: 10px;">
                 <p style="margin-bottom: 110px !important;">ab¨ev`v‡šÍ,</p>
-                <hr style="border: 1px solid black; width: 340px;float:left;display: block;"><br>
-                <br>
-                <p class="mt-2">wefvMxq cÖavb (GBPAvi, GWwgb GÛ Kgcøv‡qÝ)</p>
+                <!-- <hr style="border: 1px solid black; width: 340px;float:left;display: block;"><br>
+                <br> -->
+                <p style="border-top: 1px solid black; line-height: 1.5; width: 380px;" class="mt-2">wefvMxq cÖavb (GBPAvi, GWwgb GÛ Kgcøv‡qÝ)</p>
                 <p><?= $com_info->company_name_bangla ?></p>
                 <p class="mt-5">Abywjwct</p>
                 <p>1| MÖæc ‡Rbv‡ij g¨v‡bRvi (GBPAvi, GWwgb GÛ Kgcøv‡qÝ)</p>

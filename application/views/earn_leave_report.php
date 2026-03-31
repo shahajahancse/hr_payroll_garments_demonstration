@@ -11,8 +11,8 @@
 <body>
 
 <div style=" margin:0 auto;  width:800px;">
-<?php 
-$this->load->view("head_english"); 
+<?php
+$this->load->view("head_english");
 ?>
 <!--Report title goes here-->
 <div align="center" style=" margin:0 auto;  overflow:hidden; font-family: 'Times New Roman', Times, serif;"><span style="font-size:12px; font-weight:bold;">
@@ -24,18 +24,18 @@ Earn Leave Payment Sheet <?php echo date("F-Y"); ?></span>
 <table class="sal" border="1" cellpadding="0" cellspacing="0" align="center" style="font-size:12px;">
 <th>SL</th>
 <th width="110px;">Name of Workers</th>
-<th>Designation</th> 
+<th>Designation</th>
 <th>Card No.</th>
-<th>Section</th> 
-<th style="white-space:nowrap">Join Date</th> 
-<th>Previous Month of Payble Wages</th> 
-<th>Actual Working Days <?php echo date("Y"); ?></th> 
-<th>E/L Earn in <?php echo date("Y"); ?> </th> 
-<th>Previous Earn Leave Balance is</th> 
-<th>Total Earn Leave Days</th> 
-<th>Previous Month of Payble days</th> 
-<th>Net Pay Amount</th> 
-<th>Worker Signature</th> 
+<th>Section</th>
+<th style="white-space:nowrap">Join Date</th>
+<th>Previous Month of Payble Wages</th>
+<th>Actual Working Days <?php echo date("Y"); ?></th>
+<th>E/L Earn in <?php echo date("Y"); ?> </th>
+<th>Previous Earn Leave Balance is</th>
+<th>Total Earn Leave Days</th>
+<th>Previous Month of Payble days</th>
+<th>Net Pay Amount</th>
+<th>Worker Signature</th>
 
 <?php
 // dd($values);
@@ -45,23 +45,23 @@ $count = $values["emp_name"] !== null ? count($values["emp_name"]) : 0;
 for($i=0; $i<$count; $i++ )
 {
 	echo "<tr>";
-	
+
 	echo "<td>";
 	echo $k = $i+1;
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["emp_name"][$i];
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["desig_name"][$i];
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["emp_id"][$i];
 	echo "</td>";
-	
+
 
 	echo "<td style='text-align:center'>";
 	echo $values["sec_name"][$i];
@@ -70,19 +70,19 @@ for($i=0; $i<$count; $i++ )
 	echo "<td style='text-align:center'>";
 	echo date("d-M-y",strtotime($doj));
 	echo "</td>";
-	
+
 	echo "<td style='text-align:right'>";
 	echo isset($values["pay_wages"][$i]) ? number_format($values["pay_wages"][$i]) : 0;
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["actual_working_days"];
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["current_earn_balance"][$i];
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center'>";
 	echo $values["old_earn_balance"][$i];
 	echo "</td>";
@@ -99,7 +99,7 @@ for($i=0; $i<$count; $i++ )
 	echo "<td style='text-align:center'>";
 	echo $total_earn_balance ;
 	echo "</td>";
-	
+
 	echo "<td style='text-align:center' >";
 	echo isset($values["pay_days"][$i]) ? $values["pay_days"][$i] : "&nbsp;";
 	echo "</td>";
@@ -109,9 +109,9 @@ for($i=0; $i<$count; $i++ )
 	echo "</td>";
 	$total_net_pay = $total_net_pay + $net_pay_round;
 	echo "<td >";
-	echo "&nbsp;";
+	echo "<img src='".base_url('uploads/emp_signature/'.$values["signature"][$i])."' width='100px' height='30px'>";
 	echo "</td>";
-	
+
 	echo "</tr>";
 }
 

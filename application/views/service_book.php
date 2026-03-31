@@ -27,10 +27,10 @@
 </head>
 <body class="container">
     <br>
-    <?php 
-        $session = $this->session->userdata('data'); 
-    foreach($values as $value){ 
-        $emp_signature =$this->db->select('signature')->where('emp_id',$value->emp_id)->get('pr_emp_per_info')->row('signature');    
+    <?php
+        $session = $this->session->userdata('data');
+    foreach($values as $value){
+        $emp_signature =$this->db->select('signature')->where('emp_id',$value->emp_id)->get('pr_emp_per_info')->row('signature');
         $register =$this->db->select('register')->where('unit_id',$unit_id)->get('company_infos')->row('register');
     ?>
     <div class="d-flex">
@@ -61,7 +61,7 @@
                 <p class="unicode-to-bijoy">৮। জাতীয় পরিচয় পত্র নং (যদি থাকে): <?php echo $value->nid_dob_id?></p>
                 <p class="unicode-to-bijoy">৯।  শিক্ষাগত যোগ্যতা: <?php echo $value->education==''? 'নাই' : $value->education?></p>
                 <p class="unicode-to-bijoy" style='line-height:24px'>১০। বিশেষ দক্ষতা (যদি থাকে): <?php echo $value->exp_factory_name.','. $value->exp_duration.','.$value->exp_dasignation ?></p>
-                <p class="unicode-to-bijoy">১১। উচ্চতা: </p> 
+                <p class="unicode-to-bijoy">১১। উচ্চতা: </p>
                 <p><span class="unicode-to-bijoy">১২। রক্তের গ্রুপ (যদি থাকে):</span> <?php echo $value->blood == 'None'? ' <span class="unicode-to-bijoy">নাই </span>' : '<span style="font-size:15px">'.$value->blood.'</span>' ?></p>
                 <p class="unicode-to-bijoy">১৩। সনাক্ত করিবার জন্য বিশেষ কোনচিহ্ন (যদি থাকে): নাই</p>
                 <p class="unicode-to-bijoy">১৪। সার্ভিস বহি খুলিবার তারিখ: ইং</p>
@@ -74,14 +74,14 @@
                     <img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px;width:70px;margin-right: 60px;    margin-top: 25px;">
                 </div>
                 <div style="display:flex; justify-contant:space-between;position: fiexd ">
-                <p  style="width:fit-content;position: relative;bottom: -8px;"><span class="unicode-to-bijoy">শ্রমিকের স্বাক্ষর</span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>   
+                <p  style="width:fit-content;position: relative;bottom: -8px;"><span class="unicode-to-bijoy">শ্রমিকের স্বাক্ষর</span>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </p>
                 <p style="position: relative;bottom: -8px;" class="unicode-to-bijoy">মালিক/ব্যবস্থাপনা কর্তৃপক্ষের স্বাক্ষর</p>
                 </div>
             </div>
         </div>
     </div>
     <div style="margin-bottom: 20px;page-break-after: always;"></div>
-    
+
     <div class="d-flex">
         <div class="flex-fill" style="height:90vh;width:60vw;border: 1px solid black;">
             <p style="padding: 5px 0px 0px 5px;" class="unicode-to-bijoy"> ফরম নং - ৭(খ)</p>
@@ -137,8 +137,8 @@
                         <td style="white-space: nowrap;font-family:sutonnyMJ;font-size:15px"><?php echo date('d-m-Y',strtotime($value->emp_join_date))?> Bs</td>
                         <td><?php echo $value->left_date=='' ? 'বর্তমান': '<span style="font-family:sutonnyMJ;font-size:15px">'.date('d-m-Y',strtotime($value->left_date)).' Bs </span>'?> </td>
                         <td><?php echo $value->left_date=='' ? '-': cc($value->resign_reason)?> </td>
-                        <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px;width:70px"></td>
-                        <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px;width:70px"></td>
+                        <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px;width:70px"></td>
+                        <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px;width:70px"></td>
                     </tr>
                 </tbody>
             </table>
@@ -171,7 +171,7 @@
                         <td class="unicode-to-bijoy">বাড়ী ভাড়া ভাতা</td>
                         <td class="unicode-to-bijoy">চিকিৎসা ভাতা</td>
                         <td class="unicode-to-bijoy">বোনাস (যদি থাকে)</td>
-                    </tr> 
+                    </tr>
                     <tr class="text-center" style="font-weight: bold;" >
                         <td></td>
                         <td></td>
@@ -188,7 +188,7 @@
                         <td style="font-size:15px;font-family:sutonnyMJ">750</td>
                         <td>-</td>
                     </tr>
-                    <?php 
+                    <?php
                         $incProms = $this->db->where('new_emp_id',$value->emp_id)->get('pr_incre_prom_pun')->result();
                         foreach($incProms as $incProm){
                     ?>
@@ -212,7 +212,7 @@
             <p  class="unicode-to-bijoy" style="padding: 5px 0px 0px 5px;font-weight:600;"> সার্ভিস রেকর্ড ও মজুরি এবং ভাতাসংক্রান্ত তথ্য</p>
             <table class="table-sm" style="font-size: 0.8em;width: 100%;" border="1">
                 <thead>
-                    <tr class="text-center"> 
+                    <tr class="text-center">
                         <th class="unicode-to-bijoy">অন্যান্য ভাতা</th>
                         <th class="unicode-to-bijoy">মোট, প্রভিডেন্ট ফান্ড (যদি থাকে)</th>
                         <th class="unicode-to-bijoy">শ্রমিকের প্রদেয় চাঁদা</th>
@@ -247,8 +247,8 @@
                         <td> </td>
                         <td> </td>
                         <td> </td>
-                        <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
-                        <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px"></td>
                     </tr>
 
                     <?php  foreach($incProms as $incProm){?>
@@ -258,8 +258,8 @@
                         <td> </td>
                         <td> </td>
                         <td> </td>
-                        <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
-                        <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px"></td>
                     </tr>
                     <?php }?>
                 </tbody>
@@ -267,7 +267,7 @@
         </div>
     </div>
     <div style="margin-bottom: 20px;page-break-after: always;"></div>
-    
+
     <div class="d-flex">
         <div class="flex-fill" style="height:90vh;width:60vw;border: 1px solid black;">
             <p  class="unicode-to-bijoy" style="padding: 5px 0px 0px 5px;">ফরম নং - ৭(ঘ)</p>
@@ -302,7 +302,7 @@
                         <th class="unicode-to-bijoy">৯</th>
                     </tr>
                 </thead>
-                <?php 
+                <?php
                     $leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->where('leave_type','el')->order_by('leave_start','asc')->get('pr_leave_trans')->result();
                     $leaves=[];
                     foreach($leave as $key => $row){
@@ -311,7 +311,7 @@
                             continue;
                         }else{
                             $leaves[] = $row;
-                        }  
+                        }
                     }
                     $earn_leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->get('pr_earn_leave')->row();
                 ?>
@@ -327,13 +327,13 @@
                                 <td style="font-family:sutonnyMJ;font-size:15px"><?php echo ""?></td>
                                 <td class="unicode-to-bijoy" style="font-family:sutonnyMJ;font-size:15px;white-space: nowrap"><?php echo $earn_leave->earn_month ?></td>
                                 <td style="font-family:sutonnyMJ;font-size:15px"><?php echo "" ?></td>
-                                <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
-                                <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px"></td>
-                            </tr>   
+                                <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
+                                <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px"></td>
+                            </tr>
                         <?php }?>
                 </tbody>
             </table>
-    
+
         </div>
         <div style="width:1% !important"></div>
     </div>
@@ -362,13 +362,13 @@
                     <tr>
                         <td>-</td>
                         <td>-</td>
-                        <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
-                        <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px"></td>
                     </tr>
                 </tbody>
             </table>
-    
-        </div> 
+
+        </div>
         <div style="width:1% !important"></div>
         <div class="flex-fill" style="height:90vh;width:60vw;border: 1px solid black;">
             <p  class="unicode-to-bijoy" style="padding: 5px 0px 0px 5px;">ফরম নং - ৭(ঙ)</p>
@@ -393,12 +393,12 @@
                     <tr>
                         <td>-</td>
                         <td>-</td>
-                        <td><img  src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
-                        <td><img  src="<?php echo base_url('images/'.$emp_signature)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 30px"></td>
+                        <td><img src="<?php echo base_url('uploads/emp_signature/'.$emp_signature)?>" style="height: 30px"></td>
                     </tr>
                 </tbody>
             </table>
-        </div> 
+        </div>
     </div>
     <?php }?>
     <!-- <div style="page-break-after: always;"></div> -->

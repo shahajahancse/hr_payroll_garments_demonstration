@@ -521,175 +521,6 @@ class Processdb extends CI_Model{
 
 
 	//================================End Employee Information View=================================
-
-	function updatedb1_old_30_09_21()
-	{
-		$id =  $this->input->post('empid');
-		$dob = $this->input->post('dob');
-		$dob = date("Y-m-d", strtotime($dob));
-		$ejd = $this->input->post('ejd');
-		$ejd = date("Y-m-d", strtotime($ejd));
-		if($_FILES["userfile"]["name"] != '')
-		{
-			$config['upload_path'] = './uploads/photo/';
-			$config['allowed_types'] = '*';
-			$config['max_size']	= '500';
-			$config['max_width']  = '500';
-			$config['max_height']  = '700';
-			$this->load->library('upload', $config);
-
-			if ( ! $this->upload->do_upload())
-			{
-				$error = array('error' => $this->upload->display_errors());
-				$img_error =  $error["error"];
-				echo "<span style='color:red;'>$img_error</span>";
-				/*echo "<SCRIPT>alert($img_error);</SCRIPT>";*/
-				$data = array(
-				  'emp_full_name' 	=> $this->input->post('name'),
-				  'bangla_nam' 		=> $this->input->post('bname'),
-				  'emp_mname' 		=> $this->input->post('mname'),
-				  'emp_mname_bn' 		=> $this->input->post('mname_bn'),
-				  'emp_fname' 		=> $this->input->post('fname'),
-				  'emp_fname_bn' 		=> $this->input->post('fname_bn'),
-				  'spouse_name' 	=> $this->input->post('spouse_name'),
-				  'emp_dob'  		=> $dob,
-				  'emp_religion'  	=> $this->input->post('reli'),
-				  'emp_sex'  		=> $this->input->post('sex'),
-				  'emp_marital_status'=> $this->input->post('ms'),
-				  'emp_blood'		=> $this->input->post('bgroup'),
-				  'national_brn_id'	=> $this->input->post('nid'),
-				  'bank_ac_no'		=> $this->input->post('bank_ac_no')
-
-				);
-
-			}
-			else
-			{
-				$data_up = array('upload_data' => $this->upload->data());
-				$img = $data_up["upload_data"]["file_name"];
-				$data = array(
-				  'emp_full_name' 	=> $this->input->post('name'),
-				  'bangla_nam' 		=> $this->input->post('bname'),
-				  'emp_mname' 		=> $this->input->post('mname'),
-				  'emp_mname_bn' 	=> $this->input->post('mname_bn'),
-				  'emp_fname' 		=> $this->input->post('fname'),
-				  'emp_fname_bn' 	=> $this->input->post('fname_bn'),
-				  'spouse_name' 	=> $this->input->post('spouse_name'),
-				  'emp_dob'  		=> $dob,
-				  'emp_religion'  	=> $this->input->post('reli'),
-				  'emp_sex'  		=> $this->input->post('sex'),
-				  'emp_marital_status'=> $this->input->post('ms'),
-				  'emp_blood'		=> $this->input->post('bgroup'),
-				  'img_source'		=> $img,
-				  'national_brn_id'	=> $this->input->post('nid'),
-				  'bank_ac_no'		=> $this->input->post('bank_ac_no')
-				);
-
-				$result['image'] = $img;
-			}
-		}
-		else
-		{
-			$data = array(
-				'emp_full_name'  		=> $this->input->post('name'),
-				'bangla_nam' 			=> $this->input->post('bname'),
-				'emp_mname' 			=> $this->input->post('mname'),
-				'emp_mname_bn' 			=> $this->input->post('mname_bn'),
-				'emp_fname' 			=> $this->input->post('fname'),
-				'emp_fname_bn' 			=> $this->input->post('fname_bn'),
-				'spouse_name' 			=> $this->input->post('spouse_name'),
-				'emp_dob'  				=> $dob,
-				'emp_religion'  		=> $this->input->post('reli'),
-				'emp_sex'  				=> $this->input->post('sex'),
-				'emp_marital_status'	=> $this->input->post('ms'),
-				'emp_blood'				=> $this->input->post('bgroup'),
-				'national_brn_id'	=> $this->input->post('nid'),
-				'bank_ac_no'		=> $this->input->post('bank_ac_no')
-			);
-		}
-		$this->db->where('emp_id',$id);
-		$v1 = $this->db->update('pr_emp_per_info', $data);
-		$adddata = array(
-			'emp_pre_add' 	=> $this->input->post('padd'),
-			'emp_par_add'	=> $this->input->post('fadd'),
-			'emp_pre_add_ban' => $this->input->post('preadd_bn'),
-			'emp_par_add_ban' => $this->input->post('peradd_bn'),
-			'mobile'		  => $this->input->post('text3')
-					);
-		$this->db->where('emp_id',$id);
-		$v2 = $this->db->update('pr_emp_add', $adddata);
-		$unit = $this->input->post('units');
-		if($unit == "Select")
-		{
-			$result["msg"] = "Please Select Unit!";
-			return $result;
-		}
-		$data2 = array(
-			'unit_id'  			=> $this->input->post('units'),
-			'emp_dept_id'  		=> $this->input->post('dept'),
-			'emp_sec_id' 		=> $this->input->post('sec'),
-			'emp_line_id' 		=> $this->input->post('line'),
-			'emp_desi_id'  		=> $this->input->post('desig'),
-			'emp_type'  		=> $this->input->post('emp_type'),
-			'emp_operation_id'	=> $this->input->post('operation'),
-			'emp_position_id'  	=> $this->input->post('position'),
-			'emp_sts_id'		=> $this->input->post('emp_sts_id'),
-
-			'emp_sal_gra_id'	=> $this->input->post('salg'),
-			'emp_shift'  		=> $this->input->post('empshift'),
-			'gross_sal'  		=> $this->input->post('text8'),
-			'com_gross_sal'  	=> $this->input->post('text9'),
-			'ot_entitle'  		=> $this->input->post('otentitle'),
-			'transport'  		=> $this->input->post('transport'),
-			'lunch'  			=> $this->input->post('lunch'),
-			'att_bonus'  		=> $this->input->post('attbonus'),
-			'emp_join_date'		=> $ejd,
-			'salary_draw'		=> $this->input->post('saldraw'),
-			'salary_type'		=> $this->input->post('saltype'),
-			'floor_id'			=> $this->input->post('floor_name'),
-			'wk_type_id'		=> $this->input->post('working_type'),
-			'work_process_id'	=> $this->input->post('work_process'),
-			'ot_show_in'	    => $this->input->post('ot_define')
-		);
-		$this->db->where('emp_id',$id);
-		$v3 = $this->db->update('pr_emp_com_info', $data2);
-		$data_edu = array(
-				'emp_degree'  	=> $this->input->post('text2'),
-				'emp_pass_yr' 	=> $this->input->post('text3'),
-				'emp_ins' 		=> $this->input->post('text4')
-				);
-
-		$this->db->where('emp_id',$id);
-		$v4 =$this->db->update('pr_emp_edu', $data_edu);
-
-		$data_skill = array(
-				'emp_skill'  	=> $this->input->post('text5'),
-				'emp_yr_skill' 	=> $this->input->post('text6'),
-				'emp_com_name' 	=> $this->input->post('text7')
-			);
-		$this->db->where('emp_id',$id);
-		$v5= $this->db->update('pr_emp_skill', $data_skill);
-
-		$pr_id_proxi = array('proxi_id'  => $this->input->post('idcard'));
-		$this->db->where('emp_id',$id);
-		$v6 = $this->db->update('pr_id_proxi', $pr_id_proxi);
-
-		if( $v1 or $v2 or $v3 or $v4 or $v5 or $v6)
-		{
-			// PROFILE LOG Generate
-			$log_username = $this->session->userdata('username');
-			$log_emp_id   = $this->input->post('empid');
-			$this->log_model->log_profile_update($log_username, $log_emp_id);
-			$result["msg"] = "true";
-			return $result;
-		}
-		else
-		{
-			$result["msg"] = "false";
-			return $result;
-		}
-	}
-
 	function updatedb1()
 	{
 		//dd($_POST);
@@ -790,8 +621,8 @@ class Processdb extends CI_Model{
 		if($this->db->where('emp_id',$id)->update('pr_emp_com_info', $data))
 		{
 			$ids = $this->db->where('emp_id',$id)->get('pr_emp_com_info')->row()->emp_id;
-			$per_data['emp_id'] =$ids;
-			$img ="";
+			$per_data['emp_id'] = $ids;
+			$img = "";
 			if($_FILES["img_source"]["name"] != '')
 			{
 				$imgs = explode('.', $_FILES["img_source"]["name"]);
@@ -814,6 +645,7 @@ class Processdb extends CI_Model{
 					$per_data['img_source'] = $img;
 				}
 			}
+
 			if($_FILES["signature"]["name"] != ''){
 				$imgs = explode('.', $_FILES["signature"]["name"]);
 				$ext = end($imgs);
@@ -843,17 +675,13 @@ class Processdb extends CI_Model{
 			if($this->db->where('emp_id',$ids)->update('pr_emp_per_info', $per_data)){
 				//dd('ok');
 				echo "<SCRIPT LANGUAGE=\"JavaScript\">alert('Update Successfully.'); window.location='personal_info';</SCRIPT>";
-
 			}else{
 				//dd('failed');
 				echo "<SCRIPT LANGUAGE=\"JavaScript\">alert('Update Failed.'); window.location='personal_info';</SCRIPT>";
-
 			}
-
-			//echo "<SCRIPT LANGUAGE=\"JavaScript\">alert('Update Successfully.'); window.location='personal_info';</SCRIPT>";
 		} else {
 			echo "<SCRIPT LANGUAGE=\"JavaScript\">alert('Update Failed.'); window.location='personal_info';</SCRIPT>";
-		  return ;
+		  	return ;
 		}
 	}
 

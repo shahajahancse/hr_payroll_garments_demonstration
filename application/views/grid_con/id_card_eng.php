@@ -40,8 +40,8 @@
         <div class='box'>
             <div style="rotate:-90deg;margin: 0px <?php echo $unit_id == 2 ? '20px':'50px'?> 0px;text-align: center">
               <?php  $image = $this->db->where('unit_id', $unit_id)->get('company_infos')->row(); ?>
-              <p>
-                <img src="<?php echo base_url('/images'.'/'.$image->company_logo)?>" style="height: 37px;width: 70px;">
+              <p style="margin-top: 5px;">
+                <img src="<?php echo base_url('/images'.'/'.$image->company_logo)?>" style="height: 30px; width: 100px;">
               </p>
               <?php if($unit_id == 4) {?>
                <h6 style="" class='font-weight-bold'><?= $image->company_name_english; ?></h6>
@@ -74,8 +74,8 @@
             <div style='rotate: -90deg;margin: 40px 240px 40px -60px;text-align: center;'>
                   <?php echo $unit_id == 1 ? "<br>":''?>
                   <p style="margin-top: 20px;font-size:14px;white-space:nowrap">
-                    <?php 
-                    
+                    <?php
+
                       if($unit_id == 1){
                         echo "  ";
                         // echo " Document Code : AJFL/HRAC(HR)/03/021 ";

@@ -1,5 +1,5 @@
-<?php  
-    $this->db->select('*')->where_in('leave_type',['cl','sl','el'])->where('emp_id', $values['emp_info']->emp_id)->order_by('start_date','ASC')->group_by('leave_start');
+<?php
+    $this->db->select('*')->where_in('leave_type',['cl','sl','el'])->where('emp_id', $values['emp_info']->emp_id)->order_by('start_date','ASC');
     if( $first_date == '' && $second_date == ''){
         $this->db->where('start_date >',date('d/m/Y',strtotime($values['emp_info']->emp_join_date)));
     }else if( !$first_date == '' && $second_date == ''){
@@ -17,7 +17,7 @@
     <title>Document</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
 
@@ -26,7 +26,7 @@
             border-collapse: collapse;
             border-spacing: 0;
         }
-    
+
         .tg td {
             border-color: black;
             border-style: solid;
@@ -37,7 +37,7 @@
             padding: 10px 5px;
             word-break: normal;
         }
-    
+
         .tg th {
             border-color: black;
             border-style: solid;
@@ -49,7 +49,7 @@
             padding: 10px 5px;
             word-break: normal;
         }
-    
+
         .tg .tg-8jvv {
             border-color: inherit;
             font-size: 15px;
@@ -67,11 +67,11 @@
             <p  class="unicode-to-bijoy">ছুটির রেজিস্টার ও ছুটির বহি</p>
 
         </div>
-        <?php 
+        <?php
         // dd();
         $unit_id =$this->session->userdata['data']->unit_name;
         $com_info = $this->db->select('*')->where('unit_id',$unit_id)->get('company_infos')->row();
-        
+
         ?>
         <div class="mt-5" style="line-height: 10px;">
             <p class="unicode-to-bijoy">কারখানা/প্রতিষ্ঠানের নামঃ <?php echo $com_info->company_name_bangla?></p>
@@ -118,8 +118,8 @@
                     <td class="tg-8jvv text-center unicode-to-bijoy">12</td>
                     <td class="tg-8jvv text-center unicode-to-bijoy">13</td>
                 </tr>
-				<?php 
-					// dd($take_leaves); 
+				<?php
+					// dd($take_leaves);
 					$separated_data = [];
 					foreach ($take_leaves as $object) {
 						$year = date('Y', strtotime($object->start_date));
@@ -128,13 +128,13 @@
                     ?>
 				<tr>
 				<?php $leave_year='';	foreach ($separated_data as $year => $objects) {
-                    
+
                     $total_cl_leave = $values['leave_balance']->lv_cl;
                     $total_sl_leave = $values['leave_balance']->lv_sl;
                     $total_el_leave = 0;
                     $total_cl_use =0;
                     $total_sl_use =0;
-                    $total_el_use =0;  
+                    $total_el_use =0;
 					echo "<td colspan='13' class='unicode-to-bijoy'>বছর: $year</td>";
                 ?>
                 </tr>
@@ -144,7 +144,7 @@
                 ?>
                     <tr>
                         <td class="text-center unicode-to-bijoy">
-                            <?php 
+                            <?php
                                 $array = $values['yearly_total_info'];
                                 // dd($array);
                                 if (isset($array[$year]["P"])) {
@@ -161,7 +161,7 @@
 						<td><?php echo " "?></td>
 						<td class="text-center"><?php echo "<span class='unicode-to-bijoy'>".date('d/m/Y', strtotime($object->start_date))."</span>"?></td>
 						<td class="text-center unicode-to-bijoy">
-							<?php  $date1 = new DateTime($object->leave_start); 
+							<?php  $date1 = new DateTime($object->leave_start);
 								$date2 = new DateTime($object->leave_end);
 								$interval = $date2->diff($date1);
 								$interval->d += 1;
@@ -177,8 +177,8 @@
 						<td style="text-align:center"><img style="height: 20px;" src="<?=base_url('/uploads/emp_signature/'.$values['emp_info']->signature)?>"></td>
 						<td style="text-align:center"><img style="height: 38px;" src="<?=base_url('images/'.$values['emp_info']->register)?>"></td>
 					</tr>
-                    
-					<?php 
+
+					<?php
                        if($count == $key){ ?>
                             <tr>
                                 <td class="text-center unicode-to-bijoy">
@@ -191,11 +191,11 @@
                                 <td><?php echo ""?></td>
                                 <td><?php echo ""?></td>
                                 <td><?php echo ""?></td>
-                                <?php 
+                                <?php
                                     @$paid_date = $this->db->select('paid_date')->where('year',$year)->where('emp_id',$object->emp_id)->get('pr_earn_leave_paid')->row()->paid_date;
                                 ?>
                                 <td class="text-center unicode-to-bijoy">
-                                    <?php 
+                                    <?php
                                         echo (isset($el_leaves) && $el_leaves != '') ? round($el_leaves,2).' দিন , <br>':'';
                                         // echo round($el_leaves,2).' দিন , <br>';
                                         echo "</br>";
@@ -209,7 +209,7 @@
                                 <td><?php echo ""?></td>
                             </tr>
                     <?php } } }
-                    
+
                     ?>
             </tbody>
         </table>

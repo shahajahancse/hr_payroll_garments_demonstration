@@ -68,7 +68,7 @@
       <div class="d-flex">
         <div class="col-md-3">
           <?php $image =$this->db->where('unit_id', $unit_id)->get('company_infos')->row();?>
-          <img src="<?php echo base_url('/images'.'/'.$image->company_logo)?>" alt="logo" height="40px" width="60px" style="margin-top:5px">
+          <img src="<?php echo base_url('/images'.'/'.$image->company_logo)?>" alt="logo" height="30px" width="80px" style="margin-top:5px">
         </div>
         <div class="col-md-6 printt mt-2 text-center" >
           <h4 style="margin-top:1px:text-align: center"><b style="white-space:nowrap"><?= $image->company_name_bangla; ?></b></h4>
@@ -81,10 +81,10 @@
           <p style="font-size:19px" class="box-top"> Bmyy¨i ZvwiL t <span style="font-size:17px"> <b><?php echo date('d-m-Y',strtotime($value->emp_join_date))?> Bs</b></span></p>
           <p style="font-size:19px" class="box-top unicode-to-bijoy">bvg t <span style="font-size:19px"><b><?php echo $value->name_bn?></b></span></p>
           <p style="font-size:19px" class="box-top unicode-to-bijoy">c`ex t <span style="font-size:12px"><b><?php echo $value->desig_bangla?></b></span></p>
-          <p style="font-size:19px" class="box-top"> wefvM/kvLvt 
+          <p style="font-size:19px" class="box-top"> wefvM/kvLvt
             <span style="font-size:19px" class='unicode-to-bijoy'>
               <b>
-                <?php 
+                <?php
                   if($unit_id== 1){
                     $line_name = explode('-',$value->line_name_en);
                     if($line_name[0] == 'Line'){
@@ -117,7 +117,7 @@
 
     <div class="box" style="line-height:<?php echo  $unit_id == 1 ? "25px":''?>">
       <p class="box-top mt-2" style="font-family:the times roman;font-size:15px;text-align: center;margin-bottom:5px">
-        <?php 
+        <?php
           if($unit_id == 1){
             // echo " Document Code : AJFL/HRAC(HR)/03/021 ";
             // echo " Document Code : AJFL/HRAC(HR)/03/021 ";
@@ -128,11 +128,11 @@
           }
         ?>
       </p>
-      <?php 
+      <?php
         if($unit_id == 1){
           echo "<br>";
         }
-      
+
       ?>
       <p class="box-top text-center">‡gqv`t PvKzwi _vKvKvjxb ch©šÍ|</p>
       <p style="font-size: 19px; padding: <?php echo $unit_id == 4 ? '0px':'4px'?>;" class="box-top text-center unicode-to-bijoy">প্রতিষ্ঠানের ঠিকানাঃ <?= $image->company_add_bangla; ?></p>

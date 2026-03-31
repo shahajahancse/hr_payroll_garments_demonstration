@@ -22,8 +22,8 @@
 <h5 style="text-align: center;" class='unicode-to-bijoy'><?php echo $unit_add_bangla = $this->db->where("unit_id",$unit_id)->get('company_infos')->row()->company_add_bangla;?></h5>
 
 <?php
-	$user_id = $this->session->userdata('data')->id; 
-	$acl = check_acl_list($user_id); 
+	$user_id = $this->session->userdata('data')->id;
+	$acl = check_acl_list($user_id);
 ?>
 	<table align="center" height="auto" border="1" cellspacing="0" cellpadding="2" style="font-size:15px; width:1050px;">
 		<th class="text-center unicode-to-bijoy">ক্রমিক নং</th>
@@ -58,7 +58,7 @@
 			<td class="text-center unicode-to-bijoy"><?php echo $row->desig_bangla?></td>
 			<td class="text-center unicode-to-bijoy" style="white-space:nowrap"><?php echo $row->line_name_bn?></td>
 			<td class="text-center unicode-to-bijoy">
-				<?php 
+				<?php
 					$sections = array_merge(
 						explode(' ', $row->line_name_en),
 						explode('-', $row->line_name_en)
@@ -82,7 +82,9 @@
 			<td class="text-center unicode-to-bijoy"><?php echo $row->per_village_bn.",".$row->per_post_name_bn.",".$row->per_upa_name_bn.",".$row->per_dis_name_bn?></td>
 			<td class="text-center unicode-to-bijoy"><?php echo $row->gender=="Male" ? "cyiæl" : "নারী"?></td>
 			<td class="text-center "><?php echo $row->blood == 'None'?'-' : $row->blood ?></td>
-			<td class="text-center unicode-to-bijoy" style="height:35px;width:77px"></td>
+			<td class="" style="height:35px; width:80px">
+				<img src="<?php echo base_url('uploads/emp_signature/'.$row->signature) ?>" alt="Signature"  style="height:35px; width:80px">
+			</td>
 		</tr>
 
 		<?php }?>
@@ -101,7 +103,7 @@
 					<td  align="center" style="width:20%"><dt class="border-top w-50" style="border-top:1px solid black !important">GM</dt></td>
 					<td  align="center" style="width:20%"><dt class="border-top w-50" style="border-top:1px solid black !important">MD</dt></td>
 				</tr> -->
-			<!-- </table> --> 
+			<!-- </table> -->
 		<!-- </tr> -->
 	</table>
 	</div>

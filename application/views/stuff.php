@@ -157,7 +157,7 @@ $obj = new NumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row();
                 //dd($com_info);?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px; height: 40px; position: absolute;margin-left:185px;margin-top:-10px">
                     <h2 class="text-center" style="margin:0 auto"><b><?= $com_info->company_name_english ?></b></h2>
                 </div>
             </div>
@@ -322,7 +322,7 @@ $obj = new NumberToWord();
                 <?php  $com_info = $this->db->where('unit_id', $unit_id)->get('company_infos')->row();
                 //dd($com_info);?>
                 <div class="d-flex">
-                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 75px;height: 50px;position: absolute;margin-left:185px;margin-top:-10px">
+                    <img src="<?php echo base_url('/awedget/assets/img/logo.png')?>" alt="Logo" style="width: 120px; height: 40px; position: absolute;margin-left:185px;margin-top:-10px">
                     <h2 class="text-center" style="margin:0 auto"><b><?= $com_info->company_name_english ?></b></h2>
                 </div>
             </div>

@@ -433,7 +433,7 @@
 							<button class="btn input-sm sbtn" onclick="grid_general_info()">General Report</button>
 							<?php } ?>
 							<?php if(in_array(109,$acl)) { ?>
-							<button class="btn input-sm sbtn" onclick="grid_general_eng()">General Report(Eng)</button>
+							<!-- <button class="btn input-sm sbtn" onclick="grid_general_eng()">General Report(Eng)</button> -->
 							<?php } ?>
 
 
