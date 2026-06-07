@@ -91,7 +91,12 @@ class Entry_system_con extends CI_Controller
         $this->db->from('pr_advance_loan loan');
         $this->db->join('pr_emp_per_info per', 'loan.emp_id = per.emp_id', 'left');
         $this->db->join('pr_units', 'loan.unit_id = pr_units.unit_id', 'left');
-        $this->db->limit(10);
+        // $this->db->limit(25);
+        if (!empty($this->session->userdata('data')->unit_name)) {
+            $this->db->where('loan.unit_id', $this->session->userdata('data')->unit_name);
+        }
+        $this->db->where('loan.loan_month >', date('Y-01-01'));
+        $this->db->order_by('loan.id', 'desc');
         $this->data['results'] = $this->db->get()->result();
 
         $this->data['title'] = 'Advance Salary';
@@ -156,7 +161,7 @@ class Entry_system_con extends CI_Controller
             $weekend     =  $attendances->weekend;
             $holiday     =  $attendances->holiday;
             $total_leave =  $attendances->total_leave;
-            $pay_days    = $attend + $weekend + $holiday + $total_leave;
+            $eligible_day = $attend + $weekend + $holiday + $total_leave;
             $att_check   = $attend + $weekend  + $holiday;	
             $att_bouns   = 0;
             if($att_check >= $num_of_days && $absent == 0 && $attn_bonus == 1){
@@ -168,16 +173,17 @@ class Entry_system_con extends CI_Controller
             $basic_sal 		= $ss['basic_sal'];
             $ot_rate 		= $ss['ot_rate'];
             $ot_amount = 0;
+            // dd($info);
             if (!empty($attendances->ot) && $info->ot_entitle != 1 && $ot == 1) {
-                $ot_rate = $info->ot_rate;
                 $ot_amount = $attendances->ot * $ot_rate;
             }
+
             if ($salary_type == 1) {
                 $salary = $info->gross_sal;
             } else {
                 $salary = $basic_sal;
             }
-            $pay = round(($salary / $num_of_days) * $pay_days) + $ot_amount + $att_bouns;
+            $pay = round(($salary / $num_of_days) * $eligible_day) + $ot_amount + $att_bouns;
             $data = array(
                 'emp_id'        => $row,
                 'loan_amount'   => floor($pay / 100) * 100,
@@ -188,17 +194,29 @@ class Entry_system_con extends CI_Controller
                 'from_date'     => $from_date,
                 'to_date'       => $to_date,
                 'unit_id'       => $unit_id,
+                'attend'        => $attend,
+                'absent'        => $absent,
+                'weekend'       => $weekend,
+                'holiday'       => $holiday,
+                'leaves'        => $total_leave,
+                'eligible_day'  => $eligible_day,
                 'ot'            => $ot,
+                'ot_hour'       => $attendances->ot,
+                'ot_amt'        => $ot_amount,
                 'attn_bonus'    => $attn_bonus,
                 'loan_status'   => 1,
                 'type'          => 2,  // 2 advance salary 
                 'pay_day'       => $pay_day,
                 'created_by'    => $this->data['user_data']->id,
             );
+            
+
+            // dd($data);
             $r = $this->db->where('emp_id', $row)->where('loan_month', $loan_month)->where('type', 2)->where('loan_status', 1)->get('pr_advance_loan')->row();
+            // dd($r);
             if (!empty($r)) {
-                $this->db->where('emp_id', $emp_id)->where('loan_month', $loan_month)->where('loan_status', 1);
-                if ($this->db->update('pr_advance_loan', $data)) {
+                // $this->db->where('id', $r)->where('loan_month', $loan_month)->where('loan_status', 1);
+                if ($this->db->where('id', $r->id)->update('pr_advance_loan', $data)) {
                     $st = true;
                 }
             } else {
@@ -1956,17 +1974,17 @@ class Entry_system_con extends CI_Controller
             exit();
         }
 
-        if ($leave_type == 'sp') {
-            if ($balance['leave_balance_paternity'] <= 0) {
-            echo "This employee have not enough leave balance";
-            exit();
-            }
+        // if ($leave_type == 'sp') {
+        //     if ($balance['leave_balance_paternity'] <= 0) {
+        //     echo "This employee have not enough leave balance";
+        //     exit();
+        //     }
 
-            if ($balance['leave_balance_paternity'] < $total_leave) {
-            echo "This employee have not enough leave balance";
-            exit();
-            }
-        }
+        //     if ($balance['leave_balance_paternity'] < $total_leave) {
+        //     echo "This employee have not enough leave balance";
+        //     exit();
+        //     }
+        // }
         // dd($balance);
 
         $formArray = array(
@@ -2356,6 +2374,8 @@ class Entry_system_con extends CI_Controller
                 echo 'error';
             }
         } else if ($type == 2 && !empty($date)) {
+            $this->db->where('emp_id', $sql);
+		    $this->db->update('pr_emp_com_info', array('attn_sum_line_id' => $line_id));
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql)->delete('pr_emp_resign_history');
             $data = [];
             $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'left_date' => $date, 'remark' => $remark);
@@ -2371,7 +2391,8 @@ class Entry_system_con extends CI_Controller
                 echo 'error';
             }
         } else {
-            
+            $this->db->where('emp_id', $sql);
+		    $this->db->update('pr_emp_com_info', array('attn_sum_line_id' => $line_id));
             $this->db->where('unit_id', $unit_id)->where('emp_id', $sql)->delete('pr_emp_left_history');
             $data = [];
             $data = array('unit_id' => $unit_id, 'emp_id' => $sql, 'resign_date' => $date, 'remark' => $remark);

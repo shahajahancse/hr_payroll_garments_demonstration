@@ -195,12 +195,11 @@
                                     @$paid_date = $this->db->select('paid_date')->where('year',$year)->where('emp_id',$object->emp_id)->get('pr_earn_leave_paid')->row()->paid_date;
                                 ?>
                                 <td class="text-center unicode-to-bijoy">
-                                    <?php 
-                                   echo isset($el_leaves) && $el_leaves != '' ? round($el_leaves, 2).' দিন,': (isset($paid_date) &&$paid_date != '' ? (int)$total_el_leave.' দিন , ' : ' ');
+                                <?php 
+                                echo isset($el_leaves) && $el_leaves != '' ? round($el_leaves, 2).' দিন,': (isset($paid_date) &&$paid_date != '' ? (float)$total_el_leave.' দিন , ' : ' ');
 
                                     echo "<br>";
-                                    echo isset($paid_date) ? $paid_date : '';
-
+                                    echo isset($paid_date) ? date("d-m-Y", strtotime($paid_date)) : '';
                                     ?>
                                 </td>
                                 <td><?php echo ""?></td>

@@ -68,22 +68,24 @@
         ?>
       
       <div class="d-flex">
-          <div class="col-md-6" style="font-family: SutonnyMJ;font-size:19px">m~Ît- <?php echo ($unit_id == 1) ? 'G‡RGdGj' : (($unit_id == 2) ? 'GjGmGGj' : 'GBPwRGj') ?>/ Aby <span style="font-family: SutonnyMJ;font-size:17px"><?php echo $value->id?>/<?php echo date('m/Y',strtotime($value->left_date . '+1 days'))?></span><span style="font-family: SutonnyMJ;font-size:19px">-wm</span></div>
-         <div class="col-md-6 text-right">তারিখঃ <span style="font-family: SutonnyMJ;font-size:21px">
+        <div class="col-md-6" style="font-family: SutonnyMJ;font-size:19px">m~Ît- <?php echo ($unit_id == 1) ? 'G‡RGdGj' : (($unit_id == 2) ? 'GjGmGGj' : 'GBPwRGj') ?>/ Aby <span style="font-family: SutonnyMJ;font-size:17px"><?php echo $value->id?>/<?php echo date('m/Y',strtotime($value->left_date . '+1 days'))?></span>
+          <span style="font-family: SutonnyMJ;font-size:19px">-wm</span>
+        </div>
+        <div class="col-md-6 text-right">তারিখঃ <span style="font-family: SutonnyMJ;font-size:21px">
+          <!-- first latter date and day calculation start-->
           <?php 
-            // set date left date to letter one print date
-            // get latter one print date
-            $s1_date = strtotime($value->left_date);
+            $s1_date = $value->left_date;
             $l_date = $s1_date;
             $days_added = 0;
             while ($days_added < 11) {
-                $l_date = strtotime('+1 day', $l_date);
-                if (!in_array(date('N', $l_date), [5])) { // Skip Friday (5) and Saturday (6)
-                  $days_added++;
-                }
+              $l_date = date("Y-m-d", strtotime("+1 days " . $l_date));
+              $l_date = rec_gov_holiday($l_date);
+              if (!in_array(date('N', strtotime($l_date)), [5])) { // Skip Friday (5) and Saturday (6)
+                $days_added++;
+              }
             }
             // dd(date('Y-m-d', $s1_date) .' = '. date('Y-m-d', $l_date));
-            $l_date = gov_holiday(date('Y-m-d', $s1_date), date('Y-m-d', $l_date));
+            // $l_date = gov_holiday(date('Y-m-d', $s1_date), date('Y-m-d', $l_date));
             $l_date = coff_day($l_date);
             // again check
             if (date('N', strtotime($l_date)) == 5) {
@@ -93,68 +95,47 @@
               $l_date = date("Y-m-d", strtotime("+1 days".$l_date));
             }
           ?>
+          <!-- // first latter date and day calculation end -->
 
+          <!-- second latter date and day calculation start -->
           <?php 
-            // set date left date to letter one print date
-            // get latter one print date
-            // $l_date = strtotime($value->left_date);
-            // $days_added = 0;
-            // while ($days_added < 11) {
-            //     $l_date = strtotime('+1 day', $l_date);
-            //     if (!in_array(date('N', $l_date), [5])) { // Skip Friday (5) and Saturday (6)
-            //       $days_added++;
-            //     }
-            // }
-            // if (date('N', $l_date) == 6) {
-            //   $l_date = strtotime('+1 day', $l_date); // Skip Friday (5) and Saturday (6)
-            // }
-            // latter one print date end
-          ?>
-          <!-- // latter one print date end -->
-
-          <!-- // get latter two print date -->
-          <?php 
-            $s2_date = strtotime('+1 day', strtotime($l_date));
+            $s2_date = $l_date;
             $l2_date = $s2_date;
-
             $days_added = 0;
             while ($days_added < 11) {
-                $l2_date = strtotime('+1 day', $l2_date);
-                if (!in_array(date('N', $l2_date), [5])) { // Skip Friday (5) and Saturday (6)
-                  $days_added++;
-                }
+              $l2_date = date("Y-m-d", strtotime("+1 days " . $l2_date));
+              $l2_date = rec_gov_holiday($l2_date);
+              if (!in_array(date('N', strtotime($l2_date)), [5])) { // Skip Friday (5) and Saturday (6)
+                $days_added++;
+              }
             }
 
-            $l2_date = gov_holiday(date('Y-m-d', $s2_date), date('Y-m-d', $l2_date), null);
+            // dd(date('Y-m-d', $s2_date) .' = '. date('Y-m-d', $l2_date));
+            // $l2_date = gov_holiday(date('Y-m-d', $s2_date), date('Y-m-d', $l2_date));
             $l2_date = coff_day($l2_date);
             // again check
             if (date('N', strtotime($l2_date)) == 5) {
-              $l2_date = date("Y-m-d", strtotime("+1 days".$l2_date)); // Skip Friday (5) and Saturday (6)
+              $l2_date = date("Y-m-d", strtotime("+1 days" . $l2_date));
             }
             if (date('N', strtotime($l2_date)) == 6) {
-              $l2_date = date("Y-m-d", strtotime("+1 days".$l2_date)); // Skip Friday (5) and Saturday (6)
+              $l2_date = date("Y-m-d", strtotime("+1 days" . $l2_date));
             }
-            // latter two print date end
           ?>
+          <!-- // second latter date and day calculation end -->
 
-
+          <!-- // latter three date and day calculation start -->
           <?php 
-            // get latter three print date
-            $s3_date = strtotime('+1 day', strtotime($l2_date));
-            if (date('N', $s3_date) == 5) {
-              $s3_date = strtotime("+1 days", $s3_date); // Skip Friday (5) and Saturday (6)
-            }
-
+            $s3_date = $l2_date;
             $l3_date = $s3_date;
             $days_added = 0;
             while ($days_added < 8) {
-                $l3_date = strtotime('+1 day', $l3_date);
-                if (!in_array(date('N', $l3_date), [5])) { // Skip Friday (5) and Saturday (6)
-                  $days_added++;
-                }
+              $l3_date = date("Y-m-d", strtotime("+1 days " . $l3_date));
+              $l3_date = rec_gov_holiday($l3_date);
+              if (!in_array(date('N', strtotime($l3_date)), [5])) { // Skip Friday (5) and Saturday (6)
+                $days_added++;
+              }
             }
-
-            $l3_date = gov_holiday(date('Y-m-d', $s3_date), date('Y-m-d', $l3_date)); 
+            // $l3_date = gov_holiday(date('Y-m-d', $s3_date), date('Y-m-d', $l3_date)); 
             $l3_date = coff_day($l3_date);
 
             // again check
@@ -166,7 +147,9 @@
             }
             // latter three print date end
             echo date('d/m/Y', strtotime($l3_date));
-            ?></span> ইং</div>
+          ?>
+          <!-- // latter three date and day calculation end -->
+          </span> ইং</div>
       </div>
 
       <div>

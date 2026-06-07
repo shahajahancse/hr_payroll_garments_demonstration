@@ -49,15 +49,41 @@
 		if(empty($values)){
 			echo "No data found"; exit;
 		}
-		$row_count = count($values["emp_id"]);
-		if($row_count >6){
-			$page=ceil($row_count/6);
+
+		// If controller passed an array of stdClass objects (rows), normalize
+		// into the associative array-of-columns format this view expects.
+		if (is_array($values) && isset($values[0]) && is_object($values[0])) {
+			$raw = $values;
+			$values = [];
+			foreach ($raw as $r) {
+				$values['emp_id'][] = isset($r->emp_id) ? $r->emp_id : (isset($r->id) ? $r->id : '');
+				$values['emp_name'][] = isset($r->name_en) ? $r->name_en : (isset($r->name) ? $r->name : '');
+				$values['desig_name'][] = isset($r->desig_name) ? $r->desig_name : '';
+				$values['line_name'][] = isset($r->line_name_en) ? $r->line_name_en : (isset($r->line_name) ? $r->line_name : '');
+				$values['emp_join_date'][] = isset($r->emp_join_date) ? $r->emp_join_date : (isset($r->jod) ? $r->jod : '');
+				$values['gross_sal'][] = isset($r->gross_sal) ? $r->gross_sal : (isset($r->com_gross_sal) ? $r->com_gross_sal : 0);
+				$values['basic_sal'][] = isset($r->basic_sal) ? $r->basic_sal : 0;
+				$values['ttl_wk_days'][] = isset($r->t_days) ? $r->t_days : (isset($r->ttl_wk_days) ? $r->ttl_wk_days : 0);
+				$values['P'][] = isset($r->P) ? $r->P : 0;
+				$values['A'][] = isset($r->A) ? $r->A : 0;
+				$values['el'][] = isset($r->el) ? $r->el : 0;
+				$values['net_pay'][] = isset($r->net_pay) ? $r->net_pay : 0;
+				$values['sec_name'][] = isset($r->sec_name_en) ? $r->sec_name_en : (isset($r->sec_name) ? $r->sec_name : '');
+			}
+		}
+
+		$row_count = isset($values["emp_id"]) ? count($values["emp_id"]) : 0;
+		if($row_count >13){
+			$page=ceil($row_count/13);
 		}
 		else{
 		$page=1;
 		}
 
 		$k = 0;
+
+		// track seen emp IDs across pages to avoid duplicate rows
+		$seen_emp_ids = array();
 
 		$grand_total_gross    		=0;
 		$grand_total_basic    		=0;
@@ -71,7 +97,30 @@
 		$grand_total_stamp			=0;
 		$grand_total_payable_amount  		=0;
 		
-	for ( $counter = 1; $counter <= $page; $counter ++){?>
+	for ( $counter = 1; $counter <= $page; $counter ++){
+		// calculate this page range before rendering header
+		$per_page_row = ($counter == $page) ? (($row_count - 1) % 13) : 13;
+		$start = $k;
+		$end = $start + $per_page_row;
+		if ($end >= $row_count) {
+			$end = $row_count - 1;
+		}
+		$indices = range($start, $end);
+
+		// decide if this page will render any rows (not empty and not duplicate)
+		$will_render = false;
+		foreach ($indices as $idx_check) {
+			$empIdCheck = isset($values['emp_id'][$idx_check]) ? trim((string) $values['emp_id'][$idx_check]) : '';
+			if ($empIdCheck === '') continue;
+			if (!in_array($empIdCheck, $seen_emp_ids, true)) { $will_render = true; break; }
+		}
+
+		if (!$will_render) {
+			$k = $end + 1; // advance index past this page
+			continue; // skip rendering empty page
+		}
+
+	?>
 	<div style=" margin:0 auto;">
 		<?php $this->load->view("head_english"); ?>
 		<div align="center" style=" margin:0 auto;  overflow:hidden; font-family: 'Times New Roman', Times, serif; width:1000px; margin-bottom:80px;">
@@ -81,36 +130,6 @@
 				<div style="text-align:right; right:120px; position:relative;">Disbursement Date:</div>
 			</div>
 			<table class="bordered" border="1"  style="font-size:12px; text-align:center;">
-				<?php
-					$total_gross    	=0;
-					$total_basic    	=0;
-					$total_working_day  =0;
-					$total_payable_day	=0;
-					$total_el_days  	=0;
-					$total_absent_day   =0;
-					$total_net_el  		=0;
-					$total_net_amount  	=0;
-					$total_net_amount_b_d=0;
-					$total_stamp 		=0;
-					$total_payable_amount  	=0;
-
-					$section=array();
-					if($counter == $page)
-					{
-						$modulus = ($row_count-1) % 6;
-						$per_page_row=$modulus;
-					}
-					else{
-						$per_page_row=5;
-					}
-
-					for($i=0; $i<=$per_page_row; $i++){
-					
-					if($section!=$values["sec_name"][$k]){
-					echo "<tr bgcolor='#CCCCCC'>";
-					echo "<td colspan='16' align='left' style='font-size:14px'>Section :&nbsp".$values["sec_name"][$k]."</td>";
-					echo "</tr>";
-				?>
 				<tr style="height:30px;padding:3px;">
 					<th width="30">SL</th>
 					<th width="80">Emp ID</th>
@@ -129,129 +148,162 @@
 					<th width="80">Payable Amount</th>
 					<th width="120">Signature</th>
 				</tr>
-				<?php }
-					echo "<tr>";
-					
-					echo "<td>";
-					echo $s = $k+1;
-					echo "</td>";
-					
-					echo "<td style='font-weight:bold;'>";
-					echo $values["emp_id"][$k];
-					echo "</td>";
-					
-					echo "<td align='left'>";
-					echo "<span style='font-family:Arial, Helvetica, sans-serif;font-weight:bold;'>";
-					print_r($values["emp_name"][$k]);
-					echo "</span>";
-					echo "<br>";
-					echo "<span style='font-family:Arial, Helvetica, sans-serif;'>";
-					print_r( $values["desig_name"][$k]);
-					echo "</span>";
-					echo "</td>";
-					
-					echo "<td style='font-weight:bold;'>";
-					echo $values["line_name"][$k];
-					echo "</td>";
-					
-					$doj = date("d-M-Y",strtotime($values["emp_join_date"][$k]));
-					echo "<td >";
-					echo $doj;
-					echo "</td>";
+				<?php
+					$total_gross    	=0;
+					$total_basic    	=0;
+					$total_working_day  =0;
+					$total_payable_day	=0;
+					$total_el_days  	=0;
+					$total_absent_day   =0;
+					$total_net_el  		=0;
+					$total_net_amount  	=0;
+					$total_net_amount_b_d=0;
+					$total_stamp 		=0;
+					$total_payable_amount  	=0;
 
-					echo "<td >";
-					echo $values["gross_sal"][$k];
-					echo "</td>";
-					$total_gross = $total_gross + $values["gross_sal"][$k];
-					$grand_total_gross = $grand_total_gross + $values["gross_sal"][$k];
-
-					echo "<td >";
-					echo $values["basic_sal"][$k];
-					echo "</td>";
-					$total_basic = $total_basic + $values["basic_sal"][$k];
-					$grand_total_basic = $grand_total_basic + $values["basic_sal"][$k];
-					
-					$tot_wor_day=$values["ttl_wk_days"][$k];
-					$el=$values["el"][$k];
-					$cl=$values["cl"][$k];
-					$ml=$values["ml"][$k];
-					$sl=$values["sl"][$k];
-					$ads_day=$values["A"][$k];
-					$h=$values["H"][$k];
-					$w=$values["W"][$k];
-					
-					//$total_working_days_after_deduction = $tot_wor_day-($ads_day);
-
-					echo "<td align='right' style='padding-right:5px;'>";
-					echo $values["ttl_wk_days"][$k];
-					echo "</td>";
-					$total_working_day = $total_working_day + $values["ttl_wk_days"][$k];
-					$grand_total_working_day = $grand_total_working_day + $values["ttl_wk_days"][$k];
-
-					echo "<td align='right' style='padding-right:5px;'>";
-					echo $values["P"][$k];
-					echo "</td>";
-					$total_payable_day = $total_payable_day + $values["P"][$k];
-					$grand_total_payable_day = $grand_total_payable_day + $values["P"][$k];
-
-					echo "<td align='right' style='padding-right:5px;'>";
-					echo $values["el"][$k];
-					echo "</td>";
-					$total_el_days = $total_el_days + $values["el"][$k];
-					$grand_total_el_days = $grand_total_el_days + $values["el"][$k];
-
-					echo "<td align='right' style='padding-right:5px;'>";
-					echo $values["A"][$k];
-					echo "</td>";
-					$total_absent_day = $total_absent_day + $values["A"][$k];
-					$grand_total_absent_day = $grand_total_absent_day + $values["A"][$k];
-
-					$net_el = ($values["P"][$k]/18)-$el;
-					
-					echo "<td align='right' style='padding-right:5px;'>";
-					//echo $values["earn_leave_com"][$k];
-					echo number_format($net_el, 2);
-					echo "</td>";
-					//$total_net_el = $total_net_el + $values["earn_leave"][$k];
-					$total_net_el = $total_net_el + number_format($net_el, 2);
-					$grand_total_net_el = $grand_total_net_el + number_format($net_el, 2);
-					
-					$net_amount = ($values["net_pay"][$k]);
-					// $net_amount = ($values["com_gross_sal"][$k]/30)*number_format($net_el, 2);
-					
-					echo "<td align='right' style='padding-right:5px; font-weight:bold;'>";
-					echo number_format($net_amount,0);
-					echo "</td>";
-					$total_net_amount_b_d = $total_net_amount_b_d + $net_amount;
-					$grand_total_net_amount_b_d = $grand_total_net_amount_b_d + $net_amount;
-					
-					
-					echo "<td align='right' style='padding-right:5px;'>";
-					if($net_amount >= 510){
-						echo $stamp = 10;
+					$section=array();
+					if($counter == $page)
+					{
+						$modulus = ($row_count-1) % 13;
+						$per_page_row=$modulus;
 					}
-					else {
-						echo $stamp = 0;
+					else{
+						$per_page_row=13;
 					}
-					$total_stamp = $total_stamp + $stamp;
-					$grand_total_stamp = $grand_total_stamp + $stamp;
-					
-						
-					echo "<td align='right' style='padding-right:5px; font-weight:bold;'>";
-					$net_amount = $net_amount - $stamp;
-					echo number_format($net_amount,0);
-					echo "</td>";
-					$total_payable_amount = $total_payable_amount + $net_amount;
-					$grand_total_payable_amount = $grand_total_payable_amount + $net_amount;
-					
-					echo "<td style='height:77px'>";
-					echo "";
-					echo "</td>";
-					
-					echo "</tr>";
-					$section=$values["sec_name"][$k];
-					$k++;
-				}
+
+					$start = $k;
+					$end = $start + $per_page_row;
+					if ($end >= $row_count) {
+						$end = $row_count - 1;
+					}
+					$indices = range($start, $end);
+
+					foreach ($indices as $idx) {
+						// skip rows where emp_id is empty/null
+						$empId = isset($values['emp_id'][$idx]) ? trim((string) $values['emp_id'][$idx]) : '';
+						if ($empId === '') {
+							continue;
+						}
+
+						// skip duplicate emp_id (already rendered)
+						if (in_array($empId, $seen_emp_ids, true)) {
+							continue;
+						}
+						$seen_emp_ids[] = $empId;
+						echo "<tr>";
+
+						echo "<td>";
+						echo $s = $idx + 1;
+						echo "</td>";
+
+						echo "<td style='font-weight:bold;'>";
+						echo $values["emp_id"][$idx];
+						echo "</td>";
+
+						echo "<td align='left'>";
+						echo "<span style='font-family:Arial, Helvetica, sans-serif;font-weight:bold;'>";
+						print_r($values["emp_name"][$idx]);
+						echo "</span>";
+						echo "<br>";
+						echo "<span style='font-family:Arial, Helvetica, sans-serif;'>";
+						print_r($values["desig_name"][$idx]);
+						echo "</span>";
+						echo "</td>";
+
+						echo "<td style='font-weight:bold;'>";
+						echo $values["line_name"][$idx];
+						echo "</td>";
+
+						$doj = date("d-M-Y", strtotime($values["emp_join_date"][$idx]));
+						echo "<td >";
+						echo $doj;
+						echo "</td>";
+
+						echo "<td >";
+						echo $values["gross_sal"][$idx];
+						echo "</td>";
+						$total_gross = $total_gross + $values["gross_sal"][$idx];
+						$grand_total_gross = $grand_total_gross + $values["gross_sal"][$idx];
+
+						echo "<td >";
+						echo $values["basic_sal"][$idx];
+						echo "</td>";
+						$total_basic = $total_basic + $values["basic_sal"][$idx];
+						$grand_total_basic = $grand_total_basic + $values["basic_sal"][$idx];
+
+						$tot_wor_day = $values["ttl_wk_days"][$idx];
+						$el = $values["el"][$idx];
+						$cl = $values["cl"][$idx];
+						$ml = $values["ml"][$idx];
+						$sl = $values["sl"][$idx];
+						$ads_day = $values["A"][$idx];
+						$h = $values["H"][$idx];
+						$w = $values["W"][$idx];
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						echo $values["ttl_wk_days"][$idx];
+						echo "</td>";
+						$total_working_day = $total_working_day + $values["ttl_wk_days"][$idx];
+						$grand_total_working_day = $grand_total_working_day + $values["ttl_wk_days"][$idx];
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						echo $values["P"][$idx];
+						echo "</td>";
+						$total_payable_day = $total_payable_day + $values["P"][$idx];
+						$grand_total_payable_day = $grand_total_payable_day + $values["P"][$idx];
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						echo $values["el"][$idx];
+						echo "</td>";
+						$total_el_days = $total_el_days + $values["el"][$idx];
+						$grand_total_el_days = $grand_total_el_days + $values["el"][$idx];
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						echo $values["A"][$idx];
+						echo "</td>";
+						$total_absent_day = $total_absent_day + $values["A"][$idx];
+						$grand_total_absent_day = $grand_total_absent_day + $values["A"][$idx];
+
+						$net_el = ($values["P"][$idx] / 18) - $el;
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						echo number_format($net_el, 2);
+						echo "</td>";
+						$total_net_el = $total_net_el + number_format($net_el, 2);
+						$grand_total_net_el = $grand_total_net_el + number_format($net_el, 2);
+
+						$net_amount = ($values["net_pay"][$idx]);
+
+						echo "<td align='right' style='padding-right:5px; font-weight:bold;'>";
+						echo number_format($net_amount, 0);
+						echo "</td>";
+						$total_net_amount_b_d = $total_net_amount_b_d + $net_amount;
+						$grand_total_net_amount_b_d = $grand_total_net_amount_b_d + $net_amount;
+
+						echo "<td align='right' style='padding-right:5px;'>";
+						if ($net_amount >= 510) {
+							echo $stamp = 10;
+						} else {
+							echo $stamp = 0;
+						}
+						$total_stamp = $total_stamp + $stamp;
+						$grand_total_stamp = $grand_total_stamp + $stamp;
+
+						echo "<td align='right' style='padding-right:5px; font-weight:bold;'>";
+						$net_amount = $net_amount - $stamp;
+						echo number_format($net_amount, 0);
+						echo "</td>";
+						$total_payable_amount = $total_payable_amount + $net_amount;
+						$grand_total_payable_amount = $grand_total_payable_amount + $net_amount;
+
+						echo "<td style='height:77px'>";
+						echo "";
+						echo "</td>";
+
+						echo "</tr>";
+						$section = $values["sec_name"][$idx];
+					}
+					$k = $end + 1;
 					echo "<tr style='font-weight:bold; background-color:#CCC;'>";
 					echo "<td colspan='5' align='center'>";
 					echo "Page Total";
@@ -315,7 +367,7 @@
 								<td align="right" style="font-size:14px;"><strong><?php echo $english_format_number = number_format($grand_total_payable_amount);?></strong></td>
 							</tr>
 					<?php } ?>
-						
+					<br>
 					<table width="100%" height="80px" border="0" align="center" style="margin-bottom:85px; font-family:Arial, Helvetica, sans-serif; font-size:10px; font-weight:bold;">
 						<tr height="80%" ><td colspan="29"></td></tr>
 						<tr height="20%">

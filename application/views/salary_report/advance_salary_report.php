@@ -8,7 +8,7 @@
     <style>
         .bottom_txt_design{
             border-top:1px solid;
-            width:100px;
+            width:fit-content;
             font-weight:bold;
         }
         .bottom_txt_manager_design
@@ -82,7 +82,8 @@
             <td rowspan="2" width="25" height="20px"><div align="center"><strong>ওটি টাকা</strong></div></td>
             <td rowspan="2" width="25" height="20px"><div align="center"><strong>মোট বেতন</strong></div></td>
             <td rowspan="2" width="25" height="20px"><div align="center"><strong>প্রদেয় বেতন</strong></div></td>
-            <td rowspan="2"  width="180"><div align="center"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;গ্রহীতার স্বাক্ষর&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></div></td>
+            <td rowspan="2"  width="180"><div align="center"><strong>গ্রহীতার স্বাক্ষর</strong></div></td>
+
         </tr>
         <tr height="10px">
             <td width="15" style="font-size:8px;"><div align="center"><strong>হাজিরা</strong></div></td>
@@ -141,16 +142,11 @@
                     <tr>
                         <td colspan="28"></td>
                     </tr>
-                    <tr height="25%">
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Prepared By</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Manager (HRD)</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Audit</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >GM (Project Head)</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Group GM (HRD)</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >COO</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >DMD</dt></td>
-                        <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Managing Director</dt></td>
-                
+                    <tr height="20%">
+                        <td  align="center" style="width:15%;"><dt class="bottom_txt_design" >Prepared By</dt></td>
+                        <td align="center"  style="width:35%;white-space:nowrap;" ><dt class="bottom_txt_design" >Manager (HR,Admin & Compl.)</dt></td>
+                        <td  align="center" style="width:10%" ><dt class="bottom_txt_design" >Audit</dt></td>
+                        <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >Approved By</dt></td>
                     </tr>
                 <?php }else{?>
                     <tr height="80%" >
@@ -225,7 +221,7 @@
                     <td rowspan="2" width="25" height="20px"><div align="center"><strong>ওটি টাকা</strong></div></td>
                     <td rowspan="2" width="25" height="20px"><div align="center"><strong>মোট বেতন</strong></div></td>
                     <td rowspan="2" width="25" height="20px"><div align="center"><strong>প্রদেয় বেতন</strong></div></td>
-                    <td rowspan="2"  width="180"><div align="center"><strong>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;গ্রহীতার স্বাক্ষর&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></div></td>
+                    <td rowspan="2"  width="180"><div align="center"><strong>গ্রহীতার স্বাক্ষর</strong></div></td>
                 </tr>
                 <tr height="10px">
                     <td width="15" style="font-size:8px;"><div align="center"><strong>হাজিরা</strong></div></td>
@@ -234,6 +230,7 @@
                     <td width="15"><div align="center" style="font-family:Arial, Helvetica, sans-serif;"><strong>CL</strong></div></td>
                     <td width="15"><div align="center" style="font-family:Arial, Helvetica, sans-serif;"><strong>SL</strong></div></td>
                     <td width="15"><div align="center" style="font-family:Arial, Helvetica, sans-serif;"><strong>EL</strong></div></td>
+                    <!-- <td width="15"><div align="center" style="font-family:Arial, Helvetica, sans-serif;"><strong>ML</strong></div></td> -->
                 </tr>
                 <!-- //hedding -->
                 <?php
@@ -261,7 +258,7 @@
 
             $get_data = $this->db->select('*')->from('pay_salary_sheet')->where('emp_id', $row->emp_id)->where('salary_month', $salary_month)->get()->row();
             // $get_data = $this->db->select('*')->from('pay_salary_sheet')->where('emp_id',$row->emp_id)->where('salary_month',$salary_month)->get()->row();
-            // dd($row);
+            // dd($get_data);
 
             $loan_date = $this->db->select('*')->from('pr_advance_loan')->where('loan_month',$salary_month)->where('emp_id',$row->emp_id)->get()->row();
             // dd($loan_date);
@@ -281,31 +278,63 @@
             // dd($gett_data);
 
             $leave_type = $this->db->select("
-               leave_type,total_leave
+               leave_type, SUM(total_leave) as total_leave
             ")
             ->from('pr_leave_trans')
             ->where('emp_id', $row->emp_id)
-            ->where("leave_end  >=",$loan_date->from_date)
+            ->where("leave_start  >=",$loan_date->from_date)
             ->where("leave_end  <=",$loan_date->to_date)
-            ->get()->row();
+            ->get()->result();
 
             // dd($leave_type);
+            $cl = 0;
+            $sl = 0;
+            $el = 0;
+            $ml = 0;
+            foreach ($leave_type as $r) {
 
-            $cl = $leave_type->leave_type == 'cl' ? $leave_type->total_leave : 0;
-            $sl = $leave_type->leave_type == 'sl' ? $leave_type->total_leave : 0;
-            $el = $leave_type->leave_type == 'el' ? $leave_type->total_leave : 0;
+                if ($r->leave_type == 'cl') {
+                    $cl = $r->total_leave;
+                }
+
+                if ($r->leave_type == 'sl') {
+                    $sl = $r->total_leave;
+                }
+
+                if ($r->leave_type == 'el') {
+                    $el = $r->total_leave;
+                }
+                if ($r->leave_type == 'ml') {
+                    $ml = $r->total_leave;
+                }
+            }
+            // dd($row);
+
+            // $cl = $leave_type->leave_type == 'cl' ? $leave_type->total_leave : 0;
+            // $sl = $leave_type->leave_type == 'sl' ? $leave_type->total_leave : 0;
+            // $el = $leave_type->leave_type == 'el' ? $leave_type->total_leave : 0;
 
             $total_days = $gett_data->att_days+$gett_data->weekend_days+$gett_data->holiday_days+$sl+$cl+$el;
             $ot_rate      = round($get_data->basic_sal/104,2);
 
             if ($unit_id == 1) {
-                $amptt = $this->db->where('pay_month',$salary_month)->where('emp_id',$row->emp_id)->get('pr_advance_loan_pay_history')->row();
-                $net_pay = $amptt->pay_amount ? $amptt->pay_amount:0;
-                $ot = 0;
-                $ot_amount = 0;
-                $net_pay = floor($net_pay/100)*100;
+                $amptt = $this->db->where('effect_month',$salary_month)->where('emp_id',$row->emp_id)->get('pr_advance_loan')->row();
+
+                // dd($amptt);
+                $net_pay = round($get_data->gross_sal/date('t',strtotime($salary_month))*$total_days);
+                // dd($net_pay);
+                // $net_pay = $amptt->pay_amt ? $amptt->pay_amt:0;
+                $ot = $loan_date->ot == 2 ? 0 : $gett_data->ot_hour;
+                $ot_amount = round($ot*$ot_rate);
+
+
+                // $ot = 0;
+                // $ot_amount = 0;
+                // $net_pay = floor($net_pay/100)*100;
             } else {
-                $net_pay      = round($get_data->gross_sal/date('t',strtotime($salary_month))*$total_days);
+                $net_pay = round($get_data->gross_sal/date('t',strtotime($salary_month))*$total_days);
+
+                // $net_pay      = round($get_data->gross_sal/date('t',strtotime($salary_month))*$total_days);
                 $ot = $loan_date->ot == 2 ? 0 : $gett_data->ot_hour;
                 $ot_amount = round($ot*$ot_rate);
             }
@@ -419,16 +448,11 @@
                     <tr>
                     <td colspan="28"></td>
                 </tr>
-                <tr height="25%">
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Prepared By</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Manager (HRD)</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Audit</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >GM (Project Head)</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Group GM (HRD)</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >COO</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >DMD</dt></td>
-                    <td  align="center" style="width:10%"><dt class="bottom_txt_design" >Managing Director</dt></td>
-                
+                <tr height="20%">
+                    <td  align="center" style="width:15%;"><dt class="bottom_txt_design" >Prepared By</dt></td>
+                    <td align="center"  style="width:35%;white-space:nowrap;" ><dt class="bottom_txt_design" >Manager (HR,Admin & Compl.)</dt></td>
+                    <td  align="center" style="width:10%" ><dt class="bottom_txt_design" >Audit</dt></td>
+                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >Approved By</dt></td>
                 </tr>
             <?php }else{?>
                 <tr height="80%" >
@@ -436,10 +460,10 @@
                 </tr>
                     <tr height="20%">
                     <td  align="center" style="width:15%;"><dt class="bottom_txt_design" >Prepared By</dt></td>
-                    <td align="center"  style="width:25%" ><dt class="bottom_txt_design" >Account Office / Executive</dt></td>
-                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >HR Manager</dt></td>
-                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >General Manager (GM)</dt></td>
-                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >Director</dt></td>
+                    <td align="center"  style="width:25%;white-space:nowrap;" ><dt class="bottom_txt_design" >Manager (HR,Admin & Compl.)</dt></td>
+                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >Audit</dt></td>
+                    <td  align="center" style="width:20%" ><dt class="bottom_txt_design" >Approved By</dt></td>
+                    
                 </tr>
             <?php }?>
         </table>

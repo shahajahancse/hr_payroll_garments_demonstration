@@ -187,8 +187,9 @@
                                             //  [total_days] => 30
                                                 $c_l = $rows->c_l;  
                                                 $s_l = $rows->s_l;  
-                                                $e_l = $rows->e_l;   
-                                                echo $total_leave = $c_l + $s_l + $e_l;
+                                                $e_l = $rows->e_l; 
+                                                $sp  = $rows->sp ;
+                                                echo $total_leave = $c_l + $s_l + $e_l + $sp;
                                             ?>
                                         </font>
                                     </td>
@@ -493,8 +494,9 @@
                                             <?php 
                                                 $c_l = $rows->c_l;  
                                                 $s_l = $rows->s_l;  
-                                                $e_l = $rows->e_l;   
-                                                echo $total_leave = $c_l + $s_l + $e_l;
+                                                $e_l = $rows->e_l;  
+                                                $sp  = $rows->sp; 
+                                                echo $total_leave = $c_l + $s_l + $e_l + $sp;
                                             ?>
                                         </font>
                                     </td>

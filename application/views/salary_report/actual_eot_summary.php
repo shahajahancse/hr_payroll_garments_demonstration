@@ -155,8 +155,12 @@
 								$acl[] = $rows->acl_id;
 							}
 			if(in_array(14,$acl)){
-				$eot_cash_bank_hour 	= $value->eot_hr_for_sa_cash_sum +$value->eot_hr_for_sa_bank_sum;
-				$eot_cash_bank_amount 	= $value->eot_amt_for_sa_cash_sum+$value->eot_amt_for_sa_bank_sum;
+				// $eot_cash_bank_hour 	= $value->eot_hr_for_sa_cash_sum +$value->eot_hr_for_sa_bank_sum;
+				// $eot_cash_bank_amount 	= $value->eot_amt_for_sa_cash_sum+$value->eot_amt_for_sa_bank_sum;
+				// $eot_amount_cash_sum	= $value->eot_amt_for_sa_cash_sum;
+				// $eot_amount_bank_sum 	= $value->eot_amt_for_sa_bank_sum;	
+				$eot_cash_bank_hour 	= $value->eot_cash_sum +$value->eot_bank_sum;
+				$eot_cash_bank_amount 	= $value->eot_amount_cash_sum+$value->eot_amount_bank_sum;
 				$eot_amount_cash_sum	= $value->eot_amt_for_sa_cash_sum;
 				$eot_amount_bank_sum 	= $value->eot_amt_for_sa_bank_sum;	
 			}

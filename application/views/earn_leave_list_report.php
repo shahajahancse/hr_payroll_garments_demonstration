@@ -8,8 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>Earn Leave List Report</title>
-
+    <title>Earn Leave List</title>
 </head>
 <body>
 
@@ -20,7 +19,7 @@
             <tr style="text-align: center;">
                 <th>SL No.</th>
                 <th>Emp ID</th>
-                <th style="white-space: nowrap;">Name (EN)</th>
+                <th style="white-space: nowrap;">Name</th>
                 <th >Designation</th>
                 <th style="white-space: nowrap;">Department</th>
                 <th style="white-space: nowrap;">Section</th>
@@ -33,7 +32,6 @@
                 <th>Paid Leave</th>
                 <th style="white-space: nowrap;">Year</th>
                 <th style="white-space: nowrap;">Paid Date</th>
-
                 <th>Action</th>
             </tr>
         </thead>
@@ -55,13 +53,10 @@
                 <td style="white-space: nowrap;"><?php echo $row->paid_leave?></td>
                 <td style="white-space: nowrap;"><?php echo $row->year?></td>
                 <td style="white-space: nowrap;"><?php echo $row->paid_date?></td>
-
-                <td >
-                    <!-- <a href="<?php echo $row->id?>" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil"></i> </a> &nbsp;&nbsp; -->
+                <td>
                     <a href="<?php echo base_url()?>grid_con/delete?id=<?php echo $row->id?>" onclick="return confirm('Are you sure to delete this record?')" style="color:red;"><i class="fa fa-trash"></i></a>
                 </td>
             </tr>
-
             <?php }?>
         </tbody>
     </table>

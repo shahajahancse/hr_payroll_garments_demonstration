@@ -201,6 +201,13 @@
         $this->db->where('new_emp_id', $value->emp_id)->group_by('effective_month');
         $this->db->order_by('effective_month', 'ASC');
         $incProms = $this->db->get('pr_incre_prom_pun as pm')->result();
+        // Keep a copy of full increments (used for the initial previous salary),
+        // but filter out increments where new_com_salary and prev_com_salary are equal (no change).
+        $incPromsFull = $incProms;
+        $incProms = array_values(array_filter($incPromsFull, function($p){
+            if (!isset($p->new_com_salary) || !isset($p->prev_com_salary)) return true;
+            return ((float)$p->new_com_salary - (float)$p->prev_com_salary) != 0.0;
+        }));
     ?>
 <div class="d-flex">
     <!-- First Page - Left Side -->
@@ -247,7 +254,8 @@
                 
                 // Initial row
                 if ($total_rows > 0) {
-                    $gross_sal = empty($incProms) ? $value->com_gross_sal : $incProms[0]->prev_com_salary;
+                    // use the original (unfiltered) increments to determine the initial previous salary
+                    $gross_sal = empty($incPromsFull) ? $value->com_gross_sal : $incPromsFull[0]->prev_com_salary;
                     $ss = $this->common_model->salary_structure($gross_sal, $value->emp_join_date);
                 ?>
                 <tr class="text-center">
@@ -255,7 +263,7 @@
                         <?= date('d-m-Y', strtotime($value->emp_join_date)) ?> Bs
                     </td>
                     <td style="font-size:13px; font-family:sutonnyMJ;">
-                        <p class="unicode-to-bijoy" style="font-size:13px;"><?= $incProms[0]->desig_bangla.' '.$value->emp_id ?></p> 
+                        <p class="unicode-to-bijoy" style="font-size:13px;"><?= (empty($incPromsFull) ? '' : $incPromsFull[0]->desig_bangla) . ' ' . $value->emp_id ?></p> 
                     </td>
                     <td style="font-size:15px; font-family:sutonnyMJ;padding:13px"><?= $ss['basic_sal'] ?></td>
                     <td style="font-size:15px; font-family:sutonnyMJ;"><?= $ss['house_rent'] ?></td>
@@ -323,7 +331,7 @@
                     <?php
                     // Initial row
                     if ($total_rows > 0) {
-                        $gross_sal = empty($incProms) ? $value->com_gross_sal : $incProms[0]->prev_com_salary;
+                        $gross_sal = empty($incPromsFull) ? $value->com_gross_sal : $incPromsFull[0]->prev_com_salary;
                         $ss = $this->common_model->salary_structure($gross_sal, $value->emp_join_date);
                         $oss = $ss['trans_allow'] + $ss['food_allow'];
                     ?>
@@ -341,14 +349,14 @@
                     // Increment rows for first page
                     for ($i = 0; $i < $display_rows - 1 && $i < count($incProms); $i++) {
                         $incProm = $incProms[$i];
-                        $gross_sal = $incProm->new_salary;
+                        $gross_sal = $incProm->new_com_salary;
                         $ss = $this->common_model->salary_structure($gross_sal, $incProm->effective_month);
                         $oss = $ss['trans_allow'] + $ss['food_allow'];
                     ?>
                     <tr>
                         <td style="padding:14px 0px" class='unicode-to-bijoy'><?php echo 'যাতায়াত-'.$ss['trans_allow'] . ' , খাদ্য-' . $ss['food_allow'] ?></td>
 
-                        <td style="font-size:15px;font-family:sutonnyMJ"><?php echo round(($incProm->new_salary))?></td>
+                        <td style="font-size:15px;font-family:sutonnyMJ"><?php echo round(($incProm->new_com_salary))?></td>
                         <td></td>
                         <td></td>
                         <td><img src="<?php echo base_url('images/'.$register)?>" style="height: 39px;width:50px"></td>
@@ -409,7 +417,7 @@ if ($pages > 1) {
                 for ($i = $start_row; $i < $end_row; $i++) {
                     if ($i == 0) {
                         // This is the initial row (shouldn't happen here as first page has it)
-                        $gross_sal = empty($incProms) ? $value->com_gross_sal : $incProms[0]->prev_com_salary;
+                        $gross_sal = empty($incPromsFull) ? $value->com_gross_sal : $incPromsFull[0]->prev_com_salary;
                         $ss = $this->common_model->salary_structure($gross_sal, $value->emp_join_date);
                 ?>
                 <tr class="text-center">
@@ -417,7 +425,7 @@ if ($pages > 1) {
                         <?= date('d-m-Y', strtotime($value->emp_join_date)) ?> Bs
                     </td>
                     <td style="font-size:13px; font-family:sutonnyMJ;">
-                        <span style="font-size:10px;"><?= $incProms[0]->desig_bangla ?></span> <?= $value->emp_id ?>
+                        <span style="font-size:10px;"><?= (empty($incPromsFull) ? '' : $incPromsFull[0]->desig_bangla) ?></span> <?= $value->emp_id ?>
                     </td>
                     <td style="font-size:15px; font-family:sutonnyMJ;padding:13px"><?= $ss['basic_sal'] ?></td>
                     <td style="font-size:15px; font-family:sutonnyMJ;"><?= $ss['house_rent'] ?></td>
@@ -485,7 +493,7 @@ if ($pages > 1) {
                 for ($i = $start_row; $i < $end_row; $i++) {
                     if ($i == 0) {
                         // Initial row (shouldn't happen here as first page has it)
-                        $gross_sal = empty($incProms) ? $value->com_gross_sal : $incProms[0]->prev_com_salary;
+                        $gross_sal = empty($incPromsFull) ? $value->com_gross_sal : $incPromsFull[0]->prev_com_salary;
                         $ss = $this->common_model->salary_structure($gross_sal, $value->emp_join_date);
                         $oss = $ss['trans_allow'] + $ss['food_allow'];
                 ?>
@@ -501,7 +509,7 @@ if ($pages > 1) {
                     } else {
                         // Increment rows
                         $incProm = $incProms[$i-1]; // -1 because initial row is index 0
-                        $gross_sal = $incProm->new_salary;
+                        $gross_sal = $incProm->new_com_salary;
                         $ss = $this->common_model->salary_structure($gross_sal, $incProm->effective_month);
                         $oss = $ss['trans_allow'] + $ss['food_allow'];
                 ?>
@@ -526,7 +534,21 @@ if ($pages > 1) {
 }
 ?>
     <div style="margin-bottom: 20px;page-break-after: always;"></div>
-    
+    <?php 
+        $leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->where('leave_type','el')->order_by('leave_start','asc')->get('pr_leave_trans')->result();
+        $leaves=[];
+        foreach($leave as $key => $row){
+            $leave[$key]->leave_start = $row->leave_start;
+            if(isset($leave[$key+1]) && $leave[$key+1]->leave_start ==$leave[$key]->leave_start){
+                continue;
+            }else{
+                $leaves[] = $row;
+            }  
+        }
+        
+        $earn_leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->get('pr_earn_leave')->result();
+        // dd($earn_leave);
+    ?>
     <!-- Four division -->
     <div class="d-flex">
         <div class="flex-fill" style="height:95vh;width:50vw;border: 1px solid black;">
@@ -562,33 +584,18 @@ if ($pages > 1) {
                         <th class="unicode-to-bijoy">৯</th>
                     </tr>
                 </thead>
-                <?php 
-                    $leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->where('leave_type','el')->order_by('leave_start','asc')->get('pr_leave_trans')->result();
 
-                    $leaves=[];
-                    foreach($leave as $key => $row){
-                        $leave[$key]->leave_start = $row->leave_start;
-                        if(isset($leave[$key+1]) && $leave[$key+1]->leave_start ==$leave[$key]->leave_start){
-                            continue;
-                        }else{
-                            $leaves[] = $row;
-                        }  
-                    }
-                    // dd($leaves);
-
-                    $earn_leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->get('pr_earn_leave')->row();
-                    ?>
                 <tbody>
                     <?php
                         $earn_leave_balance=0;
                         foreach($leaves as $row){
                             $year = date('Y', strtotime($row->leave_end));
-                           $earn_leaves = $this->db->select('*')
+                            $earn_leaves = $this->db->select('*')
                             ->where('emp_id', $value->emp_id)
                             ->where('year', $year)
                             ->get('pr_earn_leave_paid')
                             ->row();
-                            // dd($earn_leave);    
+                            // dd($row);    
                         ?>
                             <tr>
                                 <td class="text-center unicode-to-bijoy" style="font-family:sutonnyMJ;font-size:15px;width: 80px;">
@@ -668,7 +675,7 @@ if ($pages > 1) {
                             $leaves[] = $row;
                         }  
                     }
-                    $earn_leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->get('pr_earn_leave')->row();
+                    $earn_leave  = $this->db->select('*')->where('emp_id',$value->emp_id)->get('pr_earn_leave')->result();
                 ?>
                 <tbody>
                     <?php

@@ -25,8 +25,8 @@
                 <th>SL</th>
                 <th>Emp ID</th>
                 <th>Employee Name</th>
-                <th>Department</th>
-                <th>Section</th>
+               <!-- // <th>Department</th> -->
+               <!-- // <th>Section</th> -->
                 <th>Designation</th>
                 <th>Line No. </th>
                 <th>Gross Sal</th>
@@ -62,13 +62,13 @@
 						echo $values[$i]["emp_name"];
 						echo "</td>";
 						
-						echo "<td  width='140'  style='text-align:left;'>";
-						echo $values[$i]["dept_name"];
-						echo "</td>";
+						// echo "<td  width='140'  style='text-align:left;'>";
+						// echo $values[$i]["dept_name"];
+						// echo "</td>";
 						
-						echo "<td  width='140'  style='text-align:left;'>";
-						echo $values[$i]["sec_name"];
-						echo "</td>";
+						// echo "<td  width='140'  style='text-align:left;'>";
+						// echo $values[$i]["sec_name"];
+						// echo "</td>";
 						
 						echo "<td  width='140'  style='text-align:left;'>";
 						echo $values[$i]["desig_name"];
@@ -82,7 +82,7 @@
 						echo $gross_salary = $values[$i]["gross_sal"];
 						echo "</td>";
 
-						$allow 	= 600 + 350 + 900;
+						$allow 	= 2450;
 						$ot_rate = round(((($gross_salary - $allow) / 1.5) * 2  / 208),2);
 
 						echo "<td  style='text-align:right;' >";
@@ -105,15 +105,15 @@
 						$total_ot_eot = $total_ot_eot + $values[$i]["ot_hour"] + $values[$i]["eot_hour"];
 
 						echo "<td  style='text-align:right;' >";
-						echo ($values[$i]["ot_hour"] + $values[$i]["eot_hour"]) * $ot_rate;
+						echo round(($values[$i]["ot_hour"] + $values[$i]["eot_hour"]) * $ot_rate);
 						echo "</td>";
-						$total_ot_eot_amount = $total_ot_eot_amount + ($values[$i]["ot_hour"] + $values[$i]["eot_hour"]) * $ot_rate;
+						$total_ot_eot_amount =round($total_ot_eot_amount + ($values[$i]["ot_hour"] + $values[$i]["eot_hour"]) * $ot_rate);
 						
 						echo "</tr>";
 					}
 					?>
                 <tr>
-                    <td colspan="9" style="text-align:center; font-weight:bold;"> Grand Total </td>
+                    <td colspan="7" style="text-align:center; font-weight:bold;"> Grand Total </td>
                     <td style="text-align:center; font-weight:bold;"><?php echo $total_ot_hour; ?></td>
                     <td style="text-align:center; font-weight:bold;"><?php echo $total_eot_hour; ?></td>
                     <td style="text-align:center; font-weight:bold;"><?php echo $total_ot_eot; ?></td>

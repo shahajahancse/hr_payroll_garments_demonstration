@@ -346,11 +346,11 @@ for ( $counter = 1; $counter <= $page; $counter ++){?>
 		echo "</td>";
 
 		echo "<td>";
-		print_r (isset($day_info->sp) != "" ? $day_info->sp : 0);
+		print_r (isset($value[$k]->sp) != "" ? $value[$k]->sp : 0);
 		echo "</td>";
 
 		echo "<td>";
-		print_r (isset($day_info->wp) != "" ? $day_info->wp : 0);
+		print_r (isset($value[$k]->wp) != "" ? $value[$k]->wp : 0);
 		echo "</td>";
 		
 		$abs_deduction 				= $value[$k]->abs_deduction;

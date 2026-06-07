@@ -16,7 +16,7 @@ class Festival_bonus_model extends CI_Model{
 		$this->db->where_in("emp_id",$emp_ids);
 		$this->db->order_by("emp_id");
 		$query = $this->db->get("pr_emp_com_info");
-		
+		// dd($query->result());
 		if($query->num_rows() == 0) {
 			return "Employee information does not exist";
 		} else {
@@ -31,11 +31,13 @@ class Festival_bonus_model extends CI_Model{
 				//========================GENERAL INFORMATION==================================
 				//=============================================================================
 				$emp_id 		= $rows->emp_id; 
+				$emp_sex 		= $rows->emp_id; 
 				$emp_type 		= $rows->emp_type; 
 				$doj 			= $rows->emp_join_date;
 				$gross_sal 		= $rows->gross_sal;
 				$com_gross_sal	= $rows->com_gross_sal;
 				$per_info = $this->db->where("emp_id",$emp_id)->get('pr_emp_per_info')->row();
+				// dd($per_info);
 				
 				$salary_process_eligibility = $this->salary_process_eligibility($emp_id, $start_date);
 				
@@ -79,7 +81,7 @@ class Festival_bonus_model extends CI_Model{
 					$data["line_id"] 		= $rows->emp_line_id;
 					$data["desig_id"] 		= $rows->emp_desi_id;
 					$data["emp_status"] 	= $rows->emp_cat_id;
-					$data["emp_sex"] 		= $per_info->emp_sex;
+					$data["emp_sex"] 		= $per_info->gender;
 
 					$salary_structure 		= $this->common_model->salary_structure($gross_sal);
 					$basic_sal 				= $salary_structure['basic_sal'];

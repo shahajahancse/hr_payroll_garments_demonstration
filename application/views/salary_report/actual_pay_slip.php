@@ -192,7 +192,8 @@
                                                 $c_l = $day_info->c_l;  
                                                 $s_l = $day_info->s_l;  
                                                 $e_l = $day_info->e_l;   
-                                                echo $total_leave = $c_l + $s_l + $e_l;
+                                                $sp = $day_info->sp;   
+                                                echo $total_leave = $c_l + $s_l + $e_l+ $sp;
                                             ?>
                                         </font>
                                     </td>
@@ -508,7 +509,8 @@
                                                 $c_l = $day_info->c_l;  
                                                 $s_l = $day_info->s_l;  
                                                 $e_l = $day_info->e_l;   
-                                                echo $total_leave = $c_l + $s_l + $e_l;
+                                                $sp  = $day_info->sp;
+                                                echo $total_leave = $c_l + $s_l + $e_l + $sp;
                                             ?>
                                         </font>
                                     </td>

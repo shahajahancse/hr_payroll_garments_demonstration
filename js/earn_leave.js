@@ -16,7 +16,7 @@ function earn_leave_process(i) {
 	}
 	var month_year = document.getElementById('earn_leave_process_month').value;
 	if(month_year ==''){
-		alert("Please select month year");
+		alert("Please select year");
 		return false;
 	}
 	var unit_id = document.getElementById('unit_id').value;

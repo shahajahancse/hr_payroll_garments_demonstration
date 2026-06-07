@@ -245,7 +245,7 @@
                             $interval = $date2->diff($date1);
                             $interval->d += 1;
                               echo  "<span style='font-family:SutonnyMJ;font-size:20px'>".($interval->format('%a ') + 1)."</span>";
-                    ?>   w`b Gi <?= $type == 'cl' ? '‰bwgwËK' : ($type == 'el' ? 'AwR©Z' : ($type == 'sl' ? 'Amy¯’Zvi' : ($type == 'ml' ? 'cªmywZKvjxb' : ($type == 'sp' ? '‡¯úwkqvj' : '........................................')))) ?> QzwU gÄyi Kiv †h‡Z cv‡i|</p>
+                    ?>   w`b Gi <?= $type == 'cl' ? '‰bwgwËK' : ($type == 'el' ? 'AwR©Z' : ($type == 'sl' ? 'Amy¯’Zvi' : ($type == 'ml' ? 'cªmywZKvjxb' : ($type == 'sp' ? '‡we‡klj' : '........................................')))) ?> QzwU gÄyi Kiv †h‡Z cv‡i|</p>
         </div>
 
 
@@ -265,7 +265,7 @@
     <h2 class="text-center mt-2" style="border-radius:4px;border: 1px solid #57cf77;width: 250px;margin: 0 auto;">Av‡e`bKvixi Ask</h2> <br>
         <p>Av‡e`bKvixi bvg t <?php echo "<span style='font-size:17px'>".$values['emp_info']->name_bn.'</span>' ?>, c`ex t <?php echo "<span style='font-size:18px'>".$values['emp_info']->desig_bangla.'</span>'?>,
 KvW© bs t <?php echo $values['emp_info']->emp_id?>, ‡mKkb t <?php echo "<span style='font-size:20px'>".$values['emp_info']->sec_name_bn.'</span>'?>, wefvMt <?php echo "<span style='font-size:22px'>". $values['emp_info']->dept_bangla . '</span>'?> 
- Avcbv‡K <?php echo date('d/m/Y',strtotime($f_date))?> Bs n‡Z <?php echo date('d/m/Y',strtotime($s_date))?> ch©šÍ †gvU <?php echo $interval->format('%a ') + 1?> w`b <?= $type == 'cl' ? '‰bwgwËK' : ($type == 'el' ? 'AwR©Z' : ($type == 'sl' ? 'Amy¯’Zvi' : ($type == 'ml' ? 'cªmywZKvjxb' : ($type == 'sp' ? '‡¯úwkqvj' : '........................................')))) ?> QzwU gÄyi Kiv nj|  D‡jøL¨ †h, KZ…©cÿ Riæix Ae¯’vi †cÖwÿ‡Z gÄyiK…Z QzwU ¯’wMZ wKsev 
+ Avcbv‡K <?php echo date('d/m/Y',strtotime($f_date))?> Bs n‡Z <?php echo date('d/m/Y',strtotime($s_date))?> ch©šÍ †gvU <?php echo $interval->format('%a ') + 1?> w`b <?= $type == 'cl' ? '‰bwgwËK' : ($type == 'el' ? 'AwR©Z' : ($type == 'sl' ? 'Amy¯’Zvi' : ($type == 'ml' ? 'cªmywZKvjxb' : ($type == 'sp' ? 'we‡kl' : '........................................')))) ?> QzwU gÄyi Kiv nj|  D‡jøL¨ †h, KZ…©cÿ Riæix Ae¯’vi †cÖwÿ‡Z gÄyiK…Z QzwU ¯’wMZ wKsev 
 evwZj Ki‡Z cvi‡eb|</p>
     <div style='float: right; text-align: center;border-top:2px dashed black;'>
         <p>MÖnbKvix Kg©KZv©i ¯^vÿi</p>

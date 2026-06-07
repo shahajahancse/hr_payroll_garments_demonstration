@@ -150,7 +150,7 @@ class Attn_process_model extends CI_Model{
                 $in_time  = $this->time_check_in($in_start_time, $in_end_time, $emp_id, 'ASC', $table);
 				$out_time = $this->time_check_in($in_end_time, $out_end_time, $emp_id, 'DESC', $table);
 
-				// dd($in_time);
+				// dd($in_end_time.'==='. $out_end_time);
 
 				// dd($in_end_time .'->'. $out_end_time);
 				
@@ -201,6 +201,7 @@ class Attn_process_model extends CI_Model{
 				$holiday     = $this->check_holiday($emp_id, $process_date);
 				$night_rules = $this->get_night_allowance_rules($process_date, $unit, $emp_desi_id);
 				// dd($schedule[0]);
+				// dd($night_rules);
 				//============= Check employee attendance status =============
 				$leaves = $this->leave_chech($process_date, $emp_id);
 				// dd($leaves);
@@ -219,10 +220,14 @@ class Attn_process_model extends CI_Model{
 				//============= Working day/Weeked/Holiday OT Calculation =============
 				// if ($attn_status != 'A' && $in_time != "" && $out_time !="" && $in_time != $out_time) { // 2-325
 				if ($attn_status != 'A' && $in_time != "" && $in_time != $out_time) {
+					// dd("lo");
+
 					//======= Weeked/Holiday Extra OT Calculation==========
 					if($process_date == $weekend || $process_date == $holiday){
-
-                		$start_date_time = strtotime($in_time);
+						$late_start_time = '$process_date $late_start_time';
+						$out_time = $this->time_check_in($late_start_time, $out_end_time, $emp_id, 'DESC', $table);
+                		// dd($out_time);
+						$start_date_time = strtotime($in_time);
 						$end_date_time 	= strtotime($out_time);
 						$minute = round(($end_date_time - $start_date_time)/60);
 
@@ -353,10 +358,11 @@ class Attn_process_model extends CI_Model{
 				// dd($late_time);
 				// Night Allowance unit
 				if (!empty($night_rules) && strtotime($out_time) > strtotime($night_rules)) {
-					if($schedule[0]['in_start']>'18:00:00' && $unit == 4){
+					// if($schedule[0]['in_start']>'18:00:00' && $unit == 4){
 						$night_allo = 1;
-					}
-					else {$night_allo = 0;}
+					// }
+				}else {
+					$night_allo = 0;
 				}
                 // echo $night_allowance;exit;
 
@@ -463,7 +469,7 @@ class Attn_process_model extends CI_Model{
 						'unit_id'			=> $unit,
 					);
 				}	
-				// dd($data);
+				// dd($out_time);
 
 				
 				$this->db->where('shift_log_date', $process_date);

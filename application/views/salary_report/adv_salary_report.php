@@ -259,8 +259,10 @@
             showMessage('error', 'Please select month');
             return false;
         }
+        var status = document.getElementById('status').value;
 
-        var data = "unit_id=" + unit_id + "&emp_id=" + emp_id + "&salary_month=" + salary_month; 
+
+        var data = "unit_id=" + unit_id + "&emp_id=" + emp_id + "&salary_month=" + salary_month + "&status=" + status;
         url =  hostname+"salary_report_con/advance_salary_report/";
         document.getElementById('loader').style.display = 'block';
         ajaxRequest.open("POST", url, true);

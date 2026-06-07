@@ -1,5 +1,6 @@
 <div align="center" style=" margin:0 auto;  overflow:hidden; font-family: 'Times New Roman', Times, serif;">
 	<?php
+		$unit_id = $this->session->userdata('data')->unit_name;
 		if (empty($unit_id)) {
 			$unit_ids = $this->session->userdata('data');
 			if ($unit_ids->unit_name == 0) {

@@ -352,7 +352,7 @@ class Grid_con extends CI_Controller {
 			$this->load->view('grid_con/leave_application',$data);
 		} elseif($data['type'] == 'ml' && $data['values']['leave_balance_maternity'] >= $total_days){
 			$this->load->view('grid_con/leave_application',$data);
-		} elseif($data['type'] == 'sp' && $data['values']['leave_balance_paternity'] >= $total_days){
+		} elseif($data['type'] == 'sp'){
 			$this->load->view('grid_con/leave_application',$data);
 		} elseif($data['type'] == 'wp'){
 			$this->load->view('grid_con/leave_application',$data);
@@ -428,6 +428,7 @@ class Grid_con extends CI_Controller {
 		// $query['values'] = $this->Grid_model->grid_job_card($grid_firstdate, $grid_seconddate, $grid_emp_id);
 		$data['values'] = $this->Grid_model->get_ot_emp_info($grid_emp_id);
 		$data['unit_id'] = $_POST['unit_id'];
+		
 
 		$data['grid_firstdate'] = $grid_firstdate;
 		$data['grid_seconddate'] = $grid_seconddate;
@@ -779,21 +780,20 @@ class Grid_con extends CI_Controller {
 		$unit_id = $this->input->post('unit_id');
 		$status = $this->input->post('status');
 		$firstdate = $this->input->post('firstdate');
-		$data['firstdate']	= date("Y-m-d", strtotime($firstdate));
-		if ($status == 1) {
-			$days = 11;
-		} else if ($status == 2) {
-			$days = 22;
+		$firstdate	= date("Y-m-d", strtotime($firstdate));
+		
+		$empss 	= $this->Grid_model->grid_left_emp_id($firstdate, $unit_id);
+		if (!empty($empss)) {
+			$data['values'] 	= $this->Grid_model->grid_letter_report_print($empss);
 		} else {
-			$days = 31;
+			$data['values'] = [];
 		}
-		$off_day = 'Fri';
-		$data['values'] 	= $this->Grid_model->grid_letter_report($data['firstdate'],$unit_id,$off_day,$days,$status);
+
 		$data['unit_id']	= $unit_id;
 		$data['no_change']	= 2;
+		$data['status']	= $status;
 		
-		
-		if(empty($data)){
+		if(empty($data['values'])){
 			echo "Not Found Data"; exit();
 		}else{
 			if ($status == 1) {
@@ -809,35 +809,93 @@ class Grid_con extends CI_Controller {
 	function grid_letter_count(){
 		$unit_id = $this->input->post('unit_id');
 		$firstdate = $this->input->post('firstdate');
-		$data['firstdate']	= date("Y-m-d", strtotime($firstdate));
-		$days1 = 11;
-		$days2 = 22;
-		$days3 = 31;
-		$off_day = 'Fri';
-		// dd($_POST);
+		// first latter date and day calculation start
+			$l_date = date("Y-m-d", strtotime($firstdate));
+			$days_added = 0;
+			while ($days_added < 11) {
+				$l_date = date("Y-m-d", strtotime("-1 days " . $l_date)); // reverse
+				$l_date = rec_gov_holiday_reverse($l_date);
+				if (!in_array(date('N', strtotime($l_date)), [5])) { // skip Friday
+					$days_added++;
+				}
+			}
+			$l_date = coff_day_reverse($l_date);
+			// again check
+			if (date('N', strtotime($l_date)) == 5) {
+				$l_date = date("Y-m-d", strtotime("-1 days " . $l_date));
+			}
+			if (date('N', strtotime($l_date)) == 6) {
+				$l_date = date("Y-m-d", strtotime("-1 days " . $l_date));
+			}
+		// first latter date and day calculation end
 
-		$data['values']  = $this->Grid_model->grid_letter_report($data['firstdate'], $unit_id, $off_day, $days1, 1);
-		$data['values2'] = $this->Grid_model->grid_letter_report($data['firstdate'], $unit_id, $off_day, $days2, 2);
-		$data['values3'] = $this->Grid_model->grid_letter_report($data['firstdate'], $unit_id, $off_day, $days3, 3);
+		// second latter date and day calculation start 
+			$l2_date = $l_date;
+			$days_added = 0;
+			while ($days_added < 11) {
+				// reverse move
+				$l2_date = date("Y-m-d", strtotime("-1 days " . $l2_date));
+				// skip govt holiday (reverse)
+				$l2_date = rec_gov_holiday_reverse($l2_date);
+				// skip Friday only
+				if (!in_array(date('N', strtotime($l2_date)), [5])) {
+					$days_added++;
+				}
+			}
+			// skip coff day (reverse)
+			$l2_date = coff_day_reverse($l2_date);
+			// final safety check (Friday/Saturday)
+			while (in_array(date('N', strtotime($l2_date)), [5,6])) {
+				$l2_date = date("Y-m-d", strtotime("-1 days " . $l2_date));
+			}
+		// second latter date and day calculation end
 
-		// dd($data);
+		// latter three date and day calculation start
+			$l3_date = $l2_date;
+			$days_added = 0;
+			while ($days_added < 11) {
+				// reverse move
+				$l3_date = date("Y-m-d", strtotime("-1 days " . $l3_date));
+				// skip govt holiday (reverse)
+				$l3_date = rec_gov_holiday_reverse($l3_date);
+				// skip Friday only
+				if (!in_array(date('N', strtotime($l3_date)), [5])) {
+					$days_added++;
+				}
+			}
+			// skip coff day (reverse)
+			$l3_date = coff_day_reverse($l3_date);
+			// final safety check (Friday/Saturday)
+			while (in_array(date('N', strtotime($l3_date)), [5,6])) {
+				$l3_date = date("Y-m-d", strtotime("-1 days " . $l3_date));
+			}
+		// latter three date and day calculation end
+		$first_emp = $this->Grid_model->grid_left_emp_id($l_date, $unit_id);
+		$second_emp = $this->Grid_model->grid_left_emp_id($l2_date, $unit_id);
+		$third_emp = $this->Grid_model->grid_left_emp_id($l3_date, $unit_id);
 
-		if (!empty($data['values'])) {
-			$v['1'] = count($data['values']);
+		if (!empty($first_emp)) {
+			$v['1'] = count($first_emp);
+			$v['1_date'] = $l_date;
 		} else {
 			$v['1'] = 0;
+			$v['1_date'] = $l_date;
 		}
 
-		if (!empty($data['values2'])) {
-			$v['2'] = count($data['values2']);
+		if (!empty($second_emp)) {
+			$v['2'] = count($second_emp);
+			$v['2_date'] = $l2_date;
 		} else {
 			$v['2'] = 0;
+			$v['2_date'] = $l2_date;
 		}
 
-		if (!empty($data['values3'])) {
-			$v['3'] = count($data['values3']);
+		if (!empty($third_emp)) {
+			$v['3'] = count($third_emp);
+			$v['3_date'] = $l3_date;
 		} else {
 			$v['3'] = 0;
+			$v['3_date'] = $l3_date;
 		}
 		echo json_encode($v);
 	}

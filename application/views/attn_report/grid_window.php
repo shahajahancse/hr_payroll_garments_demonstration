@@ -389,13 +389,22 @@
 
 
 							<?php if(in_array(115,$acl)) { ?>
-							<button class="btn input-sm sbtn" onclick="grid_letter_report(1)">Letter 1 <span class="badge bg-red " style="color:#fff !important" id="letter1_count">0</span></button>
+							<button class="btn input-sm sbtn" onclick="grid_letter_report(1)">Letter 1 
+								<span class="badge bg-red " style="color:#fff !important" id="letter1_count">0</span>
+								<input type="hidden" id="letter1_date" value="">
+							</button>
 							<?php } ?>
 							<?php if(in_array(116,$acl)) { ?>
-							<button class="btn input-sm sbtn" onclick="grid_letter_report(2)">Letter 2 <span class="badge bg-red" style="color:#fff !important" id="letter2_count">0</span></button>
+							<button class="btn input-sm sbtn" onclick="grid_letter_report(2)">Letter 2 
+								<span class="badge bg-red" style="color:#fff !important" id="letter2_count">0</span>
+								<input type="hidden" id="letter2_date" value="">
+							</button>
 							<?php } ?>
 							<?php if(in_array(117,$acl)) { ?>
-							<button class="btn input-sm sbtn" onclick="grid_letter_report(3)">Letter 3 <span class="badge bg-red" style="color:#fff !important" id="letter3_count">0</span></button>
+							<button class="btn input-sm sbtn" onclick="grid_letter_report(3)">Letter 3 
+								<span class="badge bg-red" style="color:#fff !important" id="letter3_count">0</span>
+								<input type="hidden" id="letter3_date" value="">
+							</button>
 							<?php } ?>
 							<?php if(in_array(118,$acl)) { ?>
 							<button class="btn input-sm sbtn" onclick="grid_employee_information()">Employee Information</button>
@@ -682,12 +691,16 @@
 				success: function(data){
 					var data = JSON.parse(data);
 					$('#letter1_count').html(data[1]);
+					$('#letter1_date').val(data['1_date']);
+
 					$('#letter2_count').html(data[2]);
+					$('#letter2_date').val(data['2_date']);
+
 					$('#letter3_count').html(data[3]);
+					$('#letter3_date').val(data['3_date']);
 				}
 			})
 		}
-
 	</script>
 	<script>
 		$(document).ready(function() {
@@ -703,47 +716,47 @@
 
 
 <script>
-function grid_roster_employee(){
-	var ajaxRequest;  // The variable that makes Ajax possible!
-	
-	try{
-	// Opera 8.0+, Firefox, Safari
-	ajaxRequest = new XMLHttpRequest();
-	}catch (e){
-	// Internet Explorer Browsers
-	try{
-		ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
-	}catch (e) {
+	function grid_roster_employee(){
+		var ajaxRequest;  // The variable that makes Ajax possible!
+		
 		try{
-			ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+		// Opera 8.0+, Firefox, Safari
+		ajaxRequest = new XMLHttpRequest();
 		}catch (e){
-			// Something went wrong
-			alert("Your browser broke!");
-			return false;
+		// Internet Explorer Browsers
+		try{
+			ajaxRequest = new ActiveXObject("Msxml2.XMLHTTP");
+		}catch (e) {
+			try{
+				ajaxRequest = new ActiveXObject("Microsoft.XMLHTTP");
+			}catch (e){
+				// Something went wrong
+				alert("Your browser broke!");
+				return false;
+			}
+		}
+		}
+		var unit_id = document.getElementById('unit_id').value;
+		var first_date = document.getElementById('firstdate').value;
+		if(unit_id =='Select'){
+			alert("Please select unit !");
+			return;
+		}
+		
+		document.getElementById('loaader').style.display = 'flex';
+		var queryString="unit_id="+unit_id+"&first_date="+first_date;
+		url =  hostname+"grid_con/grid_roster_employee/";
+		ajaxRequest.open("POST", url, true);
+		ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
+		ajaxRequest.send(queryString);
+		ajaxRequest.onreadystatechange = function(){
+			if (ajaxRequest.readyState == 4) {
+				document.getElementById('loaader').style.display = 'none';
+				var resp = ajaxRequest.responseText;	
+				service_book = window.open('', '_blank', 'menubar=1,resizable=1,scrollbars=1,width=1600,height=800');
+				service_book.document.write(resp);
+				service_book.stop();			
+			}
 		}
 	}
-	}
-	var unit_id = document.getElementById('unit_id').value;
-	var first_date = document.getElementById('firstdate').value;
-	if(unit_id =='Select'){
-		alert("Please select unit !");
-		return;
-	}
-	
-	document.getElementById('loaader').style.display = 'flex';
-	var queryString="unit_id="+unit_id+"&first_date="+first_date;
-	url =  hostname+"grid_con/grid_roster_employee/";
-	ajaxRequest.open("POST", url, true);
-	ajaxRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
-	ajaxRequest.send(queryString);
-	ajaxRequest.onreadystatechange = function(){
-		if (ajaxRequest.readyState == 4) {
-			document.getElementById('loaader').style.display = 'none';
-			var resp = ajaxRequest.responseText;	
-			service_book = window.open('', '_blank', 'menubar=1,resizable=1,scrollbars=1,width=1600,height=800');
-			service_book.document.write(resp);
-			service_book.stop();			
-		}
-	}
-}
 </script>

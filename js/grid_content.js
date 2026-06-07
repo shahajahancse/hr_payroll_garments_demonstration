@@ -1687,7 +1687,17 @@ function grid_letter_report(status)
 			}
 		}
 	}
-	var firstdate = document.getElementById('firstdate').value;
+
+	if (status == 1) {
+		var firstdate = document.getElementById('letter1_date').value;
+	} else if (status == 2) {
+		var firstdate = document.getElementById('letter2_date').value;
+	} else if (status == 3) {
+		var firstdate = document.getElementById('letter3_date').value;
+	} else {
+		var firstdate = document.getElementById('firstdate').value;
+	}
+
 	if(firstdate ==''){
 		alert("Please select First date");
 		return false;

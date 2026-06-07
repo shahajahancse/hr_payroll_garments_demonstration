@@ -24,6 +24,7 @@ if ( ! function_exists('gov_holiday'))
 {
 	function gov_holiday($date1, $date2, $type = null)
 	{
+		// dd($date1 .' = '. $date2);
 		// Check if session data is set
         if (!isset($_SESSION['data']->unit_name)) {
             return null; // or handle the error as needed
@@ -32,7 +33,6 @@ if ( ! function_exists('gov_holiday'))
 		$CI->db->where('unit_id', $_SESSION['data']->unit_name);
 		$CI->db->where("date BETWEEN '$date1' AND '$date2'");
 		$gd = $CI->db->get('pr_gov_holiday')->num_rows();
-		
 		if (!empty($gd)) {
 			$date = date("Y-m-d", strtotime("+1 days".$date2));
 			$date = rec_gov_holiday($date);
@@ -53,15 +53,29 @@ if ( ! function_exists('rec_gov_holiday'))
 	{
 		// dd(date('d-m-Y', $date));
 		$CI =& get_instance();
-		$CI->db->where('unit_id', $_SESSION['data']->unit_name);
-		$CI->db->where("date", $date);
+		$CI->db->where('unit_id', $_SESSION['data']->unit_name)->where("date", $date);
 		$gd = $CI->db->get('pr_gov_holiday')->num_rows();
 		if (!empty($gd)) {
-			$date = date("Y-m-d", strtotime("+1 days".$date));
+			$date = date("Y-m-d", strtotime("+1 days " . $date));
 			$date = rec_gov_holiday($date);
 		}
 		return $date;
 	}
+}
+if ( ! function_exists('rec_gov_holiday_reverse'))
+{
+    function rec_gov_holiday_reverse($date)
+    {
+        $CI =& get_instance();
+        $CI->db->where('unit_id', $_SESSION['data']->unit_name)->where("date", $date);
+        $gd = $CI->db->get('pr_gov_holiday')->num_rows();
+
+        if (!empty($gd)) {
+            $date = date("Y-m-d", strtotime("-1 days " . $date));
+            $date = rec_gov_holiday_reverse($date);
+        }
+        return $date;
+    }
 }
 
 if ( ! function_exists('coff_day'))
@@ -72,13 +86,26 @@ if ( ! function_exists('coff_day'))
 		$CI->db->where('work_off_date', $date)->where('unit_id',$_SESSION['data']->unit_name);
 		$gd = $CI->db->get('attn_holyday_off')->row();
 		if (!empty($gd)) {
-			$date = date("Y-m-d", strtotime("+1 days".$date));
+			$date = date("Y-m-d", strtotime("+1 days " . $date));
 			$date = coff_day($date);
 		}
 		return $date;
 	}
 }
-
+if ( ! function_exists('coff_day_reverse'))
+{
+    function coff_day_reverse($date)
+    {
+        $CI =& get_instance();
+        $CI->db->where('work_off_date', $date)->where('unit_id', $_SESSION['data']->unit_name);
+        $gd = $CI->db->get('attn_holyday_off')->row();
+        if (!empty($gd)) {
+            $date = date("Y-m-d", strtotime("-1 days " . $date));
+            $date = coff_day_reverse($date);
+        }
+        return $date;
+    }
+}
 
 if ( ! function_exists('get_all_emp_id'))
 {

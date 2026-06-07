@@ -14,15 +14,14 @@
 	{ echo 'Resign Employee '; }
 	elseif($grid_status == 6)
 	{ echo 'Promoted Employee '; }
-?>Monthly EOT Sheet of 
+?> Advanced Salary Sheet of 
 <?php 
-$date = $salary_month;
-$year=trim(substr($date,0,4));
-$month=trim(substr($date,5,2));
-$day=trim(substr($date,8,2));
-$date_format = date("F-Y", mktime(0, 0, 0, $month, $day, $year));
-echo $date_format;
-
+	$date = $salary_month;
+	// $year=trim(substr($date,0,4));
+	// $month=trim(substr($date,5,2));
+	// $day=trim(substr($date,8,2));
+	$date_format = date('F,Y', strtotime($salary_month));
+	echo $date_format;
 ?>
 
 </title>
@@ -186,6 +185,8 @@ echo "Payment Date : ";
         <th rowspan="2" width="120" height="20px"><div align="center"><strong>	bKash No.</strong></div></th>
         <tr></tr>
 <?php
+
+// dd($value);
 			
 	if($counter == $page)
   	{
